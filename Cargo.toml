@@ -1,0 +1,30 @@
+[package]
+categories = ["command-line-utilities"]
+description = "Recipe site generator"
+documentation = "https://docs.rs/sweet-potator"
+edition = "2021"
+homepage = "https://github.com/tobx/sweet-potator"
+license-file = "LICENSE"
+name = "sweet-potator"
+readme = "README.md"
+repository = "https://github.com/tobx/sweet-potator"
+version = "0.1.0"
+
+[[bin]]
+name = "sweet-potator"
+path = "src/cli/main.rs"
+
+[dependencies]
+clap = { version = "3.1.2", features = ["derive"] }
+config = "0.12.0"
+dirs-next = "2.0.0"
+include_dir = "0.7.2"
+owo-colors = { version = "3.2.0", features = ["supports-colors"] }
+sanitize-filename = "0.3.0"
+serde = { version = "1.0.136", features = ["derive"] }
+slug = "0.1.4"
+tera = "1.15.0"
+thiserror = "1.0.30"
+
+[dev-dependencies]
+tempfile = "3.3.0"

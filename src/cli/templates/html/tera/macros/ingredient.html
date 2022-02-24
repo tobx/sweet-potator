@@ -1,0 +1,21 @@
+{% macro ingredient(ingredient) -%}
+  <span class="quantity">
+    {%- if ingredient.quantity is defined -%}
+      {{ ingredient.quantity.value }}
+    {%- endif -%}
+  </span>{{ lf -}}
+  <span class="unit">
+    {%- if ingredient.quantity.unit is defined -%}
+      {{ ingredient.quantity.unit }}
+    {%- endif -%}
+  </span>{{ lf -}}
+  <span class="name">{{ lf -}}
+    <span class="base">{{ ingredient.name }}</span>
+    {%- if ingredient.kind is defined -%}
+      , <span class="kind">{{ ingredient.kind }}</span>
+    {%- endif %}
+    {%- if ingredient.quantity.note is defined -%}
+      {{ " ("}}<span class="note">{{ ingredient.quantity.note }}</span>)
+    {%- endif -%}
+  </span>
+{% endmacro ingredient %}

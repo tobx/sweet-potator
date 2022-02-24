@@ -1,0 +1,47 @@
+{% extends "blocks/base.html" %}
+
+{% block variables -%}
+  {% set base_url = "." %}
+{%- endblock variables %}
+
+{% block title %}Recipes{% endblock title %}
+
+{% block main -%}
+  <article class="recipes">{{ lf -}}
+    <header>{{ lf -}}
+      <h1>Recipes</h1>{{ lf -}}
+      <h2>private recipe collection</h2>{{ lf -}}
+    </header>{{ lf }}
+    {%- if tags | length > 0 -%}
+      <nav class="tags">{{ lf -}}
+        <span class="caption">Tags:</span>{{ lf -}}
+        <ul>{{ lf }}
+          {%- for tag in tags -%}
+            <li><span class="tag">{{ tag }}</span></li>{{ lf }}
+          {%- endfor -%}
+          <li><span class="reset">{% include "includes/reset.html" %}</span></li>{{ lf -}}
+        </ul>{{ lf -}}
+      </nav>{{ lf }}
+    {%- endif -%}
+    <section class="list">{{ lf -}}
+      <p class="count"><span class="value">{{ recipes | length }}</span> recipes online:</p>{{ lf -}}
+      <ul>{{ lf }}
+        {%- for recipe in recipes -%}
+          <li>{{ lf -}}
+            <a href="{{ recipe.path | urlencode | safe }}">{{ recipe.title }}</a>{{ lf }}
+            {%- if recipe.tags | length > 0 -%}
+              <div class="tags">{{ lf -}}
+                <span class="caption">Tags:</span>{{ lf -}}
+                <ul>{{ lf }}
+                  {%- for tag in recipe.tags -%}
+                    <li><span class="tag">{{ tag }}</span></li>{{ lf }}
+                  {%- endfor -%}
+                </ul>{{ lf -}}
+              </div>{{ lf }}
+            {%- endif -%}
+          </li>{{ lf }}
+        {%- endfor -%}
+      </ul>{{ lf -}}
+    </section>{{ lf -}}
+  </article>
+{% endblock main %}

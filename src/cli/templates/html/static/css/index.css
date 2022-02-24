@@ -1,0 +1,340 @@
+:root {
+  --base-size: 1.25rem;
+  --border: var(--border-width) dashed var(--color-primary);
+  --border-width: calc(1rem / 16);
+  --color-background: White;
+  --color-primary: Tomato;
+  --color-text: black;
+  --page-font-size: var(--base-size);
+  --page-padding: var(--base-size);
+  --page-max-width: calc(48 * var(--base-size));
+}
+
+main > article {
+  --h1-font-size: 3em;
+  --h2-font-size: 1.25em;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --base-size: 1.5rem;
+    --page-padding: calc(2 * var(--base-size));
+  }
+
+  main > article {
+    --h1-font-size: 4em;
+    --h2-font-size: 1.5em;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font: var(--page-font-size) / 1 "Merriweather", serif;
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-text);
+}
+
+h1,
+h2,
+li,
+ol,
+p,
+ul {
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.hidden {
+  display: none;
+}
+
+body > header {
+  border-bottom: var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--page-padding);
+}
+
+body > header h1 {
+  align-items: center;
+  display: flex;
+  font-size: inherit;
+  font-weight: inherit;
+  column-gap: 0.5em;
+}
+
+body > header h1 svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  height: 1.5em;
+}
+
+body > header nav {
+  align-items: center;
+  display: flex;
+  padding: 1em 0;
+}
+
+body > header nav a {
+  color: inherit;
+  margin-left: var(--page-padding);
+}
+
+body > header nav a:hover {
+  color: var(--color-primary);
+}
+
+body > header nav a svg {
+  --fill: transparent;
+  --stroke: var(--color-text);
+  height: 1.5em;
+}
+
+body > header nav a:hover svg,
+body > header nav a.active svg {
+  --fill: var(--color-primary);
+  --stroke: var(--color-primary);
+}
+
+main > article {
+  margin: 0 auto;
+  max-width: var(--page-max-width);
+}
+
+main > article h1 {
+  font-size: var(--h1-font-size);
+}
+
+main > article h2 {
+  font-size: var(--h2-font-size);
+}
+
+main > article > header {
+  padding: 3em var(--page-padding) 1em var(--page-padding);
+}
+
+main > article > header h2 {
+  font-weight: normal;
+  margin-top: 0.5em;
+}
+
+main > article > section {
+  padding: 0 var(--page-padding);
+}
+
+main > article .tags {
+  display: flex;
+  font-size: 0.67em;
+  line-height: 1;
+}
+
+main > article .tags .caption {
+  margin-right: 0.75em;
+}
+
+main > article .tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  line-height: inherit;
+}
+
+main > article .tags ul .tag {
+  border-bottom: var(--border-width) solid var(--color-primary);
+  color: inherit;
+  cursor: pointer;
+  padding: calc(1em / 16) 0;
+}
+
+main > article .tags ul .tag:hover {
+  color: var(--color-primary);
+}
+
+main > article .tags ul .tag.active {
+  color: var(--color-primary);
+}
+
+main > article .tags ul .tag.active:hover {
+  border-bottom-color: var(--color-text);
+}
+
+main > article .tags ul .reset {
+  cursor: pointer;
+  display: block;
+  height: 1em;
+}
+
+main > article .tags ul .reset:hover {
+  color: var(--color-primary);
+}
+
+main > article .tags ul .reset svg {
+  height: 1.25em;
+}
+
+main > article > .tags {
+  margin: 1em var(--page-padding);
+}
+
+.recipes .list {
+  margin: 3em 0 2em 0;
+}
+
+.recipes .list .count {
+  margin-bottom: 1.5em;
+}
+
+.recipes .list > ul {
+  line-height: 1.5;
+}
+
+.recipes .list > ul > li {
+  --indent: 1.25em;
+  margin: 1em 0;
+  padding-left: calc(0.5em + var(--indent));
+}
+
+.recipes .list > ul > li a {
+  color: inherit;
+}
+
+.recipes .list > ul > li a:hover {
+  color: var(--color-primary);
+}
+
+.recipes .list > ul > li > a::before {
+  color: var(--color-primary);
+  content: "–";
+  display: inline-block;
+  margin-left: calc(-1 * var(--indent));
+  width: var(--indent);
+}
+
+.recipes .list .tags {
+  margin: 0.125em 0 2em 0;
+}
+
+.recipes .list .tags > .caption {
+  display: none;
+}
+
+.recipe h2 {
+  margin: 2em 0 1em 0;
+}
+
+.recipe ol {
+  margin-left: 2em;
+}
+
+.recipe > header h1 {
+  font-weight: normal;
+}
+
+.recipe > .image {
+  margin-top: 1em;
+}
+
+.recipe > .image img {
+  border: var(--border);
+  border-radius: 1em;
+  box-sizing: border-box;
+  padding: 0.25em;
+  width: 100%;
+}
+
+.recipe > .ingredients .servings {
+  align-items: center;
+  display: flex;
+  font-size: smaller;
+}
+
+.recipe > .ingredients .servings svg {
+  height: 1.25em;
+  margin-right: 0.5em;
+}
+
+.recipe > .ingredients .servings .value {
+  margin-left: 0.25em;
+}
+
+.recipe > .ingredients ul {
+  line-height: 1.5;
+  margin-left: 1em;
+  margin-top: 1em;
+}
+
+.recipe > .ingredients li {
+  display: table-row;
+}
+
+.recipe > .ingredients li > * {
+  display: table-cell;
+  padding-bottom: 0.5em;
+}
+
+.recipe > .ingredients li:last-child > * {
+  padding-bottom: 0;
+}
+
+.recipe > .ingredients li .quantity {
+  padding-right: 0.25em;
+  text-align: right;
+}
+
+.recipe > .ingredients li .unit {
+  padding-right: 0.5em;
+}
+
+.recipe > .instructions ol {
+  line-height: 1.5;
+}
+
+.recipe > .source {
+  margin-top: 3em;
+}
+
+body > footer {
+  border-top: var(--border);
+  margin-top: 2em;
+  padding: 1em var(--page-padding);
+}
+
+body > footer p {
+  align-items: center;
+  display: flex;
+  font-size: 75%;
+  justify-content: center;
+}
+
+body > footer p a {
+  border-bottom: var(--border-width) solid var(--color-primary);
+  line-height: 1;
+  color: var(--color-text);
+  line-height: 1;
+  padding: calc(1em / 16) 0;
+}
+
+body > footer p a:hover {
+  color: var(--color-primary);
+}
+
+body > footer p svg {
+  color: var(--color-primary);
+  height: 1.5em;
+  margin-left: 0.125em;
+}

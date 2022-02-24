@@ -1,0 +1,30 @@
+{% import "macros/ingredient.html" as ingredient %}
+
+{% macro basic_list(tag, items) -%}
+  <{{ tag }}>{{ lf }}
+    {%- for item in items -%}
+      <li>
+        {%- if item is object -%}
+          {{ lf }}{{ ingredient::ingredient(ingredient = item) }}
+        {%- else -%}
+          {{ item }}
+        {%- endif -%}
+      </li>{{ lf }}
+    {%- endfor -%}
+  </{{ tag }}>{{ lf }}
+{%- endmacro list %}
+
+{% macro sectioned_list(tag, sections) %}
+  {%- for section in sections -%}
+    <h3>{{ section.name }}</h3>{{ lf }}
+    {{- self::basic_list(tag = tag, items = section.items) }}
+  {%- endfor %}
+{%- endmacro sectioned_list %}
+
+{% macro list(tag, list) %}
+  {%- if list.sections is defined -%}
+    {{ self::sectioned_list(tag = tag, sections = list.sections) }}
+  {%- else -%}
+    {{ self::basic_list(tag = tag, items = list.items) }}
+  {%- endif %}
+{%- endmacro list %}

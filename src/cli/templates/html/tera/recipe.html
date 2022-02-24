@@ -1,0 +1,51 @@
+{% import "macros/list.html" as list %}
+
+{% extends "blocks/base.html" %}
+
+{% block variables -%}
+  {% set base_url = ".." %}
+{%- endblock variables %}
+
+{% block title %}{{ recipe.title }}{% endblock title %}
+
+{% block main -%}
+  <article class="recipe">{{ lf -}}
+    <header>{{ lf -}}
+      <h1>{{ recipe.title }}</h1>{{ lf -}}
+    </header>{{ lf }}
+    {%- if image_path is string -%}
+      <section class="image">{{ lf -}}
+        <img alt="{{ recipe.title }}" src="../{{ image_path | urlencode | safe }}">{{ lf -}}
+      </section>
+    {%- endif %}{{ lf -}}
+    <section class="ingredients">{{ lf -}}
+      <h2>Ingredients</h2>{{ lf -}}
+      <p class="servings">{{ lf -}}
+        <svg viewBox="0 0 64 64">{{ lf -}}
+          <g fill="none" stroke="currentcolor" stroke-width="4">{{ lf -}}
+            <circle cx="32" cy="15" r="13" />{{ lf -}}
+            <path d="M17,36L47,36A13 13 0 0 1 60,49L60,62L4,62L4,49A13 13 0 0 1 17,36Z" />{{ lf -}}
+          </g>{{ lf -}}
+        </svg>{{ lf -}}
+        Serves{{ lf -}}
+        <span class="value">0</span>{{ lf -}}
+      </p>{{ lf }}
+      {{- list::list(tag = "ul", list = recipe.ingredients) -}}
+    </section>{{ lf -}}
+    <section class="instructions">{{ lf -}}
+      <h2>Instructions</h2>{{ lf -}}
+      {{ list::list(tag = "ol", list = recipe.instructions) -}}
+    </section>{{ lf -}}
+    {%- if recipe.metadata.source is defined -%}
+      <section class="source">{{ lf -}}
+        <p>
+          {%- if recipe.metadata.source.link is defined -%}
+            Source: <a href="{{ recipe.metadata.source.link.url | urlencode | safe }}">{{ recipe.metadata.source.link.name }}</a>
+          {%- else -%}
+            Author: <span class="author">{{ recipe.metadata.source.author }}</span>
+          {%- endif -%}
+        </p>{{ lf -}}
+      </section>
+    {%- endif -%}
+  </article>{{ lf }}
+{% endblock main %}

@@ -1,0 +1,42 @@
+{% block variables %}{% endblock variables -%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{% block title %}{% endblock title %} &ndash; {{ app.name }}</title>
+  <link rel="preload" href="{{ base_url }}/static/fonts/merriweather/400/latin.woff2" as="font" crossorigin />
+  <link rel="preload" href="{{ base_url }}/static/fonts/merriweather/700/latin.woff2" as="font" crossorigin />
+  <link rel="icon" type="image/png" href="{{ base_url }}/static/images/favicon.png" />
+  <link rel="apple-touch-icon" href="{{ base_url }}/static/images/apple-touch-icon.png" />
+  <link href="{{ base_url }}/static/css/fonts.css" rel="stylesheet" />
+  <link href="{{ base_url }}/static/css/index.css" rel="stylesheet" />
+  <script src="{{ base_url }}/static/js/index.js"></script>
+</head>
+
+<body>{{ lf -}}
+  <header>{{ lf -}}
+    <h1>{{ lf }}
+      {%- include "includes/logo.html" -%}
+      <span>{{ app.name }}</span>{{ lf -}}
+    </h1>{{ lf -}}
+    <nav>{{ lf -}}
+      <a class="home" href="{{ base_url }}/index.html">Home</a>{{ lf -}}
+      <a class="favorites" href="{{ base_url }}/index.html">{{ lf }}
+        {%- include "includes/heart.html" -%}
+      </a>{{ lf -}}
+    </nav>{{ lf -}}
+  </header>{{ lf -}}
+  <main>{{ lf }}
+    {%- block main %}{% endblock main -%}
+  </main>{{ lf -}}
+  <footer>{{ lf -}}
+    <p>{{ lf -}}
+      <span>Made with <a href="{{ app.homepage | safe }}">{{ app.name }}</a></span>{{ lf -}}
+      {%- include "includes/logo.html" -%}
+    </p>{{ lf -}}
+  </footer>{{ lf -}}
+</body>
+
+</html>

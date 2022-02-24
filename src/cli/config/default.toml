@@ -1,0 +1,32 @@
+# Recipe directory
+recipe_dir = "./recipes"
+
+# Editor command to edit recipes
+editor = ["vim"]
+
+# Valid image file extensions
+image_file_extensions = [
+    "apng",
+    "avif",
+    "gif",
+    "jfif",
+    "jpeg",
+    "jpg",
+    "pjp",
+    "pjpeg",
+    "png",
+    "svg",
+    "webp",
+]
+
+# HTML template
+[templates.html]
+extension = "html"
+file_name_filter = "slugify"
+# escape = true
+
+# Markdown template
+[templates.markdown]
+extension = "md"
+# file_name_filter = "sanitize"
+# escape = true
