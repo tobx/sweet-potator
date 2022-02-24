@@ -16,9 +16,12 @@ Servings: {{ recipe.metadata.servings }}
 {{ table::table(list = recipe.ingredients) }}
 ## Instructions
 {{ list::list(list = recipe.instructions) }}
-{%- if recipe.metadata.source.link is defined -%}
-  {{ lf }}Source: [{{ recipe.metadata.source.link.name }}]({{ recipe.metadata.source.link.url | urlencode | safe }})
-{% elif recipe.metadata.source.author is defined -%}
-  {{ lf }}Author: {{ recipe.metadata.source.author }}
+{%- if recipe.metadata.source is object -%}
+  {{ lf }}
+  {%- if recipe.metadata.source.link is defined -%}
+    Source: [{{ recipe.metadata.source.link.name }}]({{ recipe.metadata.source.link.url | urlencode | safe }})
+  {%- else -%}
+    Author: {{ recipe.metadata.source.author }}
+  {%- endif %}
 {% endif -%}
 {%- endblock main %}

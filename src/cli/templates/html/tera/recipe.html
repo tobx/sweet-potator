@@ -31,7 +31,7 @@
       <h2>Instructions</h2>{{ lf -}}
       {{ list::list(tag = "ol", list = recipe.instructions) -}}
     </section>{{ lf -}}
-    {%- if recipe.metadata.source is defined -%}
+    {%- if recipe.metadata.source is object -%}
       <section class="source">{{ lf -}}
         <p>
           {%- if recipe.metadata.source.link is defined -%}

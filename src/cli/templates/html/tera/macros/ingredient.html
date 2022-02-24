@@ -1,20 +1,20 @@
 {% macro ingredient(ingredient) -%}
   <span class="quantity">
-    {%- if ingredient.quantity is defined -%}
+    {%- if ingredient.quantity is object -%}
       {{ ingredient.quantity.value }}
     {%- endif -%}
   </span>{{ lf -}}
   <span class="unit">
-    {%- if ingredient.quantity.unit is defined -%}
+    {%- if ingredient.quantity is object and ingredient.quantity.unit is string -%}
       {{ ingredient.quantity.unit }}
     {%- endif -%}
   </span>{{ lf -}}
   <span class="name">{{ lf -}}
     <span class="base">{{ ingredient.name }}</span>
-    {%- if ingredient.kind is defined -%}
+    {%- if ingredient.kind is string -%}
       , <span class="kind">{{ ingredient.kind }}</span>
     {%- endif %}
-    {%- if ingredient.quantity.note is defined -%}
+    {%- if ingredient.quantity is object and ingredient.quantity.note is string -%}
       {{ " ("}}<span class="note">{{ ingredient.quantity.note }}</span>)
     {%- endif -%}
   </span>

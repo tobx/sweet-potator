@@ -1,9 +1,9 @@
 {% macro quantity(quantity) -%}
   {{ quantity.value }}
-  {%- if quantity.unit is defined -%}
+  {%- if quantity.unit is string -%}
     {{ " " ~ quantity.unit }}
   {%- endif %}
-  {%- if quantity.note is defined -%}
+  {%- if quantity.note is string -%}
     {{ " " }}({{ quantity.note }})
   {%- endif %}
 {%- endmacro quantity %}
@@ -14,11 +14,11 @@
   | --- | --- |{{ lf }}
   {%- for ingredient in ingredients -%}
     | {{ ingredient.name }}
-    {%- if ingredient.kind is defined -%}
+    {%- if ingredient.kind is string -%}
       , {{ ingredient.kind }}
     {%- endif -%}
     {{ " | " }}
-    {%- if ingredient.quantity is defined -%}
+    {%- if ingredient.quantity is object -%}
       {{ table::quantity(quantity = ingredient.quantity) }}
     {%- endif %} |{{ lf }}
   {%- endfor %}

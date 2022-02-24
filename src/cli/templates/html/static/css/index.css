@@ -325,7 +325,7 @@ main > article > .tags {
 }
 
 .recipe > .source {
-  margin-top: 3em;
+  margin: 1.5em 0 2.5em 0;
 }
 
 body > footer {
