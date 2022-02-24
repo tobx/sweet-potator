@@ -46,6 +46,7 @@ a:hover {
 
 h1,
 h2,
+h3,
 li,
 ol,
 p,
@@ -53,6 +54,10 @@ ul {
   line-height: inherit;
   margin: 0;
   padding: 0;
+}
+
+h3 {
+  font-weight: normal;
 }
 
 ul {
@@ -105,8 +110,7 @@ body > header nav a svg {
   height: 1.5em;
 }
 
-body > header nav a:hover svg,
-body > header nav a.active svg {
+body > header nav a:hover svg {
   --fill: var(--color-primary);
   --stroke: var(--color-primary);
 }
@@ -122,6 +126,10 @@ main > article h1 {
 
 main > article h2 {
   font-size: var(--h2-font-size);
+}
+
+main > article h3 {
+  font-size: 1.125em;
 }
 
 main > article > header {
@@ -165,11 +173,11 @@ main > article .tags ul .tag:hover {
   color: var(--color-primary);
 }
 
-main > article .tags ul .tag.active {
+main > article .tags ul .active {
   color: var(--color-primary);
 }
 
-main > article .tags ul .tag.active:hover {
+main > article .tags ul .active:hover {
   border-bottom-color: var(--color-text);
 }
 
@@ -237,6 +245,10 @@ main > article > .tags {
   margin: 2em 0 1em 0;
 }
 
+.recipe h3 {
+  margin: 1.5em 0 0.5em 0;
+}
+
 .recipe ol {
   margin-left: 2em;
 }
@@ -260,7 +272,7 @@ main > article > .tags {
 .recipe > .ingredients .servings {
   align-items: center;
   display: flex;
-  font-size: smaller;
+  font-size: 0.85em;
 }
 
 .recipe > .ingredients .servings svg {
@@ -304,6 +316,14 @@ main > article > .tags {
   line-height: 1.5;
 }
 
+.recipe > .instructions li {
+  padding-bottom: 0.5em;
+}
+
+.recipe > .ingredients li:last-child {
+  padding-bottom: 0;
+}
+
 .recipe > .source {
   margin-top: 3em;
 }
@@ -317,7 +337,7 @@ body > footer {
 body > footer p {
   align-items: center;
   display: flex;
-  font-size: 75%;
+  font-size: 0.75em;
   justify-content: center;
 }
 
