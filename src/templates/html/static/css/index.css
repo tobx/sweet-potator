@@ -97,6 +97,7 @@ body > header nav {
 
 body > header nav a {
   color: inherit;
+  text-transform: uppercase;
   margin-left: var(--page-padding);
 }
 
@@ -320,12 +321,21 @@ main > article > .tags {
   padding-bottom: 0.5em;
 }
 
-.recipe > .ingredients li:last-child {
+.recipe > .instructions li:last-child {
+  padding-bottom: 0;
+}
+
+.recipe > .remarks p {
+  line-height: 1.5;
+  padding-bottom: 0.5em;
+}
+
+.recipe > .remarks p:last-child {
   padding-bottom: 0;
 }
 
 .recipe > .source {
-  margin: 1.5em 0 2.5em 0;
+  margin: 2.5em 0;
 }
 
 body > footer {

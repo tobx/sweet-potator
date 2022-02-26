@@ -35,6 +35,7 @@ pub struct Recipe {
     pub metadata: Metadata,
     pub ingredients: List<Ingredient>,
     pub instructions: List<String>,
+    pub remarks: Vec<String>,
 }
 
 impl Recipe {
@@ -57,6 +58,9 @@ impl Recipe {
                 .next_block()?
                 .ok_or_else(|| ParseError::from("missing instructions"))
                 .and_then(Self::parse_instructions)?,
+            remarks: reader
+                .next_block()?
+                .map_or_else(|| Ok(Vec::new()), Self::parse_remarks)?,
         })
     }
 
@@ -82,16 +86,30 @@ impl Recipe {
         lines.remove(0);
         Ok(lines.try_into().unwrap())
     }
+
+    fn parse_remarks(mut lines: Vec<String>) -> ParseResult<Vec<String>> {
+        if !matches!(lines.get(0), Some(line) if line == "Remarks") {
+            return Err("expected headline 'Remarks'".into());
+        }
+        lines.remove(0);
+        List::<String>::parse_basic(&lines)
+    }
 }
 
 impl fmt::Display for Recipe {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let indentation = " ".repeat(2);
         writeln!(f, "{}\n", self.title)?;
         writeln!(f, "{}", self.metadata)?;
         writeln!(f, "Ingredients")?;
-        self.ingredients.format(f, 2)?;
+        self.ingredients.format(f, &indentation)?;
         writeln!(f, "\nInstructions")?;
-        self.instructions.format(f, 2)
+        self.instructions.format(f, &indentation)?;
+        if !self.remarks.is_empty() {
+            writeln!(f, "\nRemarks")?;
+            list::format_items(&self.remarks, f, &indentation)?;
+        }
+        Ok(())
     }
 }
 
@@ -123,6 +141,9 @@ mod tests {
         " section 1 \n",
         " - instruction 1 \n",
         "   - instruction 2 \n",
+        " \n",
+        " Remarks \n",
+        "  - remark",
         " \n"
     );
 
@@ -139,7 +160,10 @@ mod tests {
         "\n",
         "Instructions\n",
         "  section\n",
-        "    - instruction\n"
+        "    - instruction\n",
+        "\n",
+        "Remarks\n",
+        "  - remark\n"
     );
 
     #[test]
@@ -166,6 +190,7 @@ mod tests {
                 "section".into(),
                 vec!["instruction".into()],
             )]),
+            remarks: vec!["remark".into()],
         };
         assert_eq!(recipe.to_string(), RECIPE_TO_DISPLAY)
     }

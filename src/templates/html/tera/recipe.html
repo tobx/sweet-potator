@@ -31,6 +31,14 @@
       <h2>Instructions</h2>{{ lf -}}
       {{ list::list(tag = "ol", list = recipe.instructions) -}}
     </section>{{ lf -}}
+    {% if recipe.remarks | length > 0 -%}
+      <section class="remarks">{{ lf -}}
+        <h2>Remarks</h2>{{ lf }}
+        {%- for remark in recipe.remarks -%}
+          <p>{{ remark }}</p>{{ lf }}
+        {%- endfor -%}
+      </section>{{ lf }}
+    {%- endif %}
     {%- if recipe.metadata.source is object -%}
       <section class="source">{{ lf -}}
         <p>

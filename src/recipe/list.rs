@@ -51,15 +51,14 @@ pub enum List<D> {
 }
 
 impl<D: fmt::Display> List<D> {
-    pub fn format(&self, f: &mut fmt::Formatter<'_>, indent_size: usize) -> fmt::Result {
-        let indentation = " ".repeat(indent_size);
+    pub fn format(&self, f: &mut fmt::Formatter<'_>, indentation: &str) -> fmt::Result {
         match self {
             Self::Basic(items) => {
-                format_items(items, f, &indentation)?;
+                format_items(items, f, indentation)?;
             }
             Self::Sectioned(sections) => {
                 for section in sections {
-                    section.format(f, &indentation)?;
+                    section.format(f, indentation)?;
                 }
             }
         }
@@ -68,7 +67,7 @@ impl<D: fmt::Display> List<D> {
 }
 
 impl<P: ParseFromStr> List<P> {
-    fn parse_basic<S: ParseFromStr>(lines: &[String]) -> ParseResult<Vec<S>> {
+    pub fn parse_basic<S: ParseFromStr>(lines: &[String]) -> ParseResult<Vec<S>> {
         lines
             .iter()
             .map(|line| strip_prefix(line).and_then(S::parse_from_str))
@@ -111,7 +110,7 @@ impl<D: ParseFromStr> TryFrom<Vec<String>> for List<D> {
     }
 }
 
-fn format_items<D: fmt::Display>(
+pub fn format_items<D: fmt::Display>(
     items: &[D],
     f: &mut fmt::Formatter<'_>,
     indentation: &str,
@@ -135,18 +134,19 @@ mod tests {
 
     struct DisplayTest<'a, D> {
         list: &'a List<D>,
-        indent_size: usize,
+        indentation: String,
     }
 
     impl<'a, D> DisplayTest<'a, D> {
         pub fn new(list: &'a List<D>, indent_size: usize) -> Self {
-            Self { list, indent_size }
+            let indentation = " ".repeat(indent_size);
+            Self { list, indentation }
         }
     }
 
     impl<'a, D: fmt::Display> fmt::Display for DisplayTest<'a, D> {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            self.list.format(f, self.indent_size)
+            self.list.format(f, &self.indentation)
         }
     }
 
