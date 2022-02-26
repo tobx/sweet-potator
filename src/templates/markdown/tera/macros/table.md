@@ -1,8 +1,11 @@
 {% macro quantity(quantity) %}
-  {%- if quantity.value.fraction is defined -%}
-    {{ quantity.value.fraction.numerator }}/{{ quantity.value.fraction.denominator }}
+  {%- set value = quantity.value %}
+  {%- if value.decimal is defined -%}
+    {{ value.decimal.int }}.{{ value.decimal.frac }}
+  {%- elif value.fraction is defined -%}
+    {{ value.fraction.numer }}/{{ value.fraction.denom }}
   {%- else -%}
-    {{ quantity.value.integer }}
+    {{ value.integer }}
   {%- endif %}
   {%- if quantity.unit is string -%}
     {{ " " ~ quantity.unit }}

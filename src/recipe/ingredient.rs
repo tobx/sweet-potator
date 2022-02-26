@@ -1,4 +1,4 @@
-use std::{fmt, num::ParseIntError, ops::Not};
+use std::{fmt, ops::Not};
 
 use serde::Serialize;
 
@@ -11,7 +11,8 @@ use super::{
 #[serde(rename_all = "snake_case")]
 pub enum QuantityValue {
     Integer(u32),
-    Fraction { numerator: u8, denominator: u8 },
+    Decimal { int: u32, frac: u32 },
+    Fraction { numer: u8, denom: u8 },
 }
 
 #[derive(Debug, Serialize)]
@@ -24,14 +25,14 @@ pub struct Quantity {
 impl fmt::Display for QuantityValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Integer(i) => {
-                write!(f, "{}", i)
+            Self::Integer(value) => {
+                write!(f, "{}", value)
             }
-            Self::Fraction {
-                numerator,
-                denominator,
-            } => {
-                write!(f, "{}/{}", numerator, denominator)
+            Self::Decimal { int, frac } => {
+                write!(f, "{}.{}", int, frac)
+            }
+            Self::Fraction { numer, denom } => {
+                write!(f, "{}/{}", numer, denom)
             }
         }
     }
@@ -55,20 +56,29 @@ impl ParseFromStr for Quantity {
         let (value, rest) = s
             .split_once(" ")
             .map_or((s, ""), |(value, rest)| (value, rest));
-        let value = value
-            .split_once('/')
-            .map_or_else(
-                || Ok(QuantityValue::Integer(value.parse()?)),
-                |(numerator, denominator)| {
-                    Ok(QuantityValue::Fraction {
-                        numerator: numerator.parse()?,
-                        denominator: denominator.parse()?,
-                    })
-                },
-            )
-            .map_err(|_: ParseIntError| {
-                "ingredient quantity must start with a number or fraction"
-            })?;
+        println!("{}", value);
+        let value = if let Some((int, frac)) = value.split_once('.') {
+            if let (Ok(int), Ok(frac)) = (int.parse(), frac.parse()) {
+                Some(QuantityValue::Decimal { int, frac })
+            } else {
+                None
+            }
+        } else if let Some((numer, denom)) = value.split_once('/') {
+            if let (Ok(numer), Ok(denom)) = (numer.parse(), denom.parse()) {
+                Some(QuantityValue::Fraction { numer, denom })
+            } else {
+                None
+            }
+        } else {
+            if let Ok(value) = value.parse() {
+                Some(QuantityValue::Integer(value))
+            } else {
+                None
+            }
+        }
+        .ok_or_else(|| {
+            ParseError::from("ingredient quantity must start with a number or fraction")
+        })?;
         let (unit, note) = if let Some((unit, note)) = rest.split_once(" (") {
             let unit = unit.trim().to_string();
             let note = note
@@ -137,13 +147,12 @@ mod tests {
     #[test]
     fn test_display_quantity() {
         let mut quantity = Quantity {
-            value: QuantityValue::Fraction {
-                numerator: 1,
-                denominator: 2,
-            },
+            value: QuantityValue::Decimal { int: 0, frac: 5 },
             unit: None,
             note: None,
         };
+        assert_eq!(quantity.to_string(), "0.5");
+        quantity.value = QuantityValue::Fraction { numer: 1, denom: 2 };
         assert_eq!(quantity.to_string(), "1/2");
         quantity.value = QuantityValue::Integer(1);
         assert_eq!(quantity.to_string(), "1");
@@ -161,13 +170,15 @@ mod tests {
         assert!(matches!(quantity.value, QuantityValue::Integer(1)));
         assert_eq!(quantity.unit, None);
         assert_eq!(quantity.note, None);
+        let quantity = Quantity::parse_from_str("0.5").unwrap();
+        assert!(matches!(
+            quantity.value,
+            QuantityValue::Decimal { int: 0, frac: 5 }
+        ));
         let quantity = Quantity::parse_from_str("1/2").unwrap();
         assert!(matches!(
             quantity.value,
-            QuantityValue::Fraction {
-                numerator: 1,
-                denominator: 2
-            }
+            QuantityValue::Fraction { numer: 1, denom: 2 }
         ));
         let quantity = Quantity::parse_from_str("1  a unit").unwrap();
         assert!(matches!(quantity.value, QuantityValue::Integer(1)));

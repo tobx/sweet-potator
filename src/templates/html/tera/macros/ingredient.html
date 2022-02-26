@@ -1,17 +1,19 @@
-{% macro ingredient(ingredient) -%}
+{% macro ingredient(ingredient) %}
+  {%- set quantity = ingredient.quantity -%}
   <span class="quantity">
-    {%- if ingredient.quantity is object -%}
+    {%- if quantity is object -%}
       <span class="value">
-        {%- if ingredient.quantity.value.fraction is defined -%}
-          {{ ingredient.quantity.value.fraction.numerator -}}
-          &frasl;
-          {{- ingredient.quantity.value.fraction.denominator }}
+        {%- set value = quantity.value %}
+        {%- if value.decimal is defined -%}
+          {{ value.decimal.int }}.{{ value.decimal.frac }}
+        {%- elif value.fraction is defined -%}
+          {{ value.fraction.numer }}&frasl;{{ value.fraction.denom }}
         {%- else -%}
-          {{ ingredient.quantity.value.integer }}
+          {{ value.integer }}
         {%- endif -%}
       </span>
-      {%- if ingredient.quantity.unit is string -%}
-        {{ " " }}<span class="unit">{{ ingredient.quantity.unit }}</span>
+      {%- if quantity.unit is string -%}
+        {{ " " }}<span class="unit">{{ quantity.unit }}</span>
       {%- endif -%}
     {%- endif -%}
   </span>{{ lf -}}
@@ -20,8 +22,8 @@
     {%- if ingredient.kind is string -%}
       , <span class="kind">{{ ingredient.kind }}</span>
     {%- endif %}
-    {%- if ingredient.quantity is object and ingredient.quantity.note is string -%}
-      {{ " ("}}<span class="note">{{ ingredient.quantity.note }}</span>)
+    {%- if quantity is object and quantity.note is string -%}
+      {{ " ("}}<span class="note">{{ quantity.note }}</span>)
     {%- endif -%}
   </span>
 {% endmacro ingredient %}
