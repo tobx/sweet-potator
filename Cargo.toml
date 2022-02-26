@@ -1,6 +1,6 @@
 [package]
 categories = ["command-line-utilities"]
-description = "Recipe site generator"
+description = "Static recipe site generator"
 documentation = "https://docs.rs/sweet-potator"
 edition = "2021"
 homepage = "https://github.com/tobx/sweet-potator"
@@ -8,7 +8,7 @@ license-file = "LICENSE"
 name = "sweet-potator"
 readme = "README.md"
 repository = "https://github.com/tobx/sweet-potator"
-version = "0.1.0"
+version = "0.1.1"
 
 [[bin]]
 name = "sweet-potator"

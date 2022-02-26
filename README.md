@@ -1,3 +1,3 @@
-# Sweet Potator 🍠
+# Sweet Potator
 
-Recipe site generator
+Sweet Potator is a static recipe site generator.
