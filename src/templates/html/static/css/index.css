@@ -282,10 +282,6 @@ main > article > .tags {
   margin-right: 0.5em;
 }
 
-.recipe > .ingredients .servings .value {
-  margin-left: 0.25em;
-}
-
 .recipe > .ingredients ul {
   line-height: var(--list-line-height);
   margin-left: 1em;

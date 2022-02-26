@@ -120,7 +120,7 @@ mod tests {
 
     use super::{
         list::Section,
-        metadata::{Link, Source},
+        metadata::{Link, Servings, Source},
         *,
     };
 
@@ -128,7 +128,7 @@ mod tests {
         " \n",
         " the title \n",
         " \n",
-        " Servings :  10 \n",
+        " Servings :  10  u n i t \n",
         " Link :  the name  >  the url \n",
         " Tags :  tag 1 ,  tag 2 \n",
         " \n",
@@ -152,7 +152,7 @@ mod tests {
     const RECIPE_TO_DISPLAY: &str = concat!(
         "title\n",
         "\n",
-        "Servings: 1\n",
+        "Servings: 1 unit\n",
         "Link: name > url\n",
         "Tags: tag1, tag2\n",
         "\n",
@@ -173,7 +173,10 @@ mod tests {
         let recipe = Recipe {
             title: "title".into(),
             metadata: Metadata {
-                servings: 1,
+                servings: Servings {
+                    value: 1,
+                    unit: Some("unit".into()),
+                },
                 source: Some(Source::Link(Link {
                     name: "name".into(),
                     url: "url".into(),
@@ -207,7 +210,8 @@ mod tests {
 
         // metadata
         let metadata = recipe.metadata;
-        assert_eq!(metadata.servings, 10);
+        assert_eq!(metadata.servings.value, 10);
+        assert_eq!(metadata.servings.unit.as_deref(), Some("u n i t"));
         assert!(matches!(metadata.source, Some(Source::Link(_))));
         if let Some(Source::Link(link)) = metadata.source {
             assert_eq!(link.name, "the name");

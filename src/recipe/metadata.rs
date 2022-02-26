@@ -8,6 +8,39 @@ use super::{
 };
 
 #[derive(Debug, Serialize)]
+pub struct Servings {
+    pub value: u32,
+    pub unit: Option<String>,
+}
+
+impl fmt::Display for Servings {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.value)?;
+        if let Some(unit) = &self.unit {
+            write!(f, " {}", unit)?;
+        }
+        Ok(())
+    }
+}
+
+impl ParseFromStr for Servings {
+    fn parse_from_str(s: &str) -> ParseResult<Self> {
+        let (value, unit) = s.split_once(' ').map_or((s, None), |(value, unit)| {
+            (value, Some(unit.trim_start().into()))
+        });
+        if let Ok(value) = value.parse() {
+            Ok(Servings { value, unit })
+        } else {
+            Err(format!(
+                "metadata value for key '{}' must start with a number",
+                Metadata::SERVINGS_KEY
+            )
+            .into())
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
 pub struct Link {
     pub name: String,
     pub url: String,
@@ -60,7 +93,7 @@ impl fmt::Display for Source {
 
 #[derive(Debug, Serialize)]
 pub struct Metadata {
-    pub servings: u8,
+    pub servings: Servings,
     pub source: Option<Source>,
     pub tags: Vec<String>,
 }
@@ -104,14 +137,8 @@ impl TryFrom<HashMap<String, String>> for Metadata {
     fn try_from(mut map: HashMap<String, String>) -> Result<Self, Self::Error> {
         let servings = map
             .remove(Self::SERVINGS_KEY)
-            .ok_or_else(|| format!("missing metadata key '{}'", Self::SERVINGS_KEY))?
-            .parse()
-            .map_err(|_| {
-                format!(
-                    "metadata value for key '{}' must be a number",
-                    Self::SERVINGS_KEY
-                )
-            })?;
+            .ok_or_else(|| format!("missing metadata key '{}'", Self::SERVINGS_KEY))?;
+        let servings = Servings::parse_from_str(&servings)?;
         let source = if let Some(value) = map.remove(Source::LINK_KEY) {
             Some(Source::Link(Link::parse_from_str(&value)?))
         } else {
@@ -192,18 +219,19 @@ mod tests {
     #[test]
     fn test_metadata() {
         let mut map = HashMap::new();
-        map.insert("Servings".into(), "1".into());
-        map.insert("Link".into(), "name > url".into());
+        map.insert("Servings".into(), "1  unit".into());
+        map.insert("Link".into(), "name> > >url".into());
         map.insert("Tags".into(), "tag1 ,  tag2".into());
         let metadata: Metadata = map.try_into().unwrap();
-        assert_eq!(metadata.servings, 1);
+        assert_eq!(metadata.servings.value, 1);
+        assert_eq!(metadata.servings.unit.as_deref(), Some("unit"));
         assert!(
-            matches!(&metadata.source, Some(Source::Link(link)) if link.name =="name" && link.url == "url")
+            matches!(&metadata.source, Some(Source::Link(link)) if link.name =="name>" && link.url == ">url")
         );
         assert_eq!(&metadata.tags, &["tag1", "tag2"]);
         assert_eq!(
             metadata.to_string(),
-            "Servings: 1\nLink: name > url\nTags: tag1, tag2\n"
+            "Servings: 1 unit\nLink: name> > >url\nTags: tag1, tag2\n"
         );
     }
 
@@ -218,7 +246,7 @@ mod tests {
         let mut map = HashMap::new();
         map.insert("Servings".into(), "1".into());
         let metadata: Metadata = map.try_into().unwrap();
-        assert_eq!(metadata.servings, 1);
+        assert_eq!(metadata.servings.value, 1);
         assert_eq!(metadata.to_string(), "Servings: 1\n");
     }
 

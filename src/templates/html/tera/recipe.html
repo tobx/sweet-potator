@@ -22,8 +22,13 @@
       <h2>Ingredients</h2>{{ lf -}}
       <p class="servings">{{ lf -}}
         {%- include "includes/person.html" -%}
-        Serves{{ lf -}}
-        <span class="value">0</span>{{ lf -}}
+        <span>Servings:
+          {%- set servings = recipe.metadata.servings -%}
+          {{ " " }}<span class="value">{{ servings.value }}</span>
+          {%- if servings.unit is string -%}
+            {{ " " }}<span class="unit">{{ servings.unit }}</span>
+          {%- endif -%}
+        </span>{{ lf -}}
       </p>{{ lf }}
       {{- list::list(tag = "ul", list = recipe.ingredients) -}}
     </section>{{ lf }}

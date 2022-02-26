@@ -10,7 +10,10 @@
   ![{{ recipe.title }}](../{{ image_path }}){{ lf ~ lf }}
 {%- endif -%}
 
-Servings: {{ recipe.metadata.servings }}
+Servings: {{ recipe.metadata.servings.value }}
+{%- if recipe.metadata.servings.unit is string -%}
+  {{ " " }}{{ recipe.metadata.servings.unit }}
+{%- endif %}
 
 ## Ingredients
 {{ table::table(list = recipe.ingredients) }}
