@@ -23,12 +23,15 @@ Servings: {{ recipe.metadata.servings }}
     {{ lf ~ item ~ lf }}
   {%- endfor %}
 {%- endif %}
-{%- if recipe.metadata.source is object -%}
+{%- set source = recipe.metadata.source %}
+{%- if source is object %}
   {{ lf }}
-  {%- if recipe.metadata.source.link is defined -%}
-    Source: [{{ recipe.metadata.source.link.name }}]({{ recipe.metadata.source.link.url | urlencode | safe }})
+  {%- if source.author is defined -%}
+    Author: {{ source.author }}
+  {%- elif source.book is defined -%}
+    Source: {{ source.book }}
   {%- else -%}
-    Author: {{ recipe.metadata.source.author }}
+    Source: [{{ source.link.name }}]({{ source.link.url | urlencode | safe }})
   {%- endif %}
 {% endif -%}
 {%- endblock main %}

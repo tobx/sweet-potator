@@ -39,13 +39,16 @@
         {%- endfor -%}
       </section>{{ lf }}
     {%- endif %}
-    {%- if recipe.metadata.source is object -%}
+    {%- set source = recipe.metadata.source %}
+    {%- if source is object -%}
       <section class="source">{{ lf -}}
         <p>
-          {%- if recipe.metadata.source.link is defined -%}
-            Source: <a href="{{ recipe.metadata.source.link.url | urlencode | safe }}">{{ recipe.metadata.source.link.name }}</a>
+          {%- if source.author is defined -%}
+            Author: <span class="author">{{ source.author }}</span>
+          {%- elif source.book is defined -%}
+            Source: <span class="book">{{ source.book }}</span>
           {%- else -%}
-            Author: <span class="author">{{ recipe.metadata.source.author }}</span>
+            Source: <a href="{{ source.link.url | urlencode | safe }}">{{ source.link.name }}</a>
           {%- endif -%}
         </p>{{ lf -}}
       </section>

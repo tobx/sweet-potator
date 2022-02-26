@@ -38,11 +38,13 @@ impl ParseFromStr for Link {
 #[serde(rename_all = "snake_case")]
 pub enum Source {
     Author(String),
+    Book(String),
     Link(Link),
 }
 
 impl Source {
     const AUTHOR_KEY: &'static str = "Author";
+    const BOOK_KEY: &'static str = "Book";
     const LINK_KEY: &'static str = "Link";
 }
 
@@ -50,6 +52,7 @@ impl fmt::Display for Source {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Author(author) => write!(f, "{}: {}", Self::AUTHOR_KEY, author),
+            Self::Book(book) => write!(f, "{}: {}", Self::BOOK_KEY, book),
             Self::Link(link) => write!(f, "{}: {}", Self::LINK_KEY, link),
         }
     }
@@ -112,7 +115,9 @@ impl TryFrom<HashMap<String, String>> for Metadata {
         let source = if let Some(value) = map.remove(Source::LINK_KEY) {
             Some(Source::Link(Link::parse_from_str(&value)?))
         } else {
-            map.remove(Source::AUTHOR_KEY).map(Source::Author)
+            map.remove(Source::AUTHOR_KEY)
+                .map(Source::Author)
+                .or_else(|| map.remove(Source::BOOK_KEY).map(Source::Book))
         };
         let tags = map.remove(Self::TAGS_KEY).map_or_else(Vec::new, |value| {
             value.split(", ").map(|s| s.trim().into()).collect()
@@ -180,6 +185,8 @@ mod tests {
         assert_eq!(source.to_string(), "Link: name > url");
         let source = Source::Author("name".into());
         assert_eq!(source.to_string(), "Author: name");
+        let source = Source::Book("name".into());
+        assert_eq!(source.to_string(), "Book: name");
     }
 
     #[test]
