@@ -305,12 +305,8 @@ main > article > .tags {
 }
 
 .recipe > .ingredients li .quantity {
-  padding-right: 0.25em;
+  padding-right: 1em;
   text-align: right;
-}
-
-.recipe > .ingredients li .unit {
-  padding-right: 0.5em;
 }
 
 .recipe > .instructions ol {
