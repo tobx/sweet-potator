@@ -12,8 +12,9 @@ use std::fs;
 
 use clap::Parser;
 use dirs_next::home_dir;
-use include_dir::{include_dir, Dir};
+
 use serde::Serialize;
+use sweet_potator::{APP_NAME, TEMPLATE_DIR};
 
 use crate::{
     config::{Config, CONFIG_FILE_NAME, DEFAULT_CONFIG_FILE_CONTENT, DEFAULT_RECIPE_FILE_CONTENT},
@@ -21,10 +22,6 @@ use crate::{
     options::{Options, SubCommand},
     terminal::message::write,
 };
-
-const APP_NAME: &str = env!("CARGO_PKG_NAME");
-
-const TEMPLATE_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/src/cli/templates");
 
 #[derive(Serialize)]
 struct AppInfo {
