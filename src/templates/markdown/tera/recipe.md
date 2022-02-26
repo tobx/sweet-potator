@@ -14,15 +14,15 @@ Servings: {{ recipe.metadata.servings }}
 
 ## Ingredients
 {{ table::table(list = recipe.ingredients) }}
-## Instructions
-{{ list::list(list = recipe.instructions) }}
 {%- if recipe.notes | length > 0 -%}
   {{ lf }}## Notes
   {%- for item in recipe.notes %}
     {%- if loop.first %}{{ lf }}{% endif -%}
-    {{ lf ~ item ~ lf }}
+    {{ lf }}- {{ item ~ lf }}
   {%- endfor %}
 {%- endif %}
+## Instructions
+{{ list::list(list = recipe.instructions) }}
 {%- set source = recipe.metadata.source %}
 {%- if source is object %}
   {{ lf }}

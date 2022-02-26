@@ -64,6 +64,19 @@ ul {
   list-style-type: none;
 }
 
+.dash-list {
+  --indent: 1.25em;
+  padding-left: calc(0.5em + var(--indent));
+}
+
+.dash-list .item::before {
+  color: var(--color-primary);
+  content: "–";
+  display: inline-block;
+  margin-left: calc(-1 * var(--indent));
+  width: var(--indent);
+}
+
 .hidden {
   display: none;
 }
@@ -117,6 +130,7 @@ body > header nav a:hover svg {
 }
 
 main > article {
+  --list-line-height: 1.5;
   margin: 0 auto;
   max-width: var(--page-max-width);
 }
@@ -209,13 +223,8 @@ main > article > .tags {
 }
 
 .recipes .list > ul {
-  line-height: 1.5;
-}
-
-.recipes .list > ul > li {
-  --indent: 1.25em;
+  line-height: var(--list-line-height);
   margin: 1em 0;
-  padding-left: calc(0.5em + var(--indent));
 }
 
 .recipes .list > ul > li a {
@@ -224,14 +233,6 @@ main > article > .tags {
 
 .recipes .list > ul > li a:hover {
   color: var(--color-primary);
-}
-
-.recipes .list > ul > li > a::before {
-  color: var(--color-primary);
-  content: "–";
-  display: inline-block;
-  margin-left: calc(-1 * var(--indent));
-  width: var(--indent);
 }
 
 .recipes .list .tags {
@@ -286,7 +287,7 @@ main > article > .tags {
 }
 
 .recipe > .ingredients ul {
-  line-height: 1.5;
+  line-height: var(--list-line-height);
   margin-left: 1em;
   margin-top: 1em;
 }
@@ -310,7 +311,7 @@ main > article > .tags {
 }
 
 .recipe > .instructions ol {
-  line-height: 1.5;
+  line-height: var(--list-line-height);
 }
 
 .recipe > .instructions li {
@@ -321,12 +322,15 @@ main > article > .tags {
   padding-bottom: 0;
 }
 
-.recipe > .note p {
-  line-height: 1.5;
+.recipe > .notes ul {
+  line-height: var(--list-line-height);
+}
+
+.recipe > .notes li {
   padding-bottom: 0.5em;
 }
 
-.recipe > .note p:last-child {
+.recipe > .notes li:last-child {
   padding-bottom: 0;
 }
 

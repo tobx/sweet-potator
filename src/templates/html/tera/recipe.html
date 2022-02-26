@@ -16,8 +16,8 @@
     {%- if image_path is string -%}
       <section class="image">{{ lf -}}
         <img alt="{{ recipe.title }}" src="../{{ image_path | urlencode | safe }}">{{ lf -}}
-      </section>
-    {%- endif %}{{ lf -}}
+      </section>{{ lf }}
+    {%- endif -%}
     <section class="ingredients">{{ lf -}}
       <h2>Ingredients</h2>{{ lf -}}
       <p class="servings">{{ lf -}}
@@ -26,19 +26,21 @@
         <span class="value">0</span>{{ lf -}}
       </p>{{ lf }}
       {{- list::list(tag = "ul", list = recipe.ingredients) -}}
-    </section>{{ lf -}}
+    </section>{{ lf }}
+    {%- if recipe.notes | length > 0 -%}
+      <section class="notes">{{ lf -}}
+        <h2>Notes</h2>{{ lf -}}
+        <ul class="dash-list">{{ lf }}
+          {%- for note in recipe.notes -%}
+            <li class="item">{{ note }}</li>{{ lf }}
+          {%- endfor -%}
+        </ul>{{ lf -}}
+      </section>{{ lf }}
+    {%- endif -%}
     <section class="instructions">{{ lf -}}
       <h2>Instructions</h2>{{ lf -}}
       {{ list::list(tag = "ol", list = recipe.instructions) -}}
-    </section>{{ lf -}}
-    {% if recipe.notes | length > 0 -%}
-      <section class="notes">{{ lf -}}
-        <h2>Notes</h2>{{ lf }}
-        {%- for note in recipe.notes -%}
-          <p>{{ note }}</p>{{ lf }}
-        {%- endfor -%}
-      </section>{{ lf }}
-    {%- endif %}
+    </section>{{ lf }}
     {%- set source = recipe.metadata.source %}
     {%- if source is object -%}
       <section class="source">{{ lf -}}
@@ -51,7 +53,7 @@
             Source: <a href="{{ source.link.url | urlencode | safe }}">{{ source.link.name }}</a>
           {%- endif -%}
         </p>{{ lf -}}
-      </section>
+      </section>{{ lf }}
     {%- endif -%}
-  </article>{{ lf }}
+  </article>
 {% endblock main %}

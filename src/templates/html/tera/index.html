@@ -25,10 +25,10 @@
     {%- endif -%}
     <section class="list">{{ lf -}}
       <p class="count"><span class="value">{{ recipes | length }}</span> recipes online:</p>{{ lf -}}
-      <ul>{{ lf }}
+      <ul class="dash-list">{{ lf }}
         {%- for recipe in recipes -%}
           <li>{{ lf -}}
-            <a href="{{ recipe.path | urlencode | safe }}">{{ recipe.title }}</a>{{ lf }}
+            <a class="item" href="{{ recipe.path | urlencode | safe }}">{{ recipe.title }}</a>{{ lf }}
             {%- if recipe.tags | length > 0 -%}
               <div class="tags">{{ lf -}}
                 <span class="caption">Tags:</span>{{ lf -}}
