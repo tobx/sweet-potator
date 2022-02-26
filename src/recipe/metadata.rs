@@ -57,7 +57,7 @@ impl fmt::Display for Source {
 
 #[derive(Debug, Serialize)]
 pub struct Metadata {
-    pub servings: usize,
+    pub servings: u8,
     pub source: Option<Source>,
     pub tags: Vec<String>,
 }

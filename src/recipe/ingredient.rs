@@ -1,4 +1,4 @@
-use std::{fmt, ops::Not};
+use std::{fmt, num::ParseIntError, ops::Not};
 
 use serde::Serialize;
 
@@ -8,10 +8,33 @@ use super::{
 };
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum QuantityValue {
+    Integer(u32),
+    Fraction { numerator: u8, denominator: u8 },
+}
+
+#[derive(Debug, Serialize)]
 pub struct Quantity {
-    pub value: usize,
+    pub value: QuantityValue,
     pub unit: Option<String>,
     pub note: Option<String>,
+}
+
+impl fmt::Display for QuantityValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Integer(i) => {
+                write!(f, "{}", i)
+            }
+            Self::Fraction {
+                numerator,
+                denominator,
+            } => {
+                write!(f, "{}/{}", numerator, denominator)
+            }
+        }
+    }
 }
 
 impl fmt::Display for Quantity {
@@ -33,8 +56,19 @@ impl ParseFromStr for Quantity {
             .split_once(" ")
             .map_or((s, ""), |(value, rest)| (value, rest));
         let value = value
-            .parse::<usize>()
-            .map_err(|_| "ingredient quantity must start with a number")?;
+            .split_once('/')
+            .map_or_else(
+                || Ok(QuantityValue::Integer(value.parse()?)),
+                |(numerator, denominator)| {
+                    Ok(QuantityValue::Fraction {
+                        numerator: numerator.parse()?,
+                        denominator: denominator.parse()?,
+                    })
+                },
+            )
+            .map_err(|_: ParseIntError| {
+                "ingredient quantity must start with a number or fraction"
+            })?;
         let (unit, note) = if let Some((unit, note)) = rest.split_once(" (") {
             let unit = unit.trim().to_string();
             let note = note
@@ -103,10 +137,15 @@ mod tests {
     #[test]
     fn test_display_quantity() {
         let mut quantity = Quantity {
-            value: 1,
+            value: QuantityValue::Fraction {
+                numerator: 1,
+                denominator: 2,
+            },
             unit: None,
             note: None,
         };
+        assert_eq!(quantity.to_string(), "1/2");
+        quantity.value = QuantityValue::Integer(1);
         assert_eq!(quantity.to_string(), "1");
         quantity.unit = Some("unit".into());
         assert_eq!(quantity.to_string(), "1 unit");
@@ -119,19 +158,27 @@ mod tests {
     #[test]
     fn test_parse_quantity() {
         let quantity = Quantity::parse_from_str("1").unwrap();
-        assert_eq!(quantity.value, 1);
+        assert!(matches!(quantity.value, QuantityValue::Integer(1)));
         assert_eq!(quantity.unit, None);
         assert_eq!(quantity.note, None);
+        let quantity = Quantity::parse_from_str("1/2").unwrap();
+        assert!(matches!(
+            quantity.value,
+            QuantityValue::Fraction {
+                numerator: 1,
+                denominator: 2
+            }
+        ));
         let quantity = Quantity::parse_from_str("1  a unit").unwrap();
-        assert_eq!(quantity.value, 1);
+        assert!(matches!(quantity.value, QuantityValue::Integer(1)));
         assert_eq!(quantity.unit, Some("a unit".into()));
         assert_eq!(quantity.note, None);
         let quantity = Quantity::parse_from_str("1  ( a note )").unwrap();
-        assert_eq!(quantity.value, 1);
+        assert!(matches!(quantity.value, QuantityValue::Integer(1)));
         assert_eq!(quantity.unit, None);
         assert_eq!(quantity.note, Some("a note".into()));
         let quantity = Quantity::parse_from_str("10 1 unit  ( a note )").unwrap();
-        assert_eq!(quantity.value, 10);
+        assert!(matches!(quantity.value, QuantityValue::Integer(10)));
         assert_eq!(quantity.unit, Some("1 unit".into()));
         assert_eq!(quantity.note, Some("a note".into()));
     }
@@ -139,7 +186,7 @@ mod tests {
     #[test]
     fn test_display_ingredient() {
         let quantity = Quantity {
-            value: 1,
+            value: QuantityValue::Integer(1),
             unit: None,
             note: None,
         };

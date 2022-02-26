@@ -1,7 +1,11 @@
 {% macro ingredient(ingredient) -%}
   <span class="quantity">
-    {%- if ingredient.quantity is object -%}
-      {{ ingredient.quantity.value }}
+    {%- if ingredient.quantity is object %}
+      {%- if ingredient.quantity.value.fraction is defined -%}
+        {{ ingredient.quantity.value.fraction.numerator }}/{{ ingredient.quantity.value.fraction.denominator }}
+      {%- else -%}
+        {{ ingredient.quantity.value.integer }}
+      {%- endif %}
     {%- endif -%}
   </span>{{ lf -}}
   <span class="unit">

@@ -1,5 +1,9 @@
-{% macro quantity(quantity) -%}
-  {{ quantity.value }}
+{% macro quantity(quantity) %}
+  {%- if quantity.value.fraction is defined -%}
+    {{ quantity.value.fraction.numerator }}/{{ quantity.value.fraction.denominator }}
+  {%- else -%}
+    {{ quantity.value.integer }}
+  {%- endif %}
   {%- if quantity.unit is string -%}
     {{ " " ~ quantity.unit }}
   {%- endif %}
@@ -10,16 +14,16 @@
 
 {% macro basic_table(ingredients) -%}
   {{ lf -}}
-  | Name | Quantity |{{ lf -}}
+  | Quantity | Name |{{ lf -}}
   | --- | --- |{{ lf }}
   {%- for ingredient in ingredients -%}
-    | {{ ingredient.name }}
-    {%- if ingredient.kind is string -%}
-      , {{ ingredient.kind }}
+    | {% if ingredient.quantity is object -%}
+      {{ table::quantity(quantity = ingredient.quantity) }}
     {%- endif -%}
     {{ " | " }}
-    {%- if ingredient.quantity is object -%}
-      {{ table::quantity(quantity = ingredient.quantity) }}
+    {{- ingredient.name }}
+    {%- if ingredient.kind is string -%}
+      , {{ ingredient.kind }}
     {%- endif %} |{{ lf }}
   {%- endfor %}
 {%- endmacro basic_table %}
