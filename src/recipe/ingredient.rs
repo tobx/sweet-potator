@@ -69,12 +69,10 @@ impl ParseFromStr for Quantity {
             } else {
                 None
             }
+        } else if let Ok(value) = value.parse() {
+            Some(QuantityValue::Integer(value))
         } else {
-            if let Ok(value) = value.parse() {
-                Some(QuantityValue::Integer(value))
-            } else {
-                None
-            }
+            None
         }
         .ok_or_else(|| {
             ParseError::from("ingredient quantity must start with a number or fraction")

@@ -138,7 +138,7 @@ impl<F: TextFilter> Generator<F> {
     }
 }
 
-fn get_distinct_tags<'a>(entries: &'a [IndexEntry]) -> Vec<&'a String> {
+fn get_distinct_tags(entries: &[IndexEntry]) -> Vec<&String> {
     let mut tags = HashSet::new();
     for entry in entries {
         for tag in &entry.tags {
