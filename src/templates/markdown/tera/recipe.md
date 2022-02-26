@@ -16,9 +16,9 @@ Servings: {{ recipe.metadata.servings }}
 {{ table::table(list = recipe.ingredients) }}
 ## Instructions
 {{ list::list(list = recipe.instructions) }}
-{%- if recipe.remarks | length > 0 -%}
-  {{ lf }}## Remarks
-  {%- for item in recipe.remarks %}
+{%- if recipe.notes | length > 0 -%}
+  {{ lf }}## Notes
+  {%- for item in recipe.notes %}
     {%- if loop.first %}{{ lf }}{% endif -%}
     {{ lf ~ item ~ lf }}
   {%- endfor %}

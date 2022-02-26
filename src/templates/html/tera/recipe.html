@@ -31,11 +31,11 @@
       <h2>Instructions</h2>{{ lf -}}
       {{ list::list(tag = "ol", list = recipe.instructions) -}}
     </section>{{ lf -}}
-    {% if recipe.remarks | length > 0 -%}
-      <section class="remarks">{{ lf -}}
-        <h2>Remarks</h2>{{ lf }}
-        {%- for remark in recipe.remarks -%}
-          <p>{{ remark }}</p>{{ lf }}
+    {% if recipe.notes | length > 0 -%}
+      <section class="notes">{{ lf -}}
+        <h2>Notes</h2>{{ lf }}
+        {%- for note in recipe.notes -%}
+          <p>{{ note }}</p>{{ lf }}
         {%- endfor -%}
       </section>{{ lf }}
     {%- endif %}

@@ -325,12 +325,12 @@ main > article > .tags {
   padding-bottom: 0;
 }
 
-.recipe > .remarks p {
+.recipe > .note p {
   line-height: 1.5;
   padding-bottom: 0.5em;
 }
 
-.recipe > .remarks p:last-child {
+.recipe > .note p:last-child {
   padding-bottom: 0;
 }
 
