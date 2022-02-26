@@ -1,0 +1,183 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: Recipe
+file_extensions: [recipe]
+scope: source.recipe
+version: 2
+
+contexts:
+  main:
+    - include: title
+
+  title:
+    - match: '\S.*'
+      scope: markup.heading.recipe
+      set:
+        - match: '\S.*'
+          scope: invalid.illegal.recipe
+          set:
+            - match: '(?=.*\S)'
+              set: metadata
+        - match: '^\s*$'
+          set:
+            - match: '(?=.*\S)'
+              set: metadata
+
+  force_empty_line:
+    - match: '^\s*$'
+      set:
+        - match: '(?=\s*\S)'
+          pop: true
+    - match: '\S'
+      scope: invalid.illegal.recipe
+
+  metadata:
+    - include: link
+    - include: servings
+    - include: source
+    - include: tags
+    - include: time
+    - match: '\S'
+      scope: invalid.illegal.recipe
+    - match: '^\s*$'
+      set: ingredients
+
+  source:
+    - match: '(Author|Book)\s*(:) \s*(\S.*)'
+      captures:
+        1: keyword.other.recipe
+        2: punctuation.separator.recipe
+        3: string.recipe
+
+  link:
+    - match: '(Link)\s*(:) \s*(\S[^>]*) (>) \s*(\S.*)'
+      captures:
+        1: keyword.other.recipe
+        2: punctuation.separator.recipe
+        3: string.recipe
+        4: punctuation.separator.recipe
+        5: markup.underline.link.recipe
+
+  servings:
+    - match: '(Servings)\s*(:) \s*(\d+)(?:\s*|( .*)|(.*))$'
+      captures:
+        1: keyword.other.recipe
+        2: punctuation.separator.recipe
+        3: constant.numeric.recipe
+        4: string.recipe
+        5: invalid.illegal.recipe
+
+  tags:
+    - match: '(Tags)\s*(:) (?=.*\S)'
+      captures:
+        1: keyword.other.recipe
+        2: punctuation.separator.recipe
+      push:
+        - match: ", "
+          scope: punctuation.separator.recipe
+        - match: "."
+          scope: string.recipe
+        - match: "$"
+          pop: true
+
+  time:
+    - match: '(Time)\s*(:) \s*(\d+)(?:\s* (hours|minutes))?'
+      captures:
+        1: keyword.other.recipe
+        2: punctuation.separator.recipe
+        3: constant.numeric.recipe
+        4: string.recipe
+
+  ingredients:
+    - match: '^\s*Ingredients\s*$'
+      scope: keyword.other.recipe
+      set: ingredient-list
+    - match: '\S'
+      scope: invalid.illegal.recipe
+
+  ingredient-list:
+    - match: '^\s*- '
+      push: ingredient-name
+    - match: ".*"
+      scope: entity.name.section.recipe
+    - match: '^\s*$'
+      set: instructions
+
+  ingredient-name:
+    - match: "(?:[^:,]|,[^: ])*"
+      scope: string.recipe
+      set: ingredient-kind
+    - match: '\S'
+      scope: invalid.illegal.recipe
+    - match: "$"
+      pop: true
+
+  ingredient-kind:
+    - match: '(,) \s*((?:[^:]|:[^ ])*)'
+      captures:
+        1: punctuation.separator.recipe
+        2: string.recipe
+      set: ingredient-quantity
+    - match: ""
+      set: ingredient-quantity
+
+  ingredient-quantity:
+    - match: |
+        (?x:                            # turn on extended mode
+          (:)\ \s*                      # separator
+          (\d+(?:(\.|/)\d+)?)           # integer, decimal or fraction
+          (?:\ (?:[^\ ]|\ [^(])*[^ ])?  # unit (optional)
+          (?:\s*\ (\()[^)]*(\)))?       # note (optional)
+        )
+      captures:
+        1: punctuation.separator.recipe
+        2: constant.numeric.recipe
+        3: punctuation.separator.decimal.recipe
+        4: punctuation.section.parens.begin.recipe
+        5: punctuation.section.parens.end.recipe
+      scope: string.recipe
+    - match: '\S'
+      scope: invalid.illegal.recipe
+    - match: "$"
+      pop: true
+
+  instructions:
+    - match: '^\s*Instructions\s*$'
+      scope: keyword.other.recipe
+      set: instruction-list
+    - match: '\S'
+      scope: invalid.illegal.recipe
+
+  instruction-list:
+    - match: '^\s*- '
+      push:
+        - match: ".*"
+          scope: string.recipe
+          pop: true
+    - match: ".*"
+      scope: entity.name.section.recipe
+    - match: '^\s*$'
+      push: notes
+
+  notes:
+    - match: '^\s*Notes\s*$'
+      scope: keyword.other.recipe
+      set: note-list
+    - match: '\S'
+      scope: invalid.illegal.recipe
+
+  note-list:
+    - match: '^\s*- '
+      push:
+        - match: ".*"
+          scope: string.recipe
+          pop: true
+    - match: '\S'
+      scope: invalid.illegal.recipe
+    - match: '^\s*$'
+      push: end
+
+  end:
+    - match: '\S'
+      scope: invalid.illegal.recipe
