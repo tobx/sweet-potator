@@ -56,7 +56,6 @@ impl ParseFromStr for Quantity {
         let (value, rest) = s
             .split_once(" ")
             .map_or((s, ""), |(value, rest)| (value, rest));
-        println!("{}", value);
         let value = if let Some((int, frac)) = value.split_once('.') {
             if let (Ok(int), Ok(frac)) = (int.parse(), frac.parse()) {
                 Some(QuantityValue::Decimal { int, frac })
