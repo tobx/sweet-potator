@@ -1,15 +1,5 @@
 pub type ParseResult<T> = std::result::Result<T, ParseError>;
 
-pub trait ParseFromStr: Sized {
-    fn parse_from_str(s: &str) -> ParseResult<Self>;
-}
-
-impl ParseFromStr for String {
-    fn parse_from_str(s: &str) -> ParseResult<Self> {
-        Ok(s.into())
-    }
-}
-
 #[derive(thiserror::Error, Debug)]
 #[error("{0}")]
 pub struct ParseError(String);

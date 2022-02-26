@@ -2,7 +2,10 @@ use std::{fmt, ops::Not};
 
 use serde::Serialize;
 
-use super::errors::{ParseError, ParseFromStr, ParseResult};
+use super::{
+    errors::{ParseError, ParseResult},
+    ParseFromStr,
+};
 
 #[derive(Debug, Serialize)]
 pub struct Quantity {

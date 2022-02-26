@@ -2,7 +2,10 @@ use std::{fmt, slice};
 
 use serde::Serialize;
 
-use super::errors::{ParseError, ParseFromStr, ParseResult};
+use super::{
+    errors::{ParseError, ParseResult},
+    ParseFromStr,
+};
 
 #[derive(Debug, Serialize)]
 pub struct Section<D> {

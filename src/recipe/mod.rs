@@ -19,6 +19,16 @@ use self::{
     reader::Reader,
 };
 
+pub trait ParseFromStr: Sized {
+    fn parse_from_str(s: &str) -> ParseResult<Self>;
+}
+
+impl ParseFromStr for String {
+    fn parse_from_str(s: &str) -> ParseResult<Self> {
+        Ok(s.into())
+    }
+}
+
 #[derive(Debug, Serialize)]
 pub struct Recipe {
     pub title: String,
