@@ -7,12 +7,25 @@
 # {{ recipe.title }}
 
 {% if image_path is string -%}
-  ![{{ recipe.title }}](../{{ image_path }}){{ lf ~ lf }}
+  ![{{ recipe.title }}](../{{ image_path | urlencode | safe }}){{ lf ~ lf }}
 {%- endif -%}
 
 Servings: {{ recipe.metadata.servings.value }}
 {%- if recipe.metadata.servings.unit is string -%}
   {{ " " }}{{ recipe.metadata.servings.unit }}
+{%- endif %}
+
+{%- set duration = recipe.metadata.duration %}
+{%- if duration is object -%}
+  {{ "  " ~ lf }}Preparation:
+  {%- if duration.hours > 0 -%}
+    {{ " " ~ duration.hours }} hr
+    {%- if duration.hours > 1 %}s{% endif %}
+  {%- endif %}
+  {%- if duration.minutes > 0 -%}
+    {{ " " ~ duration.minutes }} min
+    {%- if duration.minutes > 1 %}s{% endif %}
+  {%- endif %}
 {%- endif %}
 
 ## Ingredients
@@ -23,7 +36,9 @@ Servings: {{ recipe.metadata.servings.value }}
     {%- if loop.first %}{{ lf }}{% endif -%}
     {{ lf }}- {{ item ~ lf }}
   {%- endfor %}
-{%- endif %}
+{%- endif -%}
+{{ lf -}}
+
 ## Instructions
 {{ list::list(list = recipe.instructions) }}
 {%- set source = recipe.metadata.source %}

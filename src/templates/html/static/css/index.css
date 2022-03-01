@@ -271,13 +271,20 @@ main > article > .tags {
   width: 100%;
 }
 
-.recipe > .ingredients .servings {
-  align-items: center;
+.recipe > .metadata {
   display: flex;
+  flex-wrap: wrap;
   font-size: 0.85em;
+  gap: 1em 2em;
+  margin-top: 2em;
 }
 
-.recipe > .ingredients .servings svg {
+.recipe > .metadata .entry {
+  align-items: center;
+  display: flex;
+}
+
+.recipe > .metadata .entry svg {
   height: 1.25em;
   margin-right: 0.5em;
 }

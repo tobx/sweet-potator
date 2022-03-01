@@ -18,9 +18,8 @@
         <img alt="{{ recipe.title }}" src="../{{ image_path | urlencode | safe }}">{{ lf -}}
       </section>{{ lf }}
     {%- endif -%}
-    <section class="ingredients">{{ lf -}}
-      <h2>Ingredients</h2>{{ lf -}}
-      <p class="servings">{{ lf -}}
+    <section class="metadata">{{ lf -}}
+      <p class="entry">{{ lf -}}
         {%- include "includes/person.html" -%}
         <span>Servings:
           {%- set servings = recipe.metadata.servings -%}
@@ -30,6 +29,25 @@
           {%- endif -%}
         </span>{{ lf -}}
       </p>{{ lf }}
+      {%- set duration = recipe.metadata.duration %}
+      {%- if duration is object -%}
+        <p class="entry">{{ lf -}}
+          {%- include "includes/clock.html" -%}
+          <span>
+            {%- if duration.hours > 0 -%}
+              {{ " " ~ duration.hours }} hr
+              {%- if duration.hours > 1 %}s{% endif %}
+            {%- endif %}
+            {%- if duration.minutes > 0 -%}
+              {{ " " ~ duration.minutes }} min
+              {%- if duration.minutes > 1 %}s{% endif %}
+            {%- endif %}
+          </span>{{ lf -}}
+        </p>{{ lf }}
+      {%- endif -%}
+    </section>{{ lf -}}
+    <section class="ingredients">{{ lf -}}
+      <h2>Ingredients</h2>{{ lf -}}
       {{- list::list(tag = "ul", list = recipe.ingredients) -}}
     </section>{{ lf }}
     {%- if recipe.notes | length > 0 -%}

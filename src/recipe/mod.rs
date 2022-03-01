@@ -120,7 +120,7 @@ mod tests {
 
     use super::{
         list::Section,
-        metadata::{Link, Servings, Source},
+        metadata::{Duration, Link, Servings, Source},
         *,
     };
 
@@ -129,8 +129,9 @@ mod tests {
         " the title \n",
         " \n",
         " Servings :  10  u n i t \n",
-        " Link :  the name  >  the url \n",
-        " Tags :  tag 1 ,  tag 2 \n",
+        " Time: 1h  30m\n",
+        " Link: the name  >  the url\n",
+        " Tags: tag 1 ,  tag 2\n",
         " \n",
         " Ingredients \n",
         " section 1 \n",
@@ -153,6 +154,7 @@ mod tests {
         "title\n",
         "\n",
         "Servings: 1 unit\n",
+        "Time: 1h 30m\n",
         "Link: name > url\n",
         "Tags: tag1, tag2\n",
         "\n",
@@ -173,6 +175,10 @@ mod tests {
         let recipe = Recipe {
             title: "title".into(),
             metadata: Metadata {
+                duration: Some(Duration {
+                    hours: 1,
+                    minutes: 30,
+                }),
                 servings: Servings {
                     value: 1,
                     unit: Some("unit".into()),
@@ -210,8 +216,14 @@ mod tests {
 
         // metadata
         let metadata = recipe.metadata;
+
         assert_eq!(metadata.servings.value, 10);
         assert_eq!(metadata.servings.unit.as_deref(), Some("u n i t"));
+        assert!(metadata.duration.is_some());
+        if let Some(duration) = metadata.duration {
+            assert_eq!(duration.hours, 1);
+            assert_eq!(duration.minutes, 30);
+        }
         assert!(matches!(metadata.source, Some(Source::Link(_))));
         if let Some(Source::Link(link)) = metadata.source {
             assert_eq!(link.name, "the name");

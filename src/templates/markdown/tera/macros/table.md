@@ -18,7 +18,7 @@
 {% macro basic_table(ingredients) -%}
   {{ lf -}}
   | Quantity | Name |{{ lf -}}
-  | --- | --- |{{ lf }}
+  | ---: | :--- |{{ lf }}
   {%- for ingredient in ingredients -%}
     | {% if ingredient.quantity is object -%}
       {{ table::quantity(quantity = ingredient.quantity) }}

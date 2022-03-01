@@ -41,6 +41,52 @@ impl ParseFromStr for Servings {
 }
 
 #[derive(Debug, Serialize)]
+pub struct Duration {
+    pub hours: u32,
+    pub minutes: u32,
+}
+
+impl Duration {
+    fn parse_unit(text: &str, unit: &str) -> ParseResult<u32> {
+        text.strip_suffix(unit)
+            .and_then(|value| value.parse().ok())
+            .ok_or_else(|| "invalid recipe duration".into())
+    }
+}
+
+impl fmt::Display for Duration {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut duration: Vec<String> = Vec::new();
+        if self.hours > 0 {
+            duration.push(self.hours.to_string() + "h");
+        }
+        if self.minutes > 0 {
+            duration.push(self.minutes.to_string() + "m");
+        }
+        write!(f, "{}", duration.join(" "))
+    }
+}
+
+impl ParseFromStr for Duration {
+    fn parse_from_str(s: &str) -> ParseResult<Self> {
+        let (hours, minutes) = if let Some((h, m)) = s.split_once(" ") {
+            (
+                Self::parse_unit(h, "h")?,
+                Self::parse_unit(m.trim_start(), "m")?,
+            )
+        } else if let Ok(h) = Self::parse_unit(s, "h") {
+            (h, 0)
+        } else {
+            (0, Self::parse_unit(s, "m")?)
+        };
+        if hours == 0 && minutes == 0 {
+            return Err("recipe duration must be greater than zero".into());
+        }
+        Ok(Duration { hours, minutes })
+    }
+}
+
+#[derive(Debug, Serialize)]
 pub struct Link {
     pub name: String,
     pub url: String,
@@ -93,12 +139,14 @@ impl fmt::Display for Source {
 
 #[derive(Debug, Serialize)]
 pub struct Metadata {
+    pub duration: Option<Duration>,
     pub servings: Servings,
     pub source: Option<Source>,
     pub tags: Vec<String>,
 }
 
 impl Metadata {
+    const DURATION_KEY: &'static str = "Time";
     const SERVINGS_KEY: &'static str = "Servings";
     const TAGS_KEY: &'static str = "Tags";
 }
@@ -106,6 +154,9 @@ impl Metadata {
 impl fmt::Display for Metadata {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "{}: {}", Self::SERVINGS_KEY, self.servings)?;
+        if let Some(duration) = &self.duration {
+            writeln!(f, "{}: {}", Self::DURATION_KEY, duration)?;
+        }
         if let Some(source) = &self.source {
             writeln!(f, "{}", source)?;
         }
@@ -139,6 +190,11 @@ impl TryFrom<HashMap<String, String>> for Metadata {
             .remove(Self::SERVINGS_KEY)
             .ok_or_else(|| format!("missing metadata key '{}'", Self::SERVINGS_KEY))?;
         let servings = Servings::parse_from_str(&servings)?;
+        let duration = map
+            .remove(Self::DURATION_KEY)
+            .as_deref()
+            .map(Duration::parse_from_str)
+            .transpose()?;
         let source = if let Some(value) = map.remove(Source::LINK_KEY) {
             Some(Source::Link(Link::parse_from_str(&value)?))
         } else {
@@ -153,6 +209,7 @@ impl TryFrom<HashMap<String, String>> for Metadata {
             return Err(format!("unknown metadata key '{}'", key).into());
         }
         let metadata = Self {
+            duration,
             servings,
             source,
             tags,
@@ -182,6 +239,32 @@ fn parse_mapping(line: &str) -> ParseResult<(&str, &str)> {
 mod tests {
 
     use super::*;
+
+    #[test]
+    fn test_display_duration() {
+        let mut duration = Duration {
+            hours: 1,
+            minutes: 0,
+        };
+        assert_eq!(duration.to_string(), "1h");
+        duration.minutes = 30;
+        assert_eq!(duration.to_string(), "1h 30m");
+        duration.hours = 0;
+        assert_eq!(duration.to_string(), "30m");
+    }
+
+    #[test]
+    fn test_parse_duration() {
+        let duration = Duration::parse_from_str("1h").unwrap();
+        assert_eq!(duration.hours, 1);
+        assert_eq!(duration.minutes, 0);
+        let duration = Duration::parse_from_str("1m").unwrap();
+        assert_eq!(duration.hours, 0);
+        assert_eq!(duration.minutes, 1);
+        let duration = Duration::parse_from_str("2h  30m").unwrap();
+        assert_eq!(duration.hours, 2);
+        assert_eq!(duration.minutes, 30);
+    }
 
     #[test]
     fn test_display_link() {
