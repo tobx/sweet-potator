@@ -10,9 +10,10 @@
   ![{{ recipe.title }}](../{{ image_path | urlencode | safe }}){{ lf ~ lf }}
 {%- endif -%}
 
-Servings: {{ recipe.metadata.servings.value }}
-{%- if recipe.metadata.servings.unit is string -%}
-  {{ " " }}{{ recipe.metadata.servings.unit }}
+{%- set servings = recipe.metadata.servings -%}
+Servings: {{ servings.value }}
+{%- if servings.unit is string -%}
+  {{ " " }}{{ servings.unit }}
 {%- endif %}
 
 {%- set duration = recipe.metadata.duration %}

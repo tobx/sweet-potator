@@ -274,7 +274,6 @@ main > article > .tags {
 .recipe > .metadata {
   display: flex;
   flex-wrap: wrap;
-  font-size: 0.85em;
   gap: 1em 2em;
   margin-top: 2em;
 }
@@ -284,12 +283,31 @@ main > article > .tags {
   display: flex;
 }
 
-.recipe > .metadata .entry svg {
-  height: 1.25em;
+.recipe > .metadata .entry .image {
+  height: 1.5em;
   margin-right: 0.5em;
 }
 
-.recipe > .ingredients ul {
+.recipe > .metadata .entry .image svg {
+  height: 100%;
+}
+
+.recipe > .metadata .entry .content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe > .metadata .entry .content .value {
+  font-size: 1.5em;
+  margin-bottom: 0.25em;
+}
+
+.recipe > .metadata .entry .content .unit {
+  font-size: 0.67em;
+}
+
+.recipe > .metadata .entry span.value .recipe > .ingredients ul {
   line-height: var(--list-line-height);
   margin-left: 1em;
   margin-top: 1em;
