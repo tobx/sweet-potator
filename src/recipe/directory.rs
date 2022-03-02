@@ -141,9 +141,9 @@ impl Directory {
             }
         }
         for file in files {
-            let mut name: PathBuf = self.name.clone().into();
+            let mut name = self.name.clone();
             if let Some(ext) = file.extension() {
-                name.set_extension(ext);
+                name = append_os_file_ext(name, ext);
             }
             fs::rename(file, path.join(name))?;
         }
