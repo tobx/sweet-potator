@@ -203,7 +203,7 @@ mod tests {
         )?;
 
         // default recipe
-        let recipe_str = "title\n\nServings: 1\n\nIngredients\n- nothing\n\nInstructions\n- none";
+        let recipe_str = "title\n\nYield: 1\n\nIngredients\n- nothing\n\nInstructions\n- none";
 
         // create and store recipe 1
         let mut recipe1 = Recipe::parse_from(Cursor::new(recipe_str))?;

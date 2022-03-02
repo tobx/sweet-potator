@@ -24,11 +24,11 @@
           {%- include "includes/person.html" -%}
         </span>{{ lf -}}
         <span class="content">{{ lf }}
-          {%- set servings = recipe.metadata.servings -%}
-          <span class="value">{{ servings.value }}</span>{{ lf -}}
+          {%- set yield = recipe.metadata.yield -%}
+          <span class="value">{{ yield.value }}</span>{{ lf -}}
           <span class="unit">
-            {%- if servings.unit is string -%}
-              {{ servings.unit }}
+            {%- if yield.unit is string -%}
+              {{ yield.unit }}
             {%- else -%}
               Servings
             {%- endif -%}

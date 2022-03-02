@@ -8,12 +8,12 @@ use super::{
 };
 
 #[derive(Debug, Serialize)]
-pub struct Servings {
+pub struct Yield {
     pub value: u32,
     pub unit: Option<String>,
 }
 
-impl fmt::Display for Servings {
+impl fmt::Display for Yield {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.value)?;
         if let Some(unit) = &self.unit {
@@ -23,17 +23,17 @@ impl fmt::Display for Servings {
     }
 }
 
-impl ParseFromStr for Servings {
+impl ParseFromStr for Yield {
     fn parse_from_str(s: &str) -> ParseResult<Self> {
         let (value, unit) = s.split_once(' ').map_or((s, None), |(value, unit)| {
             (value, Some(unit.trim_start().into()))
         });
         if let Ok(value) = value.parse() {
-            Ok(Servings { value, unit })
+            Ok(Yield { value, unit })
         } else {
             Err(format!(
                 "metadata value for key '{}' must start with a number",
-                Metadata::SERVINGS_KEY
+                Metadata::YIELD_KEY
             )
             .into())
         }
@@ -140,20 +140,21 @@ impl fmt::Display for Source {
 #[derive(Debug, Serialize)]
 pub struct Metadata {
     pub duration: Option<Duration>,
-    pub servings: Servings,
+    #[serde(rename = "yield")]
+    pub yields: Yield,
     pub source: Option<Source>,
     pub tags: Vec<String>,
 }
 
 impl Metadata {
     const DURATION_KEY: &'static str = "Time";
-    const SERVINGS_KEY: &'static str = "Servings";
+    const YIELD_KEY: &'static str = "Yield";
     const TAGS_KEY: &'static str = "Tags";
 }
 
 impl fmt::Display for Metadata {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "{}: {}", Self::SERVINGS_KEY, self.servings)?;
+        writeln!(f, "{}: {}", Self::YIELD_KEY, self.yields)?;
         if let Some(duration) = &self.duration {
             writeln!(f, "{}: {}", Self::DURATION_KEY, duration)?;
         }
@@ -186,10 +187,10 @@ impl TryFrom<HashMap<String, String>> for Metadata {
     type Error = ParseError;
 
     fn try_from(mut map: HashMap<String, String>) -> Result<Self, Self::Error> {
-        let servings = map
-            .remove(Self::SERVINGS_KEY)
-            .ok_or_else(|| format!("missing metadata key '{}'", Self::SERVINGS_KEY))?;
-        let servings = Servings::parse_from_str(&servings)?;
+        let yields = map
+            .remove(Self::YIELD_KEY)
+            .ok_or_else(|| format!("missing metadata key '{}'", Self::YIELD_KEY))?;
+        let yields = Yield::parse_from_str(&yields)?;
         let duration = map
             .remove(Self::DURATION_KEY)
             .as_deref()
@@ -210,7 +211,7 @@ impl TryFrom<HashMap<String, String>> for Metadata {
         }
         let metadata = Self {
             duration,
-            servings,
+            yields,
             source,
             tags,
         };
@@ -302,19 +303,19 @@ mod tests {
     #[test]
     fn test_metadata() {
         let mut map = HashMap::new();
-        map.insert("Servings".into(), "1  unit".into());
+        map.insert("Yield".into(), "1  unit".into());
         map.insert("Link".into(), "name> > >url".into());
         map.insert("Tags".into(), "tag1 ,  tag2".into());
         let metadata: Metadata = map.try_into().unwrap();
-        assert_eq!(metadata.servings.value, 1);
-        assert_eq!(metadata.servings.unit.as_deref(), Some("unit"));
+        assert_eq!(metadata.yields.value, 1);
+        assert_eq!(metadata.yields.unit.as_deref(), Some("unit"));
         assert!(
             matches!(&metadata.source, Some(Source::Link(link)) if link.name =="name>" && link.url == ">url")
         );
         assert_eq!(&metadata.tags, &["tag1", "tag2"]);
         assert_eq!(
             metadata.to_string(),
-            "Servings: 1 unit\nLink: name> > >url\nTags: tag1, tag2\n"
+            "Yield: 1 unit\nLink: name> > >url\nTags: tag1, tag2\n"
         );
     }
 
@@ -327,16 +328,16 @@ mod tests {
     #[test]
     fn test_metadata_missing_entries() {
         let mut map = HashMap::new();
-        map.insert("Servings".into(), "1".into());
+        map.insert("Yield".into(), "1".into());
         let metadata: Metadata = map.try_into().unwrap();
-        assert_eq!(metadata.servings.value, 1);
-        assert_eq!(metadata.to_string(), "Servings: 1\n");
+        assert_eq!(metadata.yields.value, 1);
+        assert_eq!(metadata.to_string(), "Yield: 1\n");
     }
 
     #[test]
     fn test_metadata_unkown_entries() {
         let mut map = HashMap::new();
-        map.insert("Servings".into(), "1".into());
+        map.insert("Yield".into(), "1".into());
         map.insert("Unknown".into(), "unknown".into());
         assert!(Metadata::try_from(map).is_err());
     }

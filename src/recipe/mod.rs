@@ -120,7 +120,7 @@ mod tests {
 
     use super::{
         list::Section,
-        metadata::{Duration, Link, Servings, Source},
+        metadata::{Duration, Link, Source, Yield},
         *,
     };
 
@@ -128,7 +128,7 @@ mod tests {
         " \n",
         " the title \n",
         " \n",
-        " Servings :  10  u n i t \n",
+        " Yield :  10  u n i t \n",
         " Time: 1h  30m\n",
         " Link: the name  >  the url\n",
         " Tags: tag 1 ,  tag 2\n",
@@ -153,7 +153,7 @@ mod tests {
     const RECIPE_TO_DISPLAY: &str = concat!(
         "title\n",
         "\n",
-        "Servings: 1 unit\n",
+        "Yield: 1 unit\n",
         "Time: 1h 30m\n",
         "Link: name > url\n",
         "Tags: tag1, tag2\n",
@@ -179,7 +179,7 @@ mod tests {
                     hours: 1,
                     minutes: 30,
                 }),
-                servings: Servings {
+                yields: Yield {
                     value: 1,
                     unit: Some("unit".into()),
                 },
@@ -217,8 +217,8 @@ mod tests {
         // metadata
         let metadata = recipe.metadata;
 
-        assert_eq!(metadata.servings.value, 10);
-        assert_eq!(metadata.servings.unit.as_deref(), Some("u n i t"));
+        assert_eq!(metadata.yields.value, 10);
+        assert_eq!(metadata.yields.unit.as_deref(), Some("u n i t"));
         assert!(metadata.duration.is_some());
         if let Some(duration) = metadata.duration {
             assert_eq!(duration.hours, 1);
@@ -286,7 +286,7 @@ mod tests {
     fn test_parse_missing() {
         let reader = io::Cursor::new("");
         assert!(Recipe::parse_from(reader).is_err());
-        let reader = io::Cursor::new("title\n\nServings: 1\n\nIngredients\nNothing");
+        let reader = io::Cursor::new("title\n\nYield: 1\n\nIngredients\nNothing");
         assert!(Recipe::parse_from(reader).is_err());
     }
 }

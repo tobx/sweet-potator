@@ -34,7 +34,7 @@ contexts:
 
   metadata:
     - include: link
-    - include: servings
+    - include: yield
     - include: source
     - include: tags
     - include: time
@@ -59,8 +59,8 @@ contexts:
         4: punctuation.separator.recipe
         5: markup.underline.link.recipe
 
-  servings:
-    - match: '(Servings)\s*(:) \s*(\d+)(?:\s*|( .*)|(.*))$'
+  yield:
+    - match: '(Yield)\s*(:) \s*(\d+)(?:\s*|( .*)|(.*))$'
       captures:
         1: keyword.other.recipe
         2: punctuation.separator.recipe
