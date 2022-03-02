@@ -69,7 +69,7 @@ impl fmt::Display for Duration {
 
 impl ParseFromStr for Duration {
     fn parse_from_str(s: &str) -> ParseResult<Self> {
-        let (hours, minutes) = if let Some((h, m)) = s.split_once(" ") {
+        let (mut hours, mut minutes) = if let Some((h, m)) = s.split_once(" ") {
             (
                 Self::parse_unit(h, "h")?,
                 Self::parse_unit(m.trim_start(), "m")?,
@@ -82,6 +82,8 @@ impl ParseFromStr for Duration {
         if hours == 0 && minutes == 0 {
             return Err("recipe duration must be greater than zero".into());
         }
+        hours += minutes / 60;
+        minutes = minutes % 60;
         Ok(Duration { hours, minutes })
     }
 }
@@ -265,6 +267,9 @@ mod tests {
         let duration = Duration::parse_from_str("2h  30m").unwrap();
         assert_eq!(duration.hours, 2);
         assert_eq!(duration.minutes, 30);
+        let duration = Duration::parse_from_str("0h  60m").unwrap();
+        assert_eq!(duration.hours, 1);
+        assert_eq!(duration.minutes, 0);
     }
 
     #[test]
