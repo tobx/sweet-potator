@@ -243,12 +243,19 @@ main > article > .tags {
   display: none;
 }
 
+.recipe h1 {
+  font-size: calc(2 / 3 * var(--h1-font-size));
+  line-height: initial;
+  text-align: center;
+}
+
 .recipe h2 {
   margin: 2em 0 1em 0;
 }
 
 .recipe h3 {
-  margin: 1.5em 0 0.5em 0;
+  text-transform: uppercase;
+  margin: 2em 0 1em 0;
 }
 
 .recipe ol {
@@ -260,7 +267,7 @@ main > article > .tags {
 }
 
 .recipe > .image {
-  margin-top: 1em;
+  margin: 1em 0 2em 0;
 }
 
 .recipe > .image img {
@@ -275,7 +282,8 @@ main > article > .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 1em 2em;
-  margin-top: 2em;
+  justify-content: center;
+  margin-top: 1em;
 }
 
 .recipe > .metadata .entry {
@@ -304,13 +312,12 @@ main > article > .tags {
 }
 
 .recipe > .metadata .entry .content .unit {
-  font-size: 0.67em;
+  font-size: calc(2em / 3);
 }
 
-.recipe > .metadata .entry span.value .recipe > .ingredients ul {
-  line-height: var(--list-line-height);
-  margin-left: 1em;
-  margin-top: 1em;
+.recipe > .ingredients ul {
+  line-height: 1.25;
+  margin: 0 1.75em;
 }
 
 .recipe > .ingredients li {
@@ -329,6 +336,7 @@ main > article > .tags {
 .recipe > .ingredients li .quantity {
   padding-right: 1em;
   text-align: right;
+  white-space: nowrap;
 }
 
 .recipe > .instructions ol {
@@ -374,7 +382,6 @@ body > footer p {
 
 body > footer p a {
   border-bottom: var(--border-width) solid var(--color-primary);
-  line-height: 1;
   color: var(--color-text);
   line-height: 1;
   padding: calc(1em / 16) 0;
