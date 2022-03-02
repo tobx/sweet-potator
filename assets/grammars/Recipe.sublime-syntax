@@ -82,12 +82,27 @@ contexts:
           pop: true
 
   time:
-    - match: '(Time)\s*(:) \s*(\d+)(?:\s* (hours|minutes))?'
+    - match: |
+        (?x:                           # turn on extended mode
+          (Time)\s*(:)\ \s*            # keyword
+          (?:
+            (?:(\d+)(h)\ \s*(\d+)(m))  # hour and minute
+            |                          # or
+            (?:(\d+)([hm]))            # either hour or minute
+          )
+          (.*)$                        # invalid trailing characters
+        )
       captures:
         1: keyword.other.recipe
         2: punctuation.separator.recipe
         3: constant.numeric.recipe
-        4: string.recipe
+        4: constant.other.recipe
+        5: constant.numeric.recipe
+        6: constant.other.recipe
+        7: constant.numeric.recipe
+        8: constant.other.recipe
+        9: invalid.illegal.recipe
+      scope: string.recipe
 
   ingredients:
     - match: '^\s*Ingredients\s*$'
