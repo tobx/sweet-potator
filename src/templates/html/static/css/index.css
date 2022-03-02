@@ -227,6 +227,10 @@ main > article > .tags {
   margin: 1em 0;
 }
 
+.recipes .list > ul > li {
+  margin: 0.5em 0;
+}
+
 .recipes .list > ul > li a {
   color: inherit;
 }
@@ -344,7 +348,7 @@ main > article > .tags {
 }
 
 .recipe > .instructions li {
-  padding-bottom: 0.5em;
+  padding-bottom: 1em;
 }
 
 .recipe > .instructions li:last-child {
