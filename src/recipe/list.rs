@@ -42,12 +42,50 @@ impl<D: fmt::Display> Section<D> {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 pub enum List<D> {
-    #[serde(rename = "items")]
     Basic(Vec<D>),
-    #[serde(rename = "sections")]
     Sectioned(Vec<Section<D>>),
+}
+
+impl<D> List<D> {
+    pub fn count(&self) -> usize {
+        match self {
+            Self::Basic(items) => items.len(),
+            Self::Sectioned(sections) => sections
+                .iter()
+                .fold(0, |acc, section| acc + section.items.len()),
+        }
+    }
+}
+
+impl<D: Serialize> Serialize for List<D> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let count = self.count();
+        match self {
+            Self::Basic(items) => {
+                #[derive(Serialize)]
+                struct Extended<'a, D> {
+                    items: &'a Vec<D>,
+                    count: usize,
+                }
+                let ext = Extended { items, count };
+                Ok(ext.serialize(serializer)?)
+            }
+            Self::Sectioned(sections) => {
+                #[derive(Serialize)]
+                struct Extended<'a, D> {
+                    sections: &'a Vec<Section<D>>,
+                    count: usize,
+                }
+                let ext = Extended { sections, count };
+                Ok(ext.serialize(serializer)?)
+            }
+        }
+    }
 }
 
 impl<D: fmt::Display> List<D> {
@@ -167,6 +205,22 @@ mod tests {
         "    - item 2.1\n",
         "    - item 2.2\n",
     );
+
+    #[test]
+    fn test_count() {
+        let list = List::Basic(vec!["item 1", "item 2"]);
+        assert_eq!(list.count(), 2);
+        let section1 = Section {
+            name: "section 1".into(),
+            items: vec!["item 1.1", "item 1.2"],
+        };
+        let section2 = Section {
+            name: "section 2".into(),
+            items: vec!["item 2.1"],
+        };
+        let list = List::Sectioned(vec![section1, section2]);
+        assert_eq!(list.count(), 3);
+    }
 
     #[test]
     fn test_display_basic() {

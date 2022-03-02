@@ -54,6 +54,15 @@
           </span>{{ lf -}}
         </p>{{ lf }}
       {%- endif -%}
+      <p class="entry">{{ lf -}}
+        <span class="image">{{ lf }}
+          {%- include "includes/salt.html" -%}
+        </span>{{ lf -}}
+        <span class="content">{{ lf }}
+          <span class="value">{{ recipe.ingredients.count }}</span>{{ lf -}}
+          <span class="unit">Ingredients</span>{{ lf -}}
+        </span>{{ lf -}}
+      </p>{{ lf -}}
     </section>{{ lf -}}
     <section class="ingredients">{{ lf -}}
       <h2>Ingredients</h2>{{ lf -}}
