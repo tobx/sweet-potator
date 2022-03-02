@@ -1,5 +1,5 @@
 :root {
-  --base-size: 1.25rem;
+  --base-size: 1.125rem;
   --border: var(--border-width) dashed var(--color-primary);
   --border-width: calc(1rem / 16);
   --color-background: White;
@@ -228,7 +228,7 @@ main > article > .tags {
 }
 
 .recipes .list > ul > li {
-  margin: 0.5em 0;
+  margin: 0.75em 0;
 }
 
 .recipes .list > ul > li a {
@@ -321,7 +321,7 @@ main > article > .tags {
 
 .recipe > .ingredients ul {
   line-height: 1.25;
-  margin: 0 1.75em;
+  margin-left: 1.75em;
 }
 
 .recipe > .ingredients li {
@@ -330,7 +330,7 @@ main > article > .tags {
 
 .recipe > .ingredients li > * {
   display: table-cell;
-  padding-bottom: 0.5em;
+  padding-bottom: 0.75em;
 }
 
 .recipe > .ingredients li:last-child > * {
@@ -338,7 +338,7 @@ main > article > .tags {
 }
 
 .recipe > .ingredients li .quantity {
-  padding-right: 1em;
+  padding-right: calc(2em / 3);
   text-align: right;
   white-space: nowrap;
 }
