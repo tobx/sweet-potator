@@ -5,25 +5,17 @@
   --color-background: White;
   --color-primary: Tomato;
   --color-text: black;
+  --small: calc(2em / 3);
   --page-font-size: var(--base-size);
   --page-padding: var(--base-size);
   --page-max-width: calc(48 * var(--base-size));
-}
-
-main > article {
-  --h1-font-size: 3em;
-  --h2-font-size: 1.25em;
+  --stroke-width: 1.75;
 }
 
 @media (min-width: 640px) {
   :root {
     --base-size: 1.5rem;
     --page-padding: calc(2 * var(--base-size));
-  }
-
-  main > article {
-    --h1-font-size: 4em;
-    --h2-font-size: 1.5em;
   }
 }
 
@@ -62,6 +54,11 @@ h3 {
 
 ul {
   list-style-type: none;
+}
+
+svg {
+  /* https://stackoverflow.com/a/46344280 */
+  overflow: visible;
 }
 
 .dash-list {
@@ -130,9 +127,19 @@ body > header nav a:hover svg {
 }
 
 main > article {
+  --h1-font-size: 3em;
+  --h2-font-size: 1.25em;
+  --h3-font-size: 1.125em;
   --list-line-height: 1.5;
   margin: 0 auto;
   max-width: var(--page-max-width);
+}
+
+@media (min-width: 640px) {
+  main > article {
+    --h1-font-size: 4em;
+    --h2-font-size: 1.5em;
+  }
 }
 
 main > article h1 {
@@ -144,7 +151,7 @@ main > article h2 {
 }
 
 main > article h3 {
-  font-size: 1.125em;
+  font-size: var(--h3-font-size);
 }
 
 main > article > header {
@@ -162,7 +169,7 @@ main > article > section {
 
 main > article .tags {
   display: flex;
-  font-size: 0.67em;
+  font-size: var(--small);
   line-height: 1;
 }
 
@@ -283,9 +290,21 @@ main > article > .tags {
 }
 
 .recipe > .metadata {
+  --gap: 1em;
+  --icon-height: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .recipe > .metadata {
+    --gap: 1em 2em;
+    --icon-height: 1.5em;
+  }
+}
+
+.recipe > .metadata {
   display: flex;
   flex-wrap: wrap;
-  gap: 1em 2em;
+  gap: var(--gap);
   justify-content: center;
   margin-top: 1em;
 }
@@ -296,7 +315,7 @@ main > article > .tags {
 }
 
 .recipe > .metadata .entry .image {
-  height: 1.5em;
+  height: var(--icon-height);
   margin-right: 0.5em;
 }
 
@@ -316,12 +335,22 @@ main > article > .tags {
 }
 
 .recipe > .metadata .entry .content .unit {
-  font-size: calc(2em / 3);
+  font-size: var(--small);
+}
+
+.recipe > .ingredients ul {
+  --margin-left: 1em;
+}
+
+@media (min-width: 640px) {
+  .recipe > .ingredients ul {
+    --margin-left: 1.75em;
+  }
 }
 
 .recipe > .ingredients ul {
   line-height: 1.25;
-  margin-left: 1.75em;
+  margin-left: var(--margin-left);
 }
 
 .recipe > .ingredients li {
@@ -380,7 +409,7 @@ body > footer {
 body > footer p {
   align-items: center;
   display: flex;
-  font-size: 0.75em;
+  font-size: var(--small);
   justify-content: center;
 }
 
