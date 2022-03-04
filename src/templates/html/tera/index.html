@@ -28,7 +28,7 @@
       <ul class="dash-list">{{ lf }}
         {%- for recipe in recipes -%}
           <li>{{ lf -}}
-            <a class="item" href="{{ recipe.path | urlencode | safe }}">{{ recipe.title }}</a>{{ lf }}
+            <a class="item" href="{{ recipe.path | escape_xml | safe }}">{{ recipe.title }}</a>{{ lf }}
             {%- if recipe.tags | length > 0 -%}
               <div class="tags">{{ lf -}}
                 <span class="caption">Tags:</span>{{ lf -}}

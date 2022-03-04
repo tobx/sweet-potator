@@ -7,7 +7,7 @@
 # {{ recipe.title }}
 
 {% if image_path is string -%}
-  ![{{ recipe.title }}](../{{ image_path | urlencode | safe }}){{ lf ~ lf }}
+  ![{{ recipe.title }}](../{{ image_path | escape_xml | safe }}){{ lf ~ lf }}
 {%- endif -%}
 
 {%- set yield = recipe.metadata.yield -%}
@@ -20,12 +20,10 @@ Servings: {{ yield.value }}
 {%- if duration is object -%}
   {{ "  " ~ lf }}Preparation:
   {%- if duration.hours > 0 -%}
-    {{ " " ~ duration.hours }} hr
-    {%- if duration.hours > 1 %}s{% endif %}
+    {{ " " ~ duration.hours }} hr{{ duration.hours | pluralize }}
   {%- endif %}
   {%- if duration.minutes > 0 -%}
-    {{ " " ~ duration.minutes }} min
-    {%- if duration.minutes > 1 %}s{% endif %}
+    {{ " " ~ duration.minutes }} min{{ duration.minutes | pluralize }}
   {%- endif %}
 {%- endif %}
 
@@ -50,7 +48,7 @@ Servings: {{ yield.value }}
   {%- elif source.book is defined -%}
     Source: {{ source.book }}
   {%- else -%}
-    Source: [{{ source.link.name }}]({{ source.link.url | urlencode | safe }})
+    Source: [{{ source.link.name }}]({{ source.link.url | escape_xml | safe }})
   {%- endif %}
 {% endif -%}
 {%- endblock main %}

@@ -15,7 +15,7 @@
     </header>{{ lf }}
     {%- if image_path is string -%}
       <section class="image">{{ lf -}}
-        <img alt="{{ recipe.title }}" src="../{{ image_path | urlencode | safe }}">{{ lf -}}
+        <img alt="{{ recipe.title }}" src="../{{ image_path | escape_xml | safe }}">{{ lf -}}
       </section>{{ lf }}
     {%- endif -%}
     <section class="metadata">{{ lf -}}
@@ -45,11 +45,11 @@
             {%- set minutes = duration.hours * 60 + duration.minutes %}
             {%- if minutes < 120 -%}
               <span class="value">{{ minutes }}</span>{{ lf -}}
-              <span class="unit">Minutes</span>{{ lf }}
+              <span class="unit">Minute{{ minutes | pluralize }}</span>{{ lf }}
             {%- else %}
               {%- set hours = minutes / 60 -%}
               <span class="value">{{ hours | round }}</span>{{ lf -}}
-              <span class="unit">Hours</span>{{ lf }}
+              <span class="unit">Hour{{ hours | pluralize }}</span>{{ lf }}
             {%- endif -%}
           </span>{{ lf -}}
         </p>{{ lf }}
@@ -91,7 +91,7 @@
           {%- elif source.book is defined -%}
             Source: <span class="book">{{ source.book }}</span>
           {%- else -%}
-            Source: <a href="{{ source.link.url | urlencode | safe }}">{{ source.link.name }}</a>
+            Source: <a href="{{ source.link.url | escape_xml | safe }}">{{ source.link.name }}</a>
           {%- endif -%}
         </p>{{ lf -}}
       </section>{{ lf }}

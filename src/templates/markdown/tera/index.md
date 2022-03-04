@@ -4,6 +4,6 @@
 # Recipes
 
 {% for recipe in recipes -%}
-  - [{{ recipe.title }}]({{ recipe.path | urlencode | safe }})
+  - [{{ recipe.title }}]({{ recipe.path | escape_xml | safe }})
 {% endfor %}
 {%- endblock main %}
