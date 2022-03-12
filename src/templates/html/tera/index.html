@@ -24,7 +24,10 @@
       </nav>{{ lf }}
     {%- endif -%}
     <section class="list">{{ lf -}}
-      <p class="count"><span class="value">{{ recipes | length }}</span> recipes online:</p>{{ lf -}}
+      <p class="count">{{ lf -}}
+        <span class="value">{{ recipes | length }}</span>{{ lf -}}
+        <span class="recipes" data-singular="recipe", data-plural="recipes">recipe{{ recipes | length | pluralize }}</span> found:{{ lf -}}
+      </p>{{ lf -}}
       <ul class="dash-list">{{ lf }}
         {%- for recipe in recipes -%}
           <li>{{ lf -}}

@@ -2,6 +2,7 @@
   const selectors = {
     favorites: "body > header > nav > .favorites",
     recipe: ".recipes > .list > ul > li",
+    recipeCount: "main > .recipes > .list > .count",
     tag: ".tags ul li .tag",
     tagReset: ".tags ul li .reset",
   };
@@ -66,12 +67,20 @@
       for (const tag of this.tags.values()) {
         tag.refresh();
       }
+      let count = 0;
       for (const tagged of this.tagged) {
         const show = Array.from(this.tags)
           .filter(([, tag]) => tag.isActive)
           .every(([name]) => tagged.tags.has(name));
         tagged.element.classList.toggle("hidden", !show);
+        if (show) {
+          count++;
+        }
       }
+      const recipeCount = document.querySelector(selectors.recipeCount);
+      recipeCount.querySelector(".value").textContent = count;
+      const word = recipeCount.querySelector(".recipes");
+      word.textContent = word.dataset[count === 1 ? "singular" : "plural"];
     }
 
     reset() {
