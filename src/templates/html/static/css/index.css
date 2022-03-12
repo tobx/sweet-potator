@@ -126,6 +126,15 @@ body > header nav a:hover svg {
   --stroke: var(--color-primary);
 }
 
+body > header nav a.favorites.active svg {
+  --stroke: var(--color-primary);
+}
+
+body > header nav a.favorites.active:hover svg {
+  --fill: var(--color-text);
+  --stroke: var(--color-text);
+}
+
 main > article {
   --h1-font-size: 3em;
   --h2-font-size: 1.25em;
