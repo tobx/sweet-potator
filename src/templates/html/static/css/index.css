@@ -203,17 +203,17 @@ main > article .tags ul .active:hover {
   border-bottom-color: var(--color-text);
 }
 
-main > article .tags ul .reset {
+main > article .tags ul .icon {
   cursor: pointer;
   display: block;
   height: 1em;
 }
 
-main > article .tags ul .reset:hover {
+main > article .tags ul .icon:hover {
   color: var(--color-primary);
 }
 
-main > article .tags ul .reset svg {
+main > article .tags ul .icon svg {
   height: 1.25em;
 }
 
@@ -319,12 +319,12 @@ main > article > .tags {
   display: flex;
 }
 
-.recipe > .metadata .entry .image {
+.recipe > .metadata .entry .icon {
   height: var(--icon-height);
   margin-right: 0.5em;
 }
 
-.recipe > .metadata .entry .image svg {
+.recipe > .metadata .entry .icon svg {
   height: 100%;
 }
 

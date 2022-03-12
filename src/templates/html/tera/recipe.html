@@ -20,7 +20,7 @@
     {%- endif -%}
     <section class="metadata">{{ lf -}}
       <p class="entry">{{ lf -}}
-        <span class="image">{{ lf }}
+        <span class="icon">{{ lf }}
           {%- include "includes/person.html" -%}
         </span>{{ lf -}}
         <span class="content">{{ lf }}
@@ -38,7 +38,7 @@
       {%- set duration = recipe.metadata.duration %}
       {%- if duration is object -%}
         <p class="entry">{{ lf -}}
-          <span class="image">{{ lf }}
+          <span class="icon">{{ lf }}
             {%- include "includes/clock.html" -%}
           </span>{{ lf -}}
           <span class="content">{{ lf }}
@@ -55,7 +55,7 @@
         </p>{{ lf }}
       {%- endif -%}
       <p class="entry">{{ lf -}}
-        <span class="image">{{ lf }}
+        <span class="icon">{{ lf }}
           {%- include "includes/salt.html" -%}
         </span>{{ lf -}}
         <span class="content">{{ lf }}
