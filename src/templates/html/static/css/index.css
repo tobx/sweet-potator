@@ -1,7 +1,7 @@
 :root {
   --base-size: 1.125rem;
   --border: var(--border-width) dashed var(--color-primary);
-  --border-width: calc(1rem / 16);
+  --border-width: calc(var(--base-size) / 16);
   --color-background: White;
   --color-primary: Tomato;
   --color-text: black;
@@ -255,9 +255,18 @@ main > article > .tags {
 }
 
 .recipe h1 {
-  font-size: calc(2 / 3 * var(--h1-font-size));
+  font-size: calc(0.5 * var(--h1-font-size));
+  font-weight: normal;
   line-height: initial;
   text-align: center;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .recipe h1 {
+    font-size: calc(2 / 3 * var(--h1-font-size));
+    font-weight: bold;
+  }
 }
 
 .recipe h2 {
@@ -273,10 +282,6 @@ main > article > .tags {
   margin-left: 2em;
 }
 
-.recipe > header h1 {
-  font-weight: normal;
-}
-
 .recipe > .image {
   margin: 1em 0 2em 0;
 }
@@ -285,7 +290,7 @@ main > article > .tags {
   border: var(--border);
   border-radius: 1em;
   box-sizing: border-box;
-  padding: 0.25em;
+  padding: 0.5em;
   width: 100%;
 }
 
