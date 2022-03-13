@@ -5,6 +5,10 @@ use clap::Parser;
 #[derive(Parser)]
 #[clap(version, about)]
 pub struct Options {
+    /// Config directory
+    #[clap(long)]
+    pub config_dir: Option<PathBuf>,
+
     /// Recipe directory
     #[clap(long)]
     pub recipe_dir: Option<PathBuf>,

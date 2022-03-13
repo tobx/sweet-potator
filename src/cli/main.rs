@@ -75,11 +75,12 @@ fn route(config: &Config, options: Options) -> Result<()> {
 }
 
 fn run() -> Result<()> {
-    let options = Options::parse();
-    let home_dir = home_dir().expect("cannot retrieve home directory");
-    let app_dir = home_dir.join(".config").join(APP_NAME);
-    let config_file = app_dir.join(CONFIG_FILE_NAME);
-    let config_dir = config_file.parent().expect("invalid config file path");
+    let mut options = Options::parse();
+    let config_dir = options.config_dir.get_or_insert_with(|| {
+        let home_dir = home_dir().expect("cannot retrieve home directory");
+        home_dir.join(".config").join(APP_NAME)
+    });
+    let config_file = config_dir.join(CONFIG_FILE_NAME);
     if !config_file.exists() {
         fs::create_dir_all(config_dir)?;
         fs::write(&config_file, DEFAULT_CONFIG_FILE_CONTENT)?;
