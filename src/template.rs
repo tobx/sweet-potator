@@ -10,10 +10,6 @@ use crate::error::{Error, Result};
 
 pub type Context = tera::Context;
 
-pub trait TextFilter {
-    fn filter<S: AsRef<str>>(&self, text: S) -> String;
-}
-
 pub const STATIC_DIR: &str = "static";
 pub const TERA_DIR: &str = "tera";
 
