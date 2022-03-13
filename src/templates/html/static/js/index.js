@@ -1,11 +1,13 @@
 (() => {
   const selectors = {
     favorites: "body > header > nav > .favorites",
+    ingredientQuantity: "main > .recipe > .ingredients .quantity > .value",
     random: "main > .recipes > .list .random",
-    recipe: ".recipes > .list > ul > li",
+    recipe: "main > .recipes > .list > ul > li",
     recipeCount: "main > .recipes > .list > .count",
     tag: ".tags ul li .tag",
     tagReset: ".tags ul li .reset",
+    yield: "main .recipe > .metadata > .yield > .content > .value",
   };
 
   class Tag {
@@ -122,8 +124,7 @@
       // not using `params.toString()` to have pretty urls (browser already takes care of url encoding)
       const hash = [...params].map((entry) => entry.join("=")).join("&");
       let path = location.pathname;
-      const isRecipePage = document.querySelector("main > .recipe") !== null;
-      if (isRecipePage) {
+      if (isRecipePage()) {
         let index = path.lastIndexOf("/");
         index = path.lastIndexOf("/", index - 1);
         path = path.slice(0, index + 1);
@@ -183,6 +184,159 @@
     }
   }
 
+  // greatest common divisor
+  function gcd(a, b) {
+    while (b !== 0) {
+      t = b;
+      b = a % b;
+      a = t;
+    }
+    return a;
+  }
+
+  class Fraction {
+    constructor(numer, denom) {
+      this.numer = numer;
+      this.denom = denom;
+    }
+
+    reduce() {
+      const divisor = gcd(this.numer, this.denom);
+      return new Fraction(this.numer / divisor, this.denom / divisor);
+    }
+
+    multiply(fraction) {
+      return new Fraction(
+        this.numer * fraction.numer,
+        this.denom * fraction.denom
+      );
+    }
+
+    scaleNumber(number) {
+      return (number * this.numer) / this.denom;
+    }
+
+    toString() {
+      let value = [];
+      let numer = this.numer;
+      let denom = this.denom;
+      if (numer >= denom) {
+        const remainder = numer % denom;
+        value.push((numer - remainder) / denom);
+        numer = remainder;
+      }
+      if (numer > 0) {
+        value.push(numer + "\u2044" + this.denom);
+      }
+      return value.join(" ");
+    }
+
+    static parseFrom(text) {
+      const [numer, denom] = text.split("\u2044");
+      return denom === undefined
+        ? null
+        : new this(parseInt(numer), parseInt(denom));
+    }
+  }
+
+  class Quantity {
+    constructor(element) {
+      this.element = element;
+      const value = element.textContent;
+      const fraction = Fraction.parseFrom(value);
+      this.defaultValue = fraction === null ? parseFloat(value) : fraction;
+      this.currentValue = this.defaultValue;
+    }
+
+    isFraction() {
+      return this.defaultValue instanceof Fraction;
+    }
+
+    reset() {
+      this.currentValue = this.defaultValue;
+      this.refresh();
+    }
+
+    refresh() {
+      if (this.isFraction()) {
+        this.element.textContent = this.currentValue.toString();
+      } else {
+        this.element.textContent = Math.round(this.currentValue * 100) / 100;
+      }
+    }
+
+    scale(fraction) {
+      if (this.isFraction()) {
+        this.currentValue = this.defaultValue.multiply(fraction).reduce();
+      } else {
+        this.currentValue = fraction.scaleNumber(this.defaultValue);
+      }
+      this.refresh();
+    }
+  }
+
+  class IngredientManager {
+    constructor() {
+      const yields = document.querySelector(selectors.yield);
+      yields
+        .querySelector(".decrease")
+        .addEventListener("click", () => this.decrease());
+      yields
+        .querySelector(".increase")
+        .addEventListener("click", () => this.increase());
+      this.yieldDigits = yields.querySelector(".digits");
+      this.yieldDigits.addEventListener("click", () => this.reset());
+      this.defaultYield = parseInt(this.yieldDigits.textContent);
+      this.currentYield = this.defaultYield;
+      this.quantities = [
+        ...document.querySelectorAll(selectors.ingredientQuantity),
+      ]
+        .filter((element) => element.textContent !== null)
+        .map((element) => new Quantity(element));
+    }
+
+    decrease() {
+      if (this.currentYield > 1) {
+        this.currentYield--;
+        this.refresh();
+      }
+    }
+
+    increase() {
+      this.currentYield++;
+      this.refresh();
+    }
+
+    refresh() {
+      const yieldIsDefault = this.currentYield === this.defaultYield;
+      this.yieldDigits.textContent = this.currentYield;
+      this.yieldDigits.classList.toggle("default", yieldIsDefault);
+      if (yieldIsDefault) {
+        for (const quantity of this.quantities) {
+          quantity.reset();
+        }
+      } else {
+        const fraction = new Fraction(this.currentYield, this.defaultYield);
+        for (const quantity of this.quantities) {
+          quantity.scale(fraction);
+        }
+      }
+    }
+
+    reset() {
+      this.currentYield = this.defaultYield;
+      this.refresh();
+    }
+  }
+
+  function isRecipePage() {
+    return document.querySelector("main > .recipe") !== null;
+  }
+
+  function isRecipesPage() {
+    return document.querySelector("main > .recipes") !== null;
+  }
+
   function queryElementTags(root) {
     const tags = new Set();
     for (const element of root.querySelectorAll(selectors.tag)) {
@@ -209,12 +363,14 @@
     }
     tags.addEventListeners();
     tags.updateFromUrlHash();
-    const random = document.querySelector(selectors.random);
-    if (random !== null) {
-      random.addEventListener("click", () => {
+    if (isRecipesPage()) {
+      document.querySelector(selectors.random).addEventListener("click", () => {
         const href = tags.random().querySelector("a").getAttribute("href");
         location.assign(location.pathname + href);
       });
+    }
+    if (isRecipePage()) {
+      new IngredientManager();
     }
   }
 

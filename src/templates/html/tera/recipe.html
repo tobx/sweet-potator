@@ -19,13 +19,17 @@
       </section>{{ lf }}
     {%- endif -%}
     <section class="metadata">{{ lf -}}
-      <p class="entry">{{ lf -}}
+      <p class="entry yield">{{ lf -}}
         <span class="icon">{{ lf }}
           {%- include "includes/person.html" -%}
         </span>{{ lf -}}
         <span class="content">{{ lf }}
           {%- set yield = recipe.metadata.yield -%}
-          <span class="value">{{ yield.value }}</span>{{ lf -}}
+          <span class="value">{{ lf -}}
+            <a class="decrease change">−</a>{{ lf -}}
+            <a class="digits default">{{ yield.value }}</a>{{ lf -}}
+            <a class="increase change">+</a>{{ lf -}}
+          </span>{{ lf -}}
           <span class="unit">
             {%- if yield.unit is string -%}
               {{ yield.unit }}

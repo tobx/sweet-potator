@@ -32,8 +32,10 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: var(--color-text);
+@media (hover: hover) {
+  a:hover {
+    color: var(--color-text);
+  }
 }
 
 h1,
@@ -111,28 +113,30 @@ body > header nav a {
   margin-left: var(--page-padding);
 }
 
-body > header nav a:hover {
-  color: var(--color-primary);
-}
-
 body > header nav a svg {
   --fill: transparent;
   --stroke: var(--color-text);
   height: 1.5em;
 }
 
-body > header nav a:hover svg {
-  --fill: var(--color-primary);
-  --stroke: var(--color-primary);
-}
-
 body > header nav a.favorites.active svg {
   --stroke: var(--color-primary);
 }
 
-body > header nav a.favorites.active:hover svg {
-  --fill: var(--color-text);
-  --stroke: var(--color-text);
+@media (hover: hover) {
+  body > header nav a:hover {
+    color: var(--color-primary);
+  }
+
+  body > header nav a:hover svg {
+    --fill: var(--color-primary);
+    --stroke: var(--color-primary);
+  }
+
+  body > header nav a.favorites.active:hover svg {
+    --fill: var(--color-text);
+    --stroke: var(--color-text);
+  }
 }
 
 main > article {
@@ -200,16 +204,8 @@ main > article .tags ul .tag {
   padding: calc(1em / 16) 0;
 }
 
-main > article .tags ul .tag:hover {
-  color: var(--color-primary);
-}
-
 main > article .tags ul .active {
   color: var(--color-primary);
-}
-
-main > article .tags ul .active:hover {
-  border-bottom-color: var(--color-text);
 }
 
 main > article .tags ul .icon {
@@ -218,12 +214,22 @@ main > article .tags ul .icon {
   height: 1em;
 }
 
-main > article .tags ul .icon:hover {
-  color: var(--color-primary);
-}
-
 main > article .tags ul .icon svg {
   height: 1.25em;
+}
+
+@media (hover: hover) {
+  main > article .tags ul .tag:hover {
+    color: var(--color-primary);
+  }
+
+  main > article .tags ul .active:hover {
+    border-bottom-color: var(--color-text);
+  }
+
+  main > article .tags ul .icon:hover {
+    color: var(--color-primary);
+  }
 }
 
 main > article > .tags {
@@ -251,8 +257,10 @@ main > article > .tags {
   color: inherit;
 }
 
-.recipes .list > ul > li a:hover {
-  color: var(--color-primary);
+@media (hover: hover) {
+  .recipes .list > ul > li a:hover {
+    color: var(--color-primary);
+  }
 }
 
 .recipes .list .tags {
@@ -344,12 +352,45 @@ main > article > .tags {
 }
 
 .recipe > .metadata .entry .content .value {
+  align-items: center;
+  display: flex;
   font-size: 1.5em;
   margin-bottom: 0.25em;
 }
 
+.recipe > .metadata .entry .content .value .digits {
+  color: var(--color-text);
+}
+
+.recipe > .metadata .entry .content .value .digits.default {
+  color: var(--color-text);
+  cursor: auto;
+}
+
+.recipe > .metadata .entry .content .value .change {
+  --size: calc(2 / 3);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  font-size: calc(var(--size) * 1em);
+  justify-content: center;
+  user-select: none;
+  width: calc(1 / var(--size) * 1em);
+  height: calc(1 / var(--size) * 1em);
+}
+
 .recipe > .metadata .entry .content .unit {
   font-size: var(--small);
+}
+
+@media (hover: hover) {
+  .recipe > .metadata .entry .content .value .digits:hover {
+    color: var(--color-primary);
+  }
+
+  .recipe > .metadata .entry .content .value .change:hover {
+    color: var(--color-primary);
+  }
 }
 
 .recipe > .ingredients ul {
@@ -434,8 +475,10 @@ body > footer p a {
   padding: calc(1em / 16) 0;
 }
 
-body > footer p a:hover {
-  color: var(--color-primary);
+@media (hover: hover) {
+  body > footer p a:hover {
+    color: var(--color-primary);
+  }
 }
 
 body > footer p svg {
