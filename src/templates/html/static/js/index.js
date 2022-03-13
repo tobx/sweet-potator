@@ -370,7 +370,8 @@
       });
     }
     if (isRecipePage()) {
-      new IngredientManager();
+      const ingredients = new IngredientManager();
+      ingredients.reset();
     }
   }
 
