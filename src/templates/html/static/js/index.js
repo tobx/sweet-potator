@@ -1,6 +1,7 @@
 (() => {
   const selectors = {
     favorites: "body > header > nav > .favorites",
+    random: "main > .recipes > .list .random",
     recipe: ".recipes > .list > ul > li",
     recipeCount: "main > .recipes > .list > .count",
     tag: ".tags ul li .tag",
@@ -63,6 +64,18 @@
       }
     }
 
+    random() {
+      const activateTagNames = [...this.tags]
+        .filter(([name, tag]) => tag.isActive)
+        .map(([name]) => name);
+      const elements = this.tagged
+        .filter((tagEl) =>
+          activateTagNames.every((name) => tagEl.tags.has(name))
+        )
+        .map((tagEl) => tagEl.element);
+      return elements[Math.floor(Math.random() * elements.length)];
+    }
+
     refresh() {
       for (const tag of this.tags.values()) {
         tag.refresh();
@@ -78,9 +91,11 @@
         }
       }
       const recipeCount = document.querySelector(selectors.recipeCount);
-      recipeCount.querySelector(".value").textContent = count;
-      const word = recipeCount.querySelector(".recipes");
-      word.textContent = word.dataset[count === 1 ? "singular" : "plural"];
+      if (recipeCount !== null) {
+        recipeCount.querySelector(".value").textContent = count;
+        const word = recipeCount.querySelector(".recipes");
+        word.textContent = word.dataset[count === 1 ? "singular" : "plural"];
+      }
     }
 
     reset() {
@@ -194,6 +209,13 @@
     }
     tags.addEventListeners();
     tags.updateFromUrlHash();
+    const random = document.querySelector(selectors.random);
+    if (random !== null) {
+      random.addEventListener("click", () => {
+        const href = tags.random().querySelector("a").getAttribute("href");
+        location.assign(location.pathname + href);
+      });
+    }
   }
 
   window.addEventListener("DOMContentLoaded", initialize);
