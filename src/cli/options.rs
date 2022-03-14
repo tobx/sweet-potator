@@ -64,6 +64,10 @@ pub struct Delete {
 /// Edit a recipe
 #[derive(Default, Parser)]
 pub struct Edit {
+    /// Set recipe image
+    #[clap(long = "set-image", value_name = "FILE")]
+    pub image_path: Option<PathBuf>,
+
     /// Recipe title
     pub title: String,
 }

@@ -8,9 +8,18 @@ use crate::{
     error::{Error, Result},
     options,
     terminal::{color::Colorize, message::write},
+    util::os_str_vec,
 };
 
 pub fn edit(config: &Config, options: &options::Edit) -> Result<()> {
+    if options.image_path.is_some() {
+        set_image(config, options)
+    } else {
+        edit_recipe(config, options)
+    }
+}
+
+pub fn edit_recipe(config: &Config, options: &options::Edit) -> Result<()> {
     let mut directory = Directory::from_title(&config.recipe_dir, &options.title)?;
     let title = directory
         .load()
@@ -30,5 +39,22 @@ pub fn edit(config: &Config, options: &options::Edit) -> Result<()> {
         directory.update_from_title(&recipe.title)?;
     }
     write::success(format!("edited recipe '{}'", recipe.title.yellow()))?;
+    Ok(())
+}
+
+pub fn set_image(config: &Config, options: &options::Edit) -> Result<()> {
+    let directory = Directory::from_title(&config.recipe_dir, &options.title)?;
+    if let Some(path) = &options.image_path {
+        let file_exts = os_str_vec(&config.image_file_exts);
+        directory.copy_image_from(path, &file_exts)?;
+    }
+    write::success(format!(
+        "copied image into recipe directory '{}'",
+        directory
+            .base_name()
+            .to_str()
+            .expect("invalid directory name")
+            .yellow()
+    ))?;
     Ok(())
 }
