@@ -29,7 +29,15 @@ impl ParseFromStr for Yield {
             (value, Some(unit.trim_start().into()))
         });
         if let Ok(value) = value.parse() {
-            Ok(Yield { value, unit })
+            if value == 0 {
+                Err(format!(
+                    "metadata value for key '{}' must be greater than zero",
+                    Metadata::YIELD_KEY,
+                )
+                .into())
+            } else {
+                Ok(Yield { value, unit })
+            }
         } else {
             Err(format!(
                 "metadata value for key '{}' must start with a number",
