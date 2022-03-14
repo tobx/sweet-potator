@@ -13,9 +13,9 @@ use tera::Context;
 
 pub const TEMPLATE_DIR: &str = "$CARGO_MANIFEST_DIR/src/templates";
 
-pub struct Slug;
+pub struct Slugifier;
 
-impl TextFilter for Slug {
+impl TextFilter for Slugifier {
     fn filter<S: AsRef<str>>(&self, text: S) -> String {
         slugify(text)
     }
@@ -30,7 +30,7 @@ pub fn build(tpl_dir: &Path, recipe_dir: &Path, output_dir: &Path) -> Result<()>
     let mut context = Context::new();
     context.insert("title", "Sweet Potator Example Document");
     engine.forced_context = Some(context);
-    let generator = Generator::new(engine, vec!["jpg".into()], "md".into(), Slug);
+    let generator = Generator::new(engine, vec!["jpg".into()], "md".into(), Slugifier);
     Ok(generator.generate(recipe_dir, output_dir)?)
 }
 
