@@ -1,6 +1,11 @@
 use sweet_potator::recipe::directory::Directory;
 
-use crate::{config::Config, error::Result, options, terminal::writeln};
+use crate::{
+    config::Config,
+    error::Result,
+    options,
+    terminal::{color::Colorize, writeln},
+};
 
 pub fn list(config: &Config, options: &options::List) -> Result<()> {
     let directories = Directory::list_all(&config.recipe_dir)?;
@@ -31,13 +36,21 @@ fn list_files(directories: &[Directory]) -> Result<()> {
 }
 
 fn list_titles(directories: &[Directory]) -> Result<()> {
-    let mut titles: Vec<String> = directories
+    let mut titles: Vec<(String, Option<&str>)> = directories
         .iter()
-        .map(|directory| Ok(directory.load()?.title))
+        .map(|directory| {
+            let title = directory.load()?.title;
+            let suffix = directory.suffix(&title);
+            Ok((title, suffix))
+        })
         .collect::<Result<_>>()?;
     titles.sort();
-    for title in titles {
-        writeln(title)?;
+    for (title, suffix) in titles {
+        if let Some(suffix) = suffix {
+            writeln(format!("{}{}", title, suffix.red()))?;
+        } else {
+            writeln(title)?;
+        }
     }
     Ok(())
 }

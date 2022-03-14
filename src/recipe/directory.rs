@@ -106,6 +106,19 @@ impl Directory {
         Ok(())
     }
 
+    pub fn suffix(&self, title: &str) -> Option<&str> {
+        let directory = Self::from_title(&self.parent, title).expect("empty recipe title");
+        self.name
+            .to_str()
+            .and_then(|name| {
+                directory
+                    .name
+                    .to_str()
+                    .and_then(|test_name| name.strip_prefix(test_name))
+            })
+            .filter(|suffix| !suffix.is_empty())
+    }
+
     pub fn update_from_title(&mut self, title: &str) -> Result<()> {
         let mut name: OsString = title_to_name(title)?.into();
         if name == self.name {
