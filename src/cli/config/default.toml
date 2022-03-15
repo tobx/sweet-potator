@@ -1,4 +1,6 @@
 # Recipe directory
+#
+# The use of '~' (tilde expansion) is supported.
 recipe_dir = "./recipes"
 
 # Editor command to edit recipes

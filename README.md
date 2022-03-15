@@ -77,6 +77,8 @@ sweet-potator help
 sweet-potator help <subcommand> 
 ```
 
+Note: `sweet-potator` respects the environment variables `FORCE_COLOR` and `NO_COLOR`.
+
 ## Recipe format
 
 A recipe file looks like this:
