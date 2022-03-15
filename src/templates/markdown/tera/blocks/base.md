@@ -1,4 +1,4 @@
 {% block main %}{% endblock main %}
 ---
 
-— Made with [{{ app.name }}]({{ app.homepage | safe }})
+— {{ lang.made_with }} [{{ app.name }}]({{ app.homepage | safe }})

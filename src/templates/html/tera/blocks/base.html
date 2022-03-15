@@ -22,8 +22,8 @@
       <span>{{ app.name }}</span>{{ lf -}}
     </h1>{{ lf -}}
     <nav>{{ lf -}}
-      <a class="home" href="{{ base_url }}">Home</a>{{ lf -}}
-      <a class="favorites" data-tag-name="Favorite">{{ lf }}
+      <a class="home" href="{{ base_url }}">{{ lang.navigation_home }}</a>{{ lf -}}
+      <a class="favorites" data-tag-name="{{ lang.favorite_tag_name }}">{{ lf }}
         {%- include "includes/heart.html" -%}
       </a>{{ lf -}}
     </nav>{{ lf -}}
@@ -33,7 +33,7 @@
   </main>{{ lf -}}
   <footer>{{ lf -}}
     <p>{{ lf -}}
-      <span>Made with <a href="{{ app.homepage | safe }}">{{ app.name }}</a></span>{{ lf -}}
+      <span>{{ lang.made_with }} <a href="{{ app.homepage | safe }}">{{ app.name }}</a></span>{{ lf -}}
       {%- include "includes/logo.html" -%}
     </p>{{ lf -}}
   </footer>{{ lf -}}

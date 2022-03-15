@@ -1,0 +1,23 @@
+favorite_tag_name = "Populär"
+made_with = "Erstellt mit"
+navigation_home = "Home"
+
+[index]
+page_subtitle = "private Rezeptsammlung"
+page_title = "Rezepte"
+recipe_found = "Rezept gefunden"
+recipes_found = "Rezepte gefunden"
+tags_caption = "Tags"
+
+[recipe]
+heading_ingredients = "Zutaten"
+heading_instructions = "Zubereitung"
+heading_notes = "Anmerkungen"
+metadata_author = "Autor"
+metadata_hour = "Stunde"
+metadata_hours = "Stunden"
+metadata_ingredients = "Zutaten"
+metadata_minute = "Minute"
+metadata_minutes = "Minuten"
+metadata_servings = "Portionen"
+metadata_source = "Quelle"

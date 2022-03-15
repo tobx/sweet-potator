@@ -18,6 +18,8 @@ pub const DEFAULT_RECIPE_FILE_NAME: &str = "default.recipe";
 
 pub const DEFAULT_CONFIG_FILE_CONTENT: &str = include_str!("default.toml");
 
+pub const DEFAULT_LANGUAGE: fn() -> String = || "en".into();
+
 pub const DEFAULT_RECIPE_FILE_CONTENT: &str = include_str!("default.recipe");
 
 const TEMPLATE_DIR: &str = "templates";
@@ -53,6 +55,8 @@ pub struct GeneratorOptions {
     pub extension: String,
     #[serde(default)]
     pub file_name_filter: FileNameFilter,
+    #[serde(default = "DEFAULT_LANGUAGE")]
+    pub language: String,
 }
 
 #[derive(Deserialize)]

@@ -15,9 +15,10 @@
   {%- endif %}
 {%- endmacro quantity %}
 
-{% macro basic_table(ingredients) -%}
+{% macro basic_table(ingredients) %}
+  {%- set lang = lang.recipe -%}
   {{ lf -}}
-  | Quantity | Name |{{ lf -}}
+  | {{ lang.ingredient_table_quantity }} | {{ lang.ingredient_table_name }} |{{ lf -}}
   | ---: | :--- |{{ lf }}
   {%- for ingredient in ingredients -%}
     | {% if ingredient.quantity is object -%}

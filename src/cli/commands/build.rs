@@ -28,7 +28,12 @@ pub fn build(config: &Config, options: &options::Build) -> Result<()> {
     if !tpl_dir.exists() {
         return Err(Error::TemplateNameNotFound(options.template_name.yellow()));
     }
-    let mut engine = template::Engine::new(&tpl_dir, tpl_options.escape, &tpl_options.extension)?;
+    let mut engine = template::Engine::new(
+        &tpl_dir,
+        tpl_options.escape,
+        &tpl_options.extension,
+        Some(&tpl_options.language),
+    )?;
     let mut context = Context::new();
     context.insert("app", &AppInfo::default());
     context.insert("lf", "\n");

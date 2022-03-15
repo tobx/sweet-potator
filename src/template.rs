@@ -1,15 +1,18 @@
 use std::{
-    io,
+    fs, io,
     path::{Path, PathBuf},
 };
 
 use serde::Serialize;
 use tera::Tera;
+use toml::Value;
 
 use crate::error::{Error, Result};
 
 pub type Context = tera::Context;
 
+pub const LANGUAGE_DIR: &str = "lang";
+pub const LANGUAGE_FILE_EXTENSION: &str = "toml";
 pub const STATIC_DIR: &str = "static";
 pub const TERA_DIR: &str = "tera";
 
@@ -27,12 +30,19 @@ struct IndexEntry {
 pub struct Engine {
     tera: Tera,
     file_ext: String,
+    language_path: PathBuf,
     static_path: PathBuf,
+    pub language: Option<String>,
     pub forced_context: Option<Context>,
 }
 
 impl Engine {
-    pub fn new<E: Into<String>>(path: &Path, escape: bool, file_ext: E) -> Result<Self> {
+    pub fn new<E: Into<String>>(
+        path: &Path,
+        escape: bool,
+        file_ext: E,
+        language: Option<&str>,
+    ) -> Result<Self> {
         let file_ext = file_ext.into();
         let mut glob_path = path.join(TERA_DIR).join("**/*");
         glob_path.set_extension(&file_ext);
@@ -45,7 +55,9 @@ impl Engine {
         let engine = Self {
             tera,
             file_ext,
+            language_path: path.join(LANGUAGE_DIR),
             static_path: path.join(STATIC_DIR),
+            language: language.map(Into::into),
             forced_context: None,
         };
         if !engine.has_template(RECIPE_NAME) {
@@ -77,12 +89,31 @@ impl Engine {
         self.tera.get_template_names().any(|name| name == path)
     }
 
+    fn load_language_file(&self) -> Result<Option<Value>> {
+        if let Some(language) = &self.language {
+            let path = self
+                .language_path
+                .join(language)
+                .with_extension(LANGUAGE_FILE_EXTENSION);
+            match fs::read_to_string(path) {
+                Ok(data) => Ok(Some(data.parse()?)),
+                Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(None),
+                Err(error) => Err(error.into()),
+            }
+        } else {
+            Ok(None)
+        }
+    }
+
     fn render(
         &self,
         template_name: &str,
         mut context: Context,
         writer: impl io::Write,
     ) -> Result<()> {
+        if let Some(data) = self.load_language_file()? {
+            context.insert("lang", &data);
+        }
         if let Some(fc) = &self.forced_context {
             context.extend(fc.clone());
         }

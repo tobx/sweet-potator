@@ -1,0 +1,19 @@
+made_with = "Made with"
+
+[index]
+heading = "Recipes"
+
+[recipe]
+heading_ingredients = "Ingredients"
+heading_instructions = "Instructions"
+heading_notes = "Notes"
+ingredient_table_name = "Name"
+ingredient_table_quantity = "Quantity"
+metadata_author = "Author"
+metadata_hour = "hr"
+metadata_hours = "hrs"
+metadata_minute = "min"
+metadata_minutes = "mins"
+metadata_preparation_time = "Preparation"
+metadata_servings = "Servings"
+metadata_source = "Source"

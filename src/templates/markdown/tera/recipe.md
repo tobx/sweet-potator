@@ -3,7 +3,8 @@
 
 {% extends "blocks/base.md" %}
 
-{% block main -%}
+{% block main %}
+{%- set lang = lang.recipe %}
 # {{ recipe.title }}
 
 {% if image_path is string -%}
@@ -11,26 +12,36 @@
 {%- endif -%}
 
 {%- set yield = recipe.metadata.yield -%}
-Servings: {{ yield.value }}
+  {{ lang.metadata_servings }}: {{ yield.value }}
 {%- if yield.unit is string -%}
   {{ " " }}{{ yield.unit }}
 {%- endif %}
 
 {%- set duration = recipe.metadata.duration %}
 {%- if duration is object -%}
-  {{ "  " ~ lf }}Preparation:
+  {{ "  " ~ lf ~ lang.metadata_preparation_time }}:
   {%- if duration.hours > 0 -%}
-    {{ " " ~ duration.hours }} hr{{ duration.hours | pluralize }}
+    {{ " " ~ duration.hours }} {{
+      duration.hours | pluralize(
+        singular = lang.metadata_hour,
+        plural = lang.metadata_hours
+      )
+    }}
   {%- endif %}
   {%- if duration.minutes > 0 -%}
-    {{ " " ~ duration.minutes }} min{{ duration.minutes | pluralize }}
+    {{ " " ~ duration.minutes }} {{ 
+      duration.minutes | pluralize(
+        singular = lang.metadata_minute,
+        plural = lang.metadata_minutes
+      )
+    }}
   {%- endif %}
 {%- endif %}
 
-## Ingredients
+## {{ lang.heading_ingredients }}
 {{ table::table(list = recipe.ingredients) }}
 {%- if recipe.notes | length > 0 -%}
-  {{ lf }}## Notes
+  {{ lf }}## {{ lang.heading_notes }}
   {%- for item in recipe.notes %}
     {%- if loop.first %}{{ lf }}{% endif -%}
     {{ lf }}- {{ item ~ lf }}
@@ -38,17 +49,17 @@ Servings: {{ yield.value }}
 {%- endif -%}
 {{ lf -}}
 
-## Instructions
+## {{ lang.heading_instructions }}
 {{ list::list(list = recipe.instructions) }}
 {%- set source = recipe.metadata.source %}
 {%- if source is object %}
   {{ lf }}
   {%- if source.author is defined -%}
-    Author: {{ source.author }}
+    {{ lang.metadata_author }}: {{ source.author }}
   {%- elif source.book is defined -%}
-    Source: {{ source.book }}
+    {{ lang.metadata_source }}: {{ source.book }}
   {%- else -%}
-    Source: [{{ source.link.name }}]({{ source.link.url | escape_xml | safe }})
+    {{ lang.metadata_source }}: [{{ source.link.name }}]({{ source.link.url | escape_xml | safe }})
   {%- endif %}
 {% endif -%}
 {%- endblock main %}

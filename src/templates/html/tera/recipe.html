@@ -9,6 +9,7 @@
 {% block title %}{{ recipe.title }}{% endblock title %}
 
 {% block main -%}
+  {%- set lang = lang.recipe -%}
   <article class="recipe">{{ lf -}}
     <header>{{ lf -}}
       <h1>{{ recipe.title }}</h1>{{ lf -}}
@@ -34,7 +35,7 @@
             {%- if yield.unit is string -%}
               {{ yield.unit }}
             {%- else -%}
-              Servings
+              {{ lang.metadata_servings }}
             {%- endif -%}
           </span>{{ lf -}}
         </span>{{ lf -}}
@@ -49,11 +50,24 @@
             {%- set minutes = duration.hours * 60 + duration.minutes %}
             {%- if minutes < 120 -%}
               <span class="value">{{ minutes }}</span>{{ lf -}}
-              <span class="unit">Minute{{ minutes | pluralize }}</span>{{ lf }}
+              <span class="unit">
+                {{-
+                  minutes | pluralize(
+                    singular = lang.metadata_minute,
+                    plural = lang.metadata_minutes
+                  )
+                -}}
+              </span>{{ lf }}
             {%- else %}
               {%- set hours = minutes / 60 -%}
               <span class="value">{{ hours | round }}</span>{{ lf -}}
-              <span class="unit">Hour{{ hours | pluralize }}</span>{{ lf }}
+              <span class="unit">
+                {{- hours | pluralize(
+                    singular = lang.metadata_hour,
+                    plural = lang.metadata_hours
+                  )
+                -}}
+              </span>{{ lf }}
             {%- endif -%}
           </span>{{ lf -}}
         </p>{{ lf }}
@@ -64,17 +78,17 @@
         </span>{{ lf -}}
         <span class="content">{{ lf }}
           <span class="value">{{ recipe.ingredients.count }}</span>{{ lf -}}
-          <span class="unit">Ingredients</span>{{ lf -}}
+          <span class="unit">{{ lang.metadata_ingredients }}</span>{{ lf -}}
         </span>{{ lf -}}
       </p>{{ lf -}}
     </section>{{ lf -}}
     <section class="ingredients">{{ lf -}}
-      <h2>Ingredients</h2>{{ lf -}}
+      <h2>{{ lang.heading_ingredients }}</h2>{{ lf -}}
       {{- list::list(tag = "ul", list = recipe.ingredients) -}}
     </section>{{ lf }}
     {%- if recipe.notes | length > 0 -%}
       <section class="notes">{{ lf -}}
-        <h2>Notes</h2>{{ lf -}}
+        <h2>{{ lang.heading_notes }}</h2>{{ lf -}}
         <ul class="dash-list">{{ lf }}
           {%- for note in recipe.notes -%}
             <li class="item">{{ note }}</li>{{ lf }}
@@ -83,7 +97,7 @@
       </section>{{ lf }}
     {%- endif -%}
     <section class="instructions">{{ lf -}}
-      <h2>Instructions</h2>{{ lf -}}
+      <h2>{{ lang.heading_instructions }}</h2>{{ lf -}}
       {{ list::list(tag = "ol", list = recipe.instructions) -}}
     </section>{{ lf }}
     {%- set source = recipe.metadata.source %}
@@ -91,11 +105,11 @@
       <section class="source">{{ lf -}}
         <p>
           {%- if source.author is defined -%}
-            Author: <span class="author">{{ source.author }}</span>
+            {{ lang.metadata_author }}: <span class="author">{{ source.author }}</span>
           {%- elif source.book is defined -%}
-            Source: <span class="book">{{ source.book }}</span>
+          {{ lang.metadata_source }}: <span class="book">{{ source.book }}</span>
           {%- else -%}
-            Source: <a href="{{ source.link.url | escape_xml | safe }}">{{ source.link.name }}</a>
+          {{ lang.metadata_source }}: <a href="{{ source.link.url | escape_xml | safe }}">{{ source.link.name }}</a>
           {%- endif -%}
         </p>{{ lf -}}
       </section>{{ lf }}

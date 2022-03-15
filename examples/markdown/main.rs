@@ -26,7 +26,9 @@ pub fn build(tpl_dir: &Path, recipe_dir: &Path, output_dir: &Path) -> Result<()>
         fs::create_dir_all(output_dir)?;
     }
     let escape = false;
-    let mut engine = template::Engine::new(tpl_dir, escape, "md")?;
+    let file_extension = "md";
+    let language = None;
+    let mut engine = template::Engine::new(tpl_dir, escape, file_extension, language)?;
     let mut context = Context::new();
     context.insert("title", "Sweet Potator Example Document");
     engine.forced_context = Some(context);

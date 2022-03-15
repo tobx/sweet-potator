@@ -4,17 +4,18 @@
   {% set base_url = "." %}
 {%- endblock variables %}
 
-{% block title %}Recipes{% endblock title %}
+{% block title %}{{ lang.index.page_title }}{% endblock title %}
 
-{% block main -%}
+{% block main %}
+  {%- set lang = lang.index -%}
   <article class="recipes">{{ lf -}}
     <header>{{ lf -}}
-      <h1>Recipes</h1>{{ lf -}}
-      <h2>private recipe collection</h2>{{ lf -}}
+      <h1>{{ lang.page_title }}</h1>{{ lf -}}
+      <h2>{{ lang.page_subtitle }}</h2>{{ lf -}}
     </header>{{ lf }}
     {%- if tags | length > 0 -%}
       <nav class="tags">{{ lf -}}
-        <span class="caption">Tags:</span>{{ lf -}}
+        <span class="caption">{{ lang.tags_caption }}:</span>{{ lf -}}
         <ul>{{ lf }}
           {%- for tag in tags -%}
             <li><span class="tag">{{ tag }}</span></li>{{ lf }}
@@ -26,7 +27,14 @@
     <section class="list">{{ lf -}}
       <p class="count">{{ lf -}}
         <span class="value">{{ recipes | length }}</span>{{ lf -}}
-        <span class="recipes" data-singular="recipe", data-plural="recipes">recipe{{ recipes | length | pluralize }}</span> found (<a class="random">random</a>):{{ lf -}}
+        <span class="recipes" data-singular="{{ lang.recipe_found }}", data-plural="{{ lang.recipes_found }}">
+          {{-
+            recipes | length | pluralize(
+              singular = lang.recipe_found,
+              plural = lang.recipes_found
+            )
+          -}}
+        </span> (<a class="random">random</a>):{{ lf -}}
       </p>{{ lf -}}
       <ul class="dash-list">{{ lf }}
         {%- for recipe in recipes -%}
@@ -34,7 +42,7 @@
             <a class="item" href="{{ recipe.path | escape_xml | safe }}">{{ recipe.title }}</a>{{ lf }}
             {%- if recipe.tags | length > 0 -%}
               <div class="tags">{{ lf -}}
-                <span class="caption">Tags:</span>{{ lf -}}
+                <span class="caption">{{ lang.tags_caption }}:</span>{{ lf -}}
                 <ul>{{ lf }}
                   {%- for tag in recipe.tags -%}
                     <li><span class="tag">{{ tag }}</span></li>{{ lf }}

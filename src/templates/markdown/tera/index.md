@@ -1,7 +1,7 @@
 {% extends "blocks/base.md" %}
 
 {% block main -%}
-# Recipes
+# {{ lang.index.heading }}
 
 {% for recipe in recipes -%}
   - [{{ recipe.title }}]({{ recipe.path | escape_xml | safe }})

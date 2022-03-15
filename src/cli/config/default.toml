@@ -24,9 +24,11 @@ image_file_extensions = [
 extension = "html"
 file_name_filter = "slugify"
 # escape = true
+# language = "en"
 
 # Markdown template
 [templates.markdown]
 extension = "md"
 # file_name_filter = "sanitize"
 # escape = true
+# language = "en"

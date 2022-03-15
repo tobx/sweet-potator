@@ -10,6 +10,8 @@ pub enum Error {
     EmptyRecipeTitle,
     #[error("invalid image file extension: '{0}'")]
     InvalidImageFileExt(PathBuf),
+    #[error("invalid language file format: {0}")]
+    InvalidLanguageFileFormat(#[from] toml::de::Error),
     #[error(transparent)]
     Io(#[from] io::Error),
     #[error("invalid recipe format: '{0}'")]

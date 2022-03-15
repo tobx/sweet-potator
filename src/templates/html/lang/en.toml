@@ -1,0 +1,23 @@
+favorite_tag_name = "Favorite"
+made_with = "Made with"
+navigation_home = "Home"
+
+[index]
+page_subtitle = "private recipe collection"
+page_title = "Recipes"
+recipe_found = "recipe found"
+recipes_found = "recipes found"
+tags_caption = "Tags"
+
+[recipe]
+heading_ingredients = "Ingredients"
+heading_instructions = "Instructions"
+heading_notes = "Notes"
+metadata_author = "Author"
+metadata_hour = "Hour"
+metadata_hours = "Hours"
+metadata_ingredients = "Ingredients"
+metadata_minute = "Minute"
+metadata_minutes = "Minutes"
+metadata_servings = "Servings"
+metadata_source = "Source"

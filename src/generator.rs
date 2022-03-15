@@ -238,7 +238,7 @@ mod tests {
             "app",
             &HashMap::from([("name", "name"), ("homepage", "homepage")]),
         );
-        let mut engine = template::Engine::new(&tpl_dir, true, "html")?;
+        let mut engine = template::Engine::new(&tpl_dir, true, "html", None)?;
         engine.forced_context = Some(context);
         let image_file_exts = vec!["jpg".into()];
 
