@@ -2,6 +2,17 @@
 recipe_dir = "./recipes"
 
 # Editor command to edit recipes
+#
+# The editor should be able to wait for the files to be closed before returning.
+# This might be achieved with additional command line parameters.
+#
+# E.g. for Sublime Text use:
+# editor = ["subl", "--wait", "--"]
+#
+# CLI editors should work fine.
+#
+# For recipe file syntax highlighting check this out:
+# https://github.com/tobx/sweet-potator/tree/main/assets/grammars
 editor = ["vim"]
 
 # Valid image file extensions
