@@ -3,7 +3,9 @@
 Sweet Potator is a static recipe site generator.
  
 Create, edit and organize your cooking recipes in flat files via command line. Publish them to a web server, generate markdown files or create you own templates to generate any format you want.
- 
+
+Check out the [**demo page**](https://tobx.github.io/sweet-potator/).
+
 ## Table of contents
  
 - [Features](#features)
