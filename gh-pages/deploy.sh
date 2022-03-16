@@ -7,7 +7,7 @@ project_dir="$(dirname -- "${self_dir}")"
 
 verify_branch() {
     current_branch=$(git branch --show-current)
-    if [ "$current_branch" != "$1" ]; then
+    if [ "${current_branch}" != "$1" ]; then
         >&2 echo "Error: current branch is not '${1}' but '${current_branch}'"
         return 1
     fi
@@ -47,15 +47,21 @@ rm -rf "${config_dir}"
 
 datetime=$(date -u +%Y-%m-%dT%TZ)
 commit=$(git rev-parse --short HEAD)
+
 git checkout "gh-pages"
 verify_branch "gh-pages"
-git rm -rf "docs"
-echo "move '${self_dir}/dist' to '${project_dir}/docs'"
-mv "${self_dir}/dist" "${project_dir}/docs"
-git add "docs"
+
+docs_dir="${project_dir}/docs"
+rm -rf "${docs_dir}"
+
+echo "move '${output_dir}' to '${docs_dir}'"
+mv "${output_dir}" "${docs_dir}"
+
+git add "${docs_dir}"
 if [ -n "$(git status --porcelain)" ]; then
     git commit -m "Deploy main@${commit} (${datetime})"
 else
     git status
 fi
+
 git checkout "main"
