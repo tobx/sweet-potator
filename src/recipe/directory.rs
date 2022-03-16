@@ -82,7 +82,14 @@ impl Directory {
     }
 
     pub fn load(&self) -> Result<Recipe> {
-        parse_recipe(&self.recipe_path())
+        let path = self.recipe_path();
+        let file = fs::File::open(&path)?;
+        Recipe::parse_from(file).map_err(|mut error| {
+            if let Error::Parse(error) = &mut error {
+                error.set_path(&path);
+            }
+            error
+        })
     }
 
     pub fn path(&self) -> PathBuf {
@@ -197,11 +204,6 @@ fn find_available_name(
         }
         i += 1;
     }
-}
-
-fn parse_recipe(path: &Path) -> Result<Recipe> {
-    let file = fs::File::open(path)?;
-    Recipe::parse_from(file)
 }
 
 fn sanitize_title(title: &str) -> Result<&str> {

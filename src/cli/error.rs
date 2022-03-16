@@ -6,6 +6,8 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub enum Error {
     #[error(transparent)]
     Config(#[from] config::ConfigError),
+    #[error("recipe list is corrupt")]
+    CorruptedRecipeList,
     #[error("editor command '{0}' not found")]
     EditorCommandNotFound(String),
     #[error("io error: {0}")]

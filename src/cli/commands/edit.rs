@@ -1,6 +1,6 @@
 use std::io;
 
-use sweet_potator::recipe::directory::Directory;
+use sweet_potator::{error::Error as SweetPotatorError, recipe::directory::Directory};
 
 use crate::{
     config::Config,
@@ -21,21 +21,23 @@ pub fn edit(config: &Config, options: &options::Edit) -> Result<()> {
 
 pub fn edit_recipe(config: &Config, options: &options::Edit) -> Result<()> {
     let mut directory = Directory::from_title(&config.recipe_dir, &options.title)?;
-    let title = directory
-        .load()
-        .map_err(Error::from)
-        .map_err(|error| match error {
-            Error::Io(error) if error.kind() == io::ErrorKind::NotFound => {
+    let title = directory.load().map_or_else(
+        |error| match error {
+            SweetPotatorError::Io(error) if error.kind() == io::ErrorKind::NotFound => {
                 let path = directory.recipe_path();
                 let file_name = path.file_name().unwrap();
-                Error::RecipeFileNotFound(file_name.to_string_lossy().yellow())
+                Err(Error::RecipeFileNotFound(
+                    file_name.to_string_lossy().yellow(),
+                ))
             }
-            _ => error,
-        })?
-        .title;
+            SweetPotatorError::Parse(_) => Ok(None),
+            _ => Err(error.into()),
+        },
+        |recipe| Ok(Some(recipe.title)),
+    )?;
     editor::open(&config.editor, &directory.recipe_path())?;
     let recipe = directory.load()?;
-    if recipe.title != title {
+    if title.map_or(true, |title| title != recipe.title) {
         directory.update_from_title(&recipe.title)?;
     }
     write::success(format!("edited recipe '{}'", recipe.title.yellow()))?;

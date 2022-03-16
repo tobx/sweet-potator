@@ -2,9 +2,9 @@ use sweet_potator::recipe::directory::Directory;
 
 use crate::{
     config::Config,
-    error::Result,
+    error::{Error, Result},
     options,
-    terminal::{color::Colorize, writeln},
+    terminal::{color::Colorize, message::write, writeln},
 };
 
 pub fn list(config: &Config, options: &options::List) -> Result<()> {
@@ -36,14 +36,21 @@ fn list_files(directories: &[Directory]) -> Result<()> {
 }
 
 fn list_titles(directories: &[Directory]) -> Result<()> {
-    let mut titles: Vec<(String, Option<&str>)> = directories
-        .iter()
-        .map(|directory| {
-            let title = directory.load()?.title;
-            let suffix = directory.suffix(&title);
-            Ok((title, suffix))
-        })
-        .collect::<Result<_>>()?;
+    let mut result = Ok(());
+    let mut titles = Vec::new();
+    for directory in directories {
+        match directory.load() {
+            Ok(recipe) => {
+                let title = recipe.title;
+                let suffix = directory.suffix(&title);
+                titles.push((title, suffix));
+            }
+            Err(error) => {
+                write::error(error)?;
+                result = Err(Error::CorruptedRecipeList);
+            }
+        }
+    }
     titles.sort();
     for (title, suffix) in titles {
         if let Some(suffix) = suffix {
@@ -52,5 +59,5 @@ fn list_titles(directories: &[Directory]) -> Result<()> {
             writeln(title)?;
         }
     }
-    Ok(())
+    result
 }

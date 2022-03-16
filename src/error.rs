@@ -14,7 +14,7 @@ pub enum Error {
     InvalidLanguageFileFormat(#[from] toml::de::Error),
     #[error(transparent)]
     Io(#[from] io::Error),
-    #[error("invalid recipe format: '{0}'")]
+    #[error(transparent)]
     Parse(#[from] ParseError),
     #[error("missing image file extension in path: '{0}'")]
     MissingImageFileExt(PathBuf),
