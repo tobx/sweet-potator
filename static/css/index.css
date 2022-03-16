@@ -1,0 +1,488 @@
+:root {
+  --base-size: 1.125rem;
+  --border: var(--border-width) dashed var(--color-primary);
+  --border-width: calc(var(--base-size) / 16);
+  --color-background: White;
+  --color-primary: Tomato;
+  --color-text: black;
+  --small: calc(2em / 3);
+  --page-font-size: var(--base-size);
+  --page-padding: var(--base-size);
+  --page-max-width: calc(48 * var(--base-size));
+  --stroke-width: 1.75;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --base-size: 1.5rem;
+    --page-padding: calc(2 * var(--base-size));
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font: var(--page-font-size) / 1 "Merriweather", serif;
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  a:hover {
+    color: var(--color-text);
+  }
+}
+
+h1,
+h2,
+h3,
+li,
+ol,
+p,
+ul {
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+h3 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+}
+
+svg {
+  /* https://stackoverflow.com/a/46344280 */
+  overflow: visible;
+}
+
+.dash-list {
+  --indent: 1.25em;
+  padding-left: calc(0.5em + var(--indent));
+}
+
+.dash-list .item::before {
+  color: var(--color-primary);
+  content: "–";
+  display: inline-block;
+  margin-left: calc(-1 * var(--indent));
+  width: var(--indent);
+}
+
+.hidden {
+  display: none;
+}
+
+body > header {
+  border-bottom: var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--page-padding);
+}
+
+body > header h1 {
+  align-items: center;
+  display: flex;
+  font-size: inherit;
+  font-weight: inherit;
+  column-gap: 0.5em;
+}
+
+body > header h1 svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  height: 1.5em;
+}
+
+body > header nav {
+  align-items: center;
+  display: flex;
+  padding: 1em 0;
+}
+
+body > header nav a {
+  color: inherit;
+  text-transform: uppercase;
+  margin-left: var(--page-padding);
+}
+
+body > header nav a svg {
+  --fill: transparent;
+  --stroke: var(--color-text);
+  height: 1.5em;
+}
+
+body > header nav a.favorites.active svg {
+  --stroke: var(--color-primary);
+}
+
+@media (hover: hover) {
+  body > header nav a:hover {
+    color: var(--color-primary);
+  }
+
+  body > header nav a:hover svg {
+    --fill: var(--color-primary);
+    --stroke: var(--color-primary);
+  }
+
+  body > header nav a.favorites.active:hover svg {
+    --fill: var(--color-text);
+    --stroke: var(--color-text);
+  }
+}
+
+main > article {
+  --h1-font-size: 3em;
+  --h2-font-size: 1.25em;
+  --h3-font-size: 1.125em;
+  --list-line-height: 1.5;
+  margin: 0 auto;
+  max-width: var(--page-max-width);
+}
+
+@media (min-width: 640px) {
+  main > article {
+    --h1-font-size: 4em;
+    --h2-font-size: 1.5em;
+  }
+}
+
+main > article h1 {
+  font-size: var(--h1-font-size);
+}
+
+main > article h2 {
+  font-size: var(--h2-font-size);
+}
+
+main > article h3 {
+  font-size: var(--h3-font-size);
+}
+
+main > article > header {
+  padding: 3em var(--page-padding) 1em var(--page-padding);
+}
+
+main > article > header h2 {
+  font-weight: normal;
+  margin-top: 0.5em;
+}
+
+main > article > section {
+  padding: 0 var(--page-padding);
+}
+
+main > article .tags {
+  display: flex;
+  font-size: var(--small);
+  line-height: 1;
+}
+
+main > article .tags .caption {
+  margin-right: 0.75em;
+}
+
+main > article .tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  line-height: inherit;
+}
+
+main > article .tags ul .tag {
+  border-bottom: var(--border-width) solid var(--color-primary);
+  color: inherit;
+  cursor: pointer;
+  padding: calc(1em / 16) 0;
+}
+
+main > article .tags ul .active {
+  color: var(--color-primary);
+}
+
+main > article .tags ul .icon {
+  cursor: pointer;
+  display: block;
+  height: 1em;
+}
+
+main > article .tags ul .icon svg {
+  height: 1.25em;
+}
+
+@media (hover: hover) {
+  main > article .tags ul .tag:hover {
+    color: var(--color-primary);
+  }
+
+  main > article .tags ul .active:hover {
+    border-bottom-color: var(--color-text);
+  }
+
+  main > article .tags ul .icon:hover {
+    color: var(--color-primary);
+  }
+}
+
+main > article > .tags {
+  margin: 1em var(--page-padding);
+}
+
+.recipes .list {
+  margin: 3em 0 2em 0;
+}
+
+.recipes .list .count {
+  margin-bottom: 1.5em;
+}
+
+.recipes .list > ul {
+  line-height: var(--list-line-height);
+  margin: 1em 0;
+}
+
+.recipes .list > ul > li {
+  margin: 0.75em 0;
+}
+
+.recipes .list > ul > li a {
+  color: inherit;
+}
+
+@media (hover: hover) {
+  .recipes .list > ul > li a:hover {
+    color: var(--color-primary);
+  }
+}
+
+.recipes .list .tags {
+  margin: 0.125em 0 2em 0;
+}
+
+.recipes .list .tags > .caption {
+  display: none;
+}
+
+.recipe h1 {
+  font-size: calc(0.5 * var(--h1-font-size));
+  font-weight: normal;
+  line-height: initial;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .recipe h1 {
+    font-size: calc(2 / 3 * var(--h1-font-size));
+    font-weight: bold;
+  }
+}
+
+.recipe h2 {
+  margin: 2em 0 1em 0;
+}
+
+.recipe h3 {
+  text-transform: uppercase;
+  margin: 2em 0 1em 0;
+}
+
+.recipe ol {
+  margin-left: 2em;
+}
+
+.recipe > .image {
+  margin: 1em 0 2em 0;
+}
+
+.recipe > .image img {
+  border: var(--border);
+  border-radius: 1em;
+  box-sizing: border-box;
+  padding: 0.5em;
+  width: 100%;
+}
+
+.recipe > .metadata {
+  --gap: 1em;
+  --icon-height: 1.25em;
+}
+
+@media (min-width: 640px) {
+  .recipe > .metadata {
+    --gap: 1em 2em;
+    --icon-height: 1.5em;
+  }
+}
+
+.recipe > .metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.recipe > .metadata .entry {
+  align-items: center;
+  display: flex;
+}
+
+.recipe > .metadata .entry .icon {
+  height: var(--icon-height);
+  margin-right: 0.5em;
+}
+
+.recipe > .metadata .entry .icon svg {
+  height: 100%;
+}
+
+.recipe > .metadata .entry .content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe > .metadata .entry .content .value {
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  margin-bottom: 0.25em;
+}
+
+.recipe > .metadata .entry .content .value .digits {
+  color: var(--color-text);
+}
+
+.recipe > .metadata .entry .content .value .digits.default {
+  color: var(--color-text);
+  cursor: auto;
+}
+
+.recipe > .metadata .entry .content .value .change {
+  --size: calc(2 / 3);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  font-size: calc(var(--size) * 1em);
+  justify-content: center;
+  user-select: none;
+  width: calc(1 / var(--size) * 1em);
+  height: calc(1 / var(--size) * 1em);
+}
+
+.recipe > .metadata .entry .content .unit {
+  font-size: var(--small);
+}
+
+@media (hover: hover) {
+  .recipe > .metadata .entry .content .value .digits:hover {
+    color: var(--color-primary);
+  }
+
+  .recipe > .metadata .entry .content .value .change:hover {
+    color: var(--color-primary);
+  }
+}
+
+.recipe > .ingredients ul {
+  --margin-left: 1em;
+}
+
+@media (min-width: 640px) {
+  .recipe > .ingredients ul {
+    --margin-left: 1.75em;
+  }
+}
+
+.recipe > .ingredients ul {
+  line-height: 1.25;
+  margin-left: var(--margin-left);
+}
+
+.recipe > .ingredients li {
+  display: table-row;
+}
+
+.recipe > .ingredients li > * {
+  display: table-cell;
+  padding-bottom: 0.75em;
+}
+
+.recipe > .ingredients li:last-child > * {
+  padding-bottom: 0;
+}
+
+.recipe > .ingredients li .quantity {
+  padding-right: calc(2em / 3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.recipe > .instructions ol {
+  line-height: var(--list-line-height);
+}
+
+.recipe > .instructions li {
+  padding-bottom: 1em;
+}
+
+.recipe > .instructions li:last-child {
+  padding-bottom: 0;
+}
+
+.recipe > .notes ul {
+  line-height: var(--list-line-height);
+}
+
+.recipe > .notes li {
+  padding-bottom: 0.5em;
+}
+
+.recipe > .notes li:last-child {
+  padding-bottom: 0;
+}
+
+.recipe > .source {
+  margin: 2.5em 0;
+}
+
+body > footer {
+  border-top: var(--border);
+  margin-top: 2em;
+  padding: 1em var(--page-padding);
+}
+
+body > footer p {
+  align-items: center;
+  display: flex;
+  font-size: var(--small);
+  justify-content: center;
+}
+
+body > footer p a {
+  border-bottom: var(--border-width) solid var(--color-primary);
+  color: var(--color-text);
+  line-height: 1;
+  padding: calc(1em / 16) 0;
+}
+
+@media (hover: hover) {
+  body > footer p a:hover {
+    color: var(--color-primary);
+  }
+}
+
+body > footer p svg {
+  color: var(--color-primary);
+  height: 1.5em;
+  margin-left: 0.125em;
+}
