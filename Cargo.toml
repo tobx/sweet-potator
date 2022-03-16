@@ -3,6 +3,7 @@ categories = ["command-line-utilities"]
 description = "Static recipe site generator"
 documentation = "https://docs.rs/sweet-potator"
 edition = "2021"
+exclude = ["/.editorconfig", "/gh-pages"]
 homepage = "https://github.com/tobx/sweet-potator"
 license-file = "LICENSE"
 name = "sweet-potator"
