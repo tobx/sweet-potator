@@ -9,14 +9,14 @@ license-file = "LICENSE"
 name = "sweet-potator"
 readme = "README.md"
 repository = "https://github.com/tobx/sweet-potator"
-version = "0.4.2"
+version = "0.4.3"
 
 [[bin]]
 name = "sweet-potator"
 path = "src/cli/main.rs"
 
 [dependencies]
-clap = { version = "3.1.2", features = ["derive"] }
+clap = { version = "3.1.6", features = ["derive"] }
 config = "0.12.0"
 dirs-next = "2.0.0"
 include_dir = "0.7.2"

@@ -1,5 +1,8 @@
 # Sweet Potator
 
+[![Latest Version](https://img.shields.io/crates/v/sweet-potator.svg)](https://crates.io/crates/sweet-potator)
+[![Documentation](https://docs.rs/toml/badge.svg)](https://docs.rs/sweet-potator)
+
 Sweet Potator is a static recipe site generator.
  
 Create, edit and organize your cooking recipes in flat files via command line. Publish them to a web server, generate markdown files or create you own templates to generate any format you want.
@@ -9,7 +12,6 @@ Check out the [**demo page**](https://tobx.github.io/sweet-potator/).
 ## Table of contents
  
 - [Features](#features)
-- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [CLI Usage](#cli-usage)
@@ -25,17 +27,14 @@ Check out the [**demo page**](https://tobx.github.io/sweet-potator/).
 - Adjust servings dynamically (HTML template)
 - Multi-language support for included templates
 
-## Prerequisites
 
-Since there are no binaries yet, you need to [install Rust](https://www.rust-lang.org/tools/install) to compile this application from source.
 
 ## Installation
-
-Clone repository and install:
+ 
+To install this application you need an [installation](https://www.rust-lang.org/tools/install) of [Rust](https://www.rust-lang.org/) and run:
 
 ```
-$ git clone https://github.com/tobx/sweet-potator.git
-$ cargo install --path sweet-potator
+cargo install sweet-potator
 ```
 
 ## Configuration
