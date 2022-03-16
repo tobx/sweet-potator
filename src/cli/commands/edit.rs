@@ -15,11 +15,11 @@ pub fn edit(config: &Config, options: &options::Edit) -> Result<()> {
     if options.image_path.is_some() {
         set_image(config, options)
     } else {
-        edit_recipe(config, options)
+        open_recipe(config, options)
     }
 }
 
-pub fn edit_recipe(config: &Config, options: &options::Edit) -> Result<()> {
+pub fn open_recipe(config: &Config, options: &options::Edit) -> Result<()> {
     let mut directory = Directory::from_title(&config.recipe_dir, &options.title)?;
     let title = directory.load().map_or_else(
         |error| match error {

@@ -91,7 +91,7 @@ impl ParseFromStr for Duration {
             return Err("recipe duration must be greater than zero".into());
         }
         hours += minutes / 60;
-        minutes = minutes % 60;
+        minutes %= 60;
         Ok(Duration { hours, minutes })
     }
 }

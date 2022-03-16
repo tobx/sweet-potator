@@ -16,7 +16,7 @@ impl fmt::Display for ParseError {
         if let Some(path) = &self.path {
             let recipe_dir = path
                 .parent()
-                .and_then(|path| path.parent())
+                .and_then(Path::parent)
                 .expect("invalid recipe path");
             write!(
                 f,
@@ -36,7 +36,7 @@ impl ParseError {
     }
 
     pub fn set_path(&mut self, path: &Path) {
-        self.path = Some(path.into())
+        self.path = Some(path.into());
     }
 }
 
