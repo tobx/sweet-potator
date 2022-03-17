@@ -63,6 +63,10 @@ svg {
   overflow: visible;
 }
 
+.collapsible.collapsed {
+  display: none;
+}
+
 .dash-list {
   --indent: 1.25em;
   padding-left: calc(0.5em + var(--indent));

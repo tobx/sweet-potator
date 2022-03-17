@@ -83,13 +83,21 @@
       </p>{{ lf -}}
     </section>{{ lf -}}
     <section class="ingredients">{{ lf -}}
-      <h2>{{ lang.heading_ingredients }}</h2>{{ lf -}}
-      {{- list::list(tag = "ul", list = recipe.ingredients) -}}
+      <h2>{{ lf -}}
+        {{ lang.heading_ingredients }}{{ lf -}}
+        <a class="collapse-trigger" data-collapse-selector=".recipe > .ingredients > .collapsible">−</a>{{ lf -}}
+      </h2>{{ lf -}}
+      <div class="collapsible">{{ lf -}}
+        {{- list::list(tag = "ul", list = recipe.ingredients) -}}
+      </div>{{ lf -}}
     </section>{{ lf }}
     {%- if recipe.notes | length > 0 -%}
       <section class="notes">{{ lf -}}
-        <h2>{{ lang.heading_notes }}</h2>{{ lf -}}
-        <ul class="dash-list">{{ lf }}
+        <h2>{{ lf -}}
+          {{ lang.heading_notes }}{{ lf -}}
+          <a class="collapse-trigger" data-collapse-selector=".recipe > .notes > .collapsible">−</a>{{ lf -}}
+        </h2>{{ lf -}}
+        <ul class="dash-list collapsible">{{ lf }}
           {%- for note in recipe.notes -%}
             <li class="item">{{ note }}</li>{{ lf }}
           {%- endfor -%}
@@ -97,8 +105,13 @@
       </section>{{ lf }}
     {%- endif -%}
     <section class="instructions">{{ lf -}}
-      <h2>{{ lang.heading_instructions }}</h2>{{ lf -}}
-      {{ list::list(tag = "ol", list = recipe.instructions) -}}
+      <h2>{{ lf -}}
+        {{ lang.heading_instructions }}{{ lf -}}
+        <a class="collapse-trigger" data-collapse-selector=".recipe > .instructions > .collapsible">−</a>{{ lf -}}
+      </h2>{{ lf -}}
+      <div class="collapsible">{{ lf -}}
+        {{ list::list(tag = "ol", list = recipe.instructions) -}}
+      </div>{{ lf -}}
     </section>{{ lf }}
     {%- set source = recipe.metadata.source %}
     {%- if source is object -%}

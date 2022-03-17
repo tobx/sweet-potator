@@ -329,6 +329,18 @@
     }
   }
 
+  function addCollapseEventHandlers() {
+    for (const trigger of document.querySelectorAll(".collapse-trigger")) {
+      trigger.addEventListener("click", () => {
+        const isCollapsed = trigger.classList.toggle("collapsed");
+        trigger.textContent = isCollapsed ? "+" : "−";
+        document
+          .querySelector(trigger.dataset.collapseSelector)
+          .classList.toggle("collapsed", isCollapsed);
+      });
+    }
+  }
+
   function isRecipePage() {
     return document.querySelector("main > .recipe") !== null;
   }
@@ -373,6 +385,7 @@
       const ingredients = new IngredientManager();
       ingredients.reset();
     }
+    addCollapseEventHandlers();
   }
 
   window.addEventListener("DOMContentLoaded", initialize);
