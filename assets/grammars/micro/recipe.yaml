@@ -1,0 +1,105 @@
+filetype: recipe
+
+detect:
+    filename: "\\.recipe$"
+
+rules:
+    # Metadata: Author|Book
+    - type:
+        start: "^\\s*(Author|Book)\\b"
+        end: "$"
+        rules:
+            - statement:
+                start: ": "
+                end: "$"
+                rules:
+                    - constant.string: "."
+
+    # Metadata: Link
+    - type:
+        start: "^\\s*Link\\b"
+        end: "$"
+        rules:
+            - statement:
+                start: ": "
+                end: "$"
+                rules:
+                    - constant.string: "."
+                    - statement: " > "
+
+    # Metadata: Tags
+    - type:
+        start: "^\\s*Tags\\b"
+        end: "$"
+        rules:
+            - statement:
+                start: ": "
+                end: "$"
+                rules:
+                    - constant.string: "."
+                    - statement: ", "
+
+    # Metadata: Time
+    - type:
+        start: "^\\s*Time\\b"
+        end: "$"
+        rules:
+            - statement:
+                start: ": "
+                end: "$"
+                rules:
+                    - error: "\\S"
+                    - constant.number: "\\b\\d+"
+                    - symbol: "[hm]\\b"
+
+    # Metadata: Yield
+    - type:
+        start: "^\\s*Yield\\b"
+        end: "$"
+        rules:
+            - statement:
+                start: ": "
+                end: "$"
+                rules:
+                    - constant.string: "."
+                    - constant.number: "\\b\\d+\\b"
+
+    # Notes
+    - identifier:
+        start: "^\\s*Notes\\s*$"
+        end: "^\\s*$"
+        rules:
+            - constant.string: "."
+            - statement: "^\\s*- "
+
+    # Instructions
+    - identifier:
+        start: "^\\s*Instructions\\s*$"
+        end: "^\\s*$"
+        rules:
+            - special: "."
+            - statement:
+                start: "^\\s*- "
+                end: "$"
+                rules:
+                    - constant.string: "."
+
+    # Ingredients
+    - identifier:
+        start: "^\\s*Ingredients\\s*$"
+        end: "^\\s*$"
+        rules:
+            - special: "."
+            - statement:
+                start: "^\\s*- "
+                end: "$"
+                rules:
+                    - constant.string: "."
+                    - statement: ", |: |\\d(/|\\.)\\d"
+                    - constant.number: "\\b\\d+\\b"
+                    - symbol.brackets:
+                        start: " \\("
+                        end: "\\)\\s*$"
+                        rules:
+                            - constant.string: ".+"
+                            - symbol.brackets: "\\)" # seems to be required because of micro bug?

@@ -13,7 +13,7 @@ recipe_dir = "./recipes"
 #
 # CLI editors should work fine.
 #
-# For recipe file syntax highlighting check this out:
+# For syntax highlighting have a look at:
 # https://github.com/tobx/sweet-potator/tree/main/assets/grammars
 editor = ["vim"]
 
