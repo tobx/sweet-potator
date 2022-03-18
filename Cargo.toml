@@ -9,7 +9,7 @@ license-file = "LICENSE"
 name = "sweet-potator"
 readme = "README.md"
 repository = "https://github.com/tobx/sweet-potator"
-version = "0.5.0"
+version = "0.6.0"
 
 [[bin]]
 name = "sweet-potator"
@@ -23,6 +23,7 @@ include_dir = "0.7.2"
 owo-colors = { version = "3.2.0", features = ["supports-colors"] }
 sanitize-filename = "0.3.0"
 serde = { version = "1.0.136", features = ["derive"] }
+serde_json = "1.0.79"
 slug = "0.1.4"
 tera = "1.15.0"
 thiserror = "1.0.30"

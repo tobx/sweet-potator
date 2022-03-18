@@ -24,6 +24,7 @@ pub enum SubCommand {
     Create(Create),
     Delete(Delete),
     Edit(Edit),
+    Export(Export),
     Info,
     List(List),
 }
@@ -70,6 +71,13 @@ pub struct Edit {
 
     /// Recipe title
     pub title: String,
+}
+
+/// Export recipes as JSON file
+#[derive(Default, Parser)]
+pub struct Export {
+    /// Output directory
+    pub output_dir: PathBuf,
 }
 
 /// List recipes

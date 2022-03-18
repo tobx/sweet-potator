@@ -105,7 +105,7 @@ impl Directory {
             self.name = name;
         }
         let recipe_path = self.recipe_path();
-        let mut file = fs::OpenOptions::new()
+        let mut file = fs::File::options()
             .write(true)
             .create_new(true)
             .open(&recipe_path)?;

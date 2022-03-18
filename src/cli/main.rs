@@ -62,13 +62,14 @@ impl Default for AppInfo {
 }
 
 fn route(config: &Config, options: Options) -> Result<()> {
-    use SubCommand::{Build, Create, Delete, Edit, Info, List};
+    use SubCommand::{Build, Create, Delete, Edit, Export, Info, List};
 
     match options.subcommand {
         Build(options) => commands::build(config, &options),
         Create(options) => commands::create(config, &options),
         Delete(options) => commands::delete(config, &options),
         Edit(options) => commands::edit(config, &options),
+        Export(options) => commands::export(config, &options),
         Info => commands::info(config),
         List(options) => commands::list(config, &options),
     }

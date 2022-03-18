@@ -12,6 +12,8 @@ pub enum Error {
     EditorCommandNotFound(String),
     #[error("io error: {0}")]
     Io(#[from] io::Error),
+    #[error("output directory '{0}' already exists")]
+    OutputDirectoryAlreadyExists(String),
     #[error("recipe directory '{0}' not found")]
     RecipeDirNotFound(String),
     #[error("recipe file '{0}' not found")]
