@@ -148,7 +148,7 @@ You might want to create [aliases](https://en.wikipedia.org/wiki/Alias_%28comman
 
 CLI search example using [skim](https://github.com/lotabout/skim):
 
-[![asciicast](https://asciinema.org/a/GjFTzUamKuajH0V1EcISeiUWH.svg)](https://asciinema.org/a/GjFTzUamKuajH0V1EcISeiUWH)
+[![asciicast](https://asciinema.org/a/4bpAswSzSTQSrCoNTOwyefBzA.svg)](https://asciinema.org/a/4bpAswSzSTQSrCoNTOwyefBzA)
 
 ## Multi-language Support
 
