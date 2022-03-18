@@ -5,21 +5,37 @@ set -e
 self_dir="$(realpath -- "$(dirname -- "$0")")"
 project_dir="$(dirname -- "${self_dir}")"
 
+red=$(tput setaf 1)
+reset=$(tput sgr0)
+
+confirm_commit() {
+    read -r -p "Type '${red}gh-pages${reset}' to continue > " input
+    echo
+    if [ $input != "gh-pages" ]; then
+        echo "Process aborted."
+        exit 1
+    fi
+}
+
 verify_branch() {
     current_branch=$(git branch --show-current)
     if [ "${current_branch}" != "$1" ]; then
-        >&2 echo "Error: current branch is not '${1}' but '${current_branch}'"
+        >&2 echo "${red}Error:${reset} current branch is not '${1}' but '${current_branch}'"
         return 1
     fi
     if [ -n "$(git status --porcelain)" ]; then
-        >&2 echo "Error: there are uncommitted changes"
+        >&2 echo "${red}Error:${reset} there are uncommitted changes"
         return 1
     fi
 }
 
+printf "Build & commit gh-pages\n\n"
+
 cd "${project_dir}"
 
 verify_branch "main"
+
+confirm_commit
 
 printf "Running tests: "
 if cargo test --quiet --release --all-features &> /dev/null; then
