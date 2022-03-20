@@ -76,7 +76,7 @@ impl Recipe {
             return Err("missing headline 'Ingredients'".into());
         }
         lines.remove(0);
-        Ok(lines.try_into().unwrap())
+        lines.try_into()
     }
 
     fn parse_instructions(mut lines: Vec<String>) -> ParseResult<List<String>> {
@@ -84,7 +84,7 @@ impl Recipe {
             return Err("missing headline 'Instructions'".into());
         }
         lines.remove(0);
-        Ok(lines.try_into().unwrap())
+        lines.try_into()
     }
 
     fn parse_notes(mut lines: Vec<String>) -> ParseResult<Vec<String>> {
