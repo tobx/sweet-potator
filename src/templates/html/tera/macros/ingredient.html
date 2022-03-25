@@ -5,7 +5,7 @@
       <span class="value">
         {%- set value = quantity.value %}
         {%- if value.decimal is defined -%}
-          {{ value.decimal.int }}.{{ value.decimal.frac }}
+          {{ value.decimal.int }}{{ lang.decimal_separator }}{{ value.decimal.frac }}
         {%- elif value.fraction is defined -%}
           {{ value.fraction.numer }}&frasl;{{ value.fraction.denom }}
         {%- else -%}

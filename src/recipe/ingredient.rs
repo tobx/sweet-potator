@@ -230,5 +230,13 @@ mod tests {
         assert_eq!(ingredient.name, "a name");
         assert_eq!(ingredient.kind, Some("a kind".into()));
         assert_eq!(ingredient.quantity.unwrap().to_string(), "1 unit (note)");
+        let ingredient = Ingredient::parse_from_str("name: 1/2").unwrap();
+        assert_eq!(ingredient.name, "name");
+        assert_eq!(ingredient.kind, None);
+        assert_eq!(ingredient.quantity.unwrap().to_string(), "1/2");
+        let ingredient = Ingredient::parse_from_str("name: 0.5 (note)").unwrap();
+        assert_eq!(ingredient.name, "name");
+        assert_eq!(ingredient.kind, None);
+        assert_eq!(ingredient.quantity.unwrap().to_string(), "0.5 (note)");
     }
 }
