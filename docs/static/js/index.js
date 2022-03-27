@@ -240,11 +240,13 @@
   }
 
   class Quantity {
-    constructor(element) {
+    constructor(element, decimalSeparator) {
       this.element = element;
+      this.decimalSeparator = decimalSeparator;
       const value = element.textContent;
-      const fraction = Fraction.parseFrom(value);
-      this.defaultValue = fraction === null ? parseFloat(value) : fraction;
+      const fraction = Fraction.parseFrom(value, decimalSeparator);
+      this.defaultValue =
+        fraction ?? parseFloat(value.replace(decimalSeparator, "."));
       this.currentValue = this.defaultValue;
     }
 
@@ -261,7 +263,9 @@
       if (this.isFraction()) {
         this.element.textContent = this.currentValue.toString();
       } else {
-        this.element.textContent = Math.round(this.currentValue * 100) / 100;
+        this.element.textContent = String(
+          Math.round(this.currentValue * 100) / 100
+        ).replace(".", this.decimalSeparator);
       }
     }
 
@@ -276,7 +280,7 @@
   }
 
   class IngredientManager {
-    constructor() {
+    constructor(config) {
       const yields = document.querySelector(selectors.yield);
       yields
         .querySelector(".decrease")
@@ -292,7 +296,7 @@
         ...document.querySelectorAll(selectors.ingredientQuantity),
       ]
         .filter((element) => element.textContent !== null)
-        .map((element) => new Quantity(element));
+        .map((element) => new Quantity(element, config.decimalSeparator));
     }
 
     decrease() {
@@ -363,6 +367,9 @@
   }
 
   function initialize() {
+    const config = Object.fromEntries(
+      Object.entries(document.getElementById("config").dataset)
+    );
     const tags = new TagManager();
     for (const [name, element] of queryTagElements(document)) {
       tags.addTagElement(name, element);
@@ -382,7 +389,7 @@
       });
     }
     if (isRecipePage()) {
-      const ingredients = new IngredientManager();
+      const ingredients = new IngredientManager(config);
       ingredients.reset();
     }
     addCollapseEventHandlers();
