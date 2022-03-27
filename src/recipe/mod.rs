@@ -116,8 +116,6 @@ impl fmt::Display for Recipe {
 #[cfg(test)]
 mod tests {
 
-    use crate::recipe::ingredient::QuantityValue;
-
     use super::{
         list::Section,
         metadata::{Duration, Link, Source, Yield},
@@ -244,7 +242,7 @@ mod tests {
             assert_eq!(item.name, "name 1");
             assert_eq!(item.kind, Some("kind 1".into()));
             let quantity = item.quantity.as_ref().unwrap();
-            assert!(matches!(quantity.value, QuantityValue::Integer(10)));
+            assert_eq!(quantity.value.to_string(), "10");
             assert_eq!(quantity.unit, Some("1 unit".into()));
             assert_eq!(quantity.note, Some("note 1".into()));
             let item = section.items.get(1).unwrap();

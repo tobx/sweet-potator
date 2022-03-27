@@ -139,18 +139,19 @@ contexts:
 
   ingredient-quantity:
     - match: |
-        (?x:                            # turn on extended mode
-          (:)\ \s*                      # separator
-          (\d+(?:(\.|/)\d+)?)           # integer, decimal or fraction
-          (?:\ (?:[^\ ]|\ [^(])*[^ ])?  # unit (optional)
-          (?:\s*\ (\()[^)]*(\)))?       # note (optional)
+        (?x:                             # turn on extended mode
+          (:)\ \s*                       # separator
+          (\d+(?:(\.|/)\d+|\ \d+(/)\d+)?)  # integer, decimal or fraction
+          (?:\ (?:[^\ ]|\ [^(])*[^ ])?   # unit (optional)
+          (?:\s*\ (\()[^)]*(\)))?        # note (optional)
         )
       captures:
         1: punctuation.separator.recipe
         2: constant.numeric.recipe
         3: punctuation.separator.decimal.recipe
-        4: punctuation.section.parens.begin.recipe
-        5: punctuation.section.parens.end.recipe
+        4: punctuation.separator.decimal.recipe
+        5: punctuation.section.parens.begin.recipe
+        6: punctuation.section.parens.end.recipe
       scope: string.recipe
     - match: '\S'
       scope: invalid.illegal.recipe
