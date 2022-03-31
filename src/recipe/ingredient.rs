@@ -49,7 +49,7 @@ pub struct Fraction {
 }
 
 impl Fraction {
-    fn add_integer(&self, int: u8) -> Option<Self> {
+    fn add_integer(self, int: u8) -> Option<Self> {
         Some(Self {
             numer: int
                 .checked_mul(self.denom)
