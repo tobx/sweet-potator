@@ -155,7 +155,10 @@ impl fmt::Display for Quantity {
 impl ParseFromStr for Quantity {
     fn parse_from_str(s: &str) -> ParseResult<Self> {
         let (value, rest) = QuantityValue::parse_from_str(s)?;
-        let (unit, note) = if let Some((unit, note)) = rest.split_once(" (") {
+        let (unit, note) = if let Some((unit, note)) = rest
+            .split_once(" (")
+            .or_else(|| rest.strip_prefix('(').map(|note| ("", note)))
+        {
             let unit = unit.trim().to_string();
             let note = note
                 .strip_suffix(')')
@@ -315,12 +318,12 @@ mod tests {
         assert_eq!(quantity.value.to_string(), "1");
         assert_eq!(quantity.unit.unwrap(), "unit");
         assert_eq!(quantity.note.unwrap(), "note");
-        let ingredient = Ingredient::parse_from_str("name: 0.5 bla (note)").unwrap();
+        let ingredient = Ingredient::parse_from_str("name: 0.5 (note)").unwrap();
         assert_eq!(ingredient.name, "name");
         assert_eq!(ingredient.kind, None);
         let quantity = ingredient.quantity.unwrap();
         assert_eq!(quantity.value.to_string(), "0.5");
-        assert_eq!(quantity.unit.unwrap(), "bla");
+        assert!(quantity.unit.is_none());
         assert_eq!(quantity.note.unwrap(), "note");
         let ingredient = Ingredient::parse_from_str("name: 1/2").unwrap();
         assert_eq!(ingredient.name, "name");
