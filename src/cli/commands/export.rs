@@ -30,7 +30,7 @@ impl Serialize for Image {
     where
         S: serde::Serializer,
     {
-        serializer.serialize_str(&self.file_name().to_str().expect("invalid image path"))
+        serializer.serialize_str(self.file_name().to_str().expect("invalid image path"))
     }
 }
 

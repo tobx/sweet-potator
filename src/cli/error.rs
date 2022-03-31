@@ -4,7 +4,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
-    #[error(transparent)]
+    #[error("config error: {0}")]
     Config(#[from] config::ConfigError),
     #[error("recipe list is corrupt")]
     CorruptedRecipeList,
@@ -24,7 +24,7 @@ pub enum Error {
     TemplateNameNotConfigured(String),
     #[error("template name '{0}' not found")]
     TemplateNameNotFound(String),
-    #[error(transparent)]
+    #[error("template engine error: {0}")]
     Tera(#[from] tera::Error),
 }
 
