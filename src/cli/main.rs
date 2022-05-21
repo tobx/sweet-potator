@@ -70,7 +70,7 @@ fn route(config: &Config, options: Options) -> Result<()> {
         Delete(options) => commands::delete(config, &options),
         Edit(options) => commands::edit(config, &options),
         Export(options) => commands::export(config, &options),
-        Info => commands::info(config),
+        Info(_) => commands::info(config),
         List(options) => commands::list(config, &options),
     }
 }

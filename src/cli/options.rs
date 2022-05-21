@@ -25,7 +25,7 @@ pub enum SubCommand {
     Delete(Delete),
     Edit(Edit),
     Export(Export),
-    Info,
+    Info(Info),
     List(List),
 }
 
