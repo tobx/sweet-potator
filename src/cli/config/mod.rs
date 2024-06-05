@@ -74,7 +74,7 @@ impl Config {
     pub fn load(path: &Path) -> std::result::Result<Self, ConfigError> {
         let config = config::Config::builder()
             .add_source(File::from_str(
-                include_str!("default.toml"),
+                DEFAULT_CONFIG_FILE_CONTENT,
                 FileFormat::Toml,
             ))
             .add_source(File::from(path).format(FileFormat::Toml))
