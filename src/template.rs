@@ -3,7 +3,6 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use serde::Serialize;
 use tera::Tera;
 use toml::Value;
 
@@ -18,14 +17,6 @@ pub const TERA_DIR: &str = "tera";
 
 pub const INDEX_NAME: &str = "index";
 pub const RECIPE_NAME: &str = "recipe";
-
-#[derive(Debug, Serialize)]
-struct IndexEntry {
-    pub title: String,
-    pub path: PathBuf,
-    pub tags: Vec<String>,
-    pub image_path: Option<PathBuf>,
-}
 
 pub struct Engine {
     tera: Tera,
