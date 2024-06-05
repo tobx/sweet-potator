@@ -32,7 +32,7 @@ impl fmt::Display for ParseError {
 
 impl ParseError {
     pub fn empty(name: &str) -> Self {
-        format!("{} must contain non-whitespace characters", name).into()
+        format!("{name} must contain non-whitespace characters").into()
     }
 
     pub fn set_path(&mut self, path: &Path) {

@@ -17,7 +17,7 @@ impl fmt::Display for Yield {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.value)?;
         if let Some(unit) = &self.unit {
-            write!(f, " {}", unit)?;
+            write!(f, " {unit}")?;
         }
         Ok(())
     }
@@ -77,7 +77,7 @@ impl fmt::Display for Duration {
 
 impl ParseFromStr for Duration {
     fn parse_from_str(s: &str) -> ParseResult<Self> {
-        let (mut hours, mut minutes) = if let Some((h, m)) = s.split_once(" ") {
+        let (mut hours, mut minutes) = if let Some((h, m)) = s.split_once(' ') {
             (
                 Self::parse_unit(h, "h")?,
                 Self::parse_unit(m.trim_start(), "m")?,
@@ -169,7 +169,7 @@ impl fmt::Display for Metadata {
             writeln!(f, "{}: {}", Self::DURATION_KEY, duration)?;
         }
         if let Some(source) = &self.source {
-            writeln!(f, "{}", source)?;
+            writeln!(f, "{source}")?;
         }
         if !self.tags.is_empty() {
             writeln!(f, "{}: {}", Self::TAGS_KEY, self.tags.join(", "))?;
@@ -186,7 +186,7 @@ impl TryFrom<Vec<String>> for Metadata {
         for line in lines {
             let (key, value) = parse_mapping(&line)?;
             if map.insert(key.into(), value.into()).is_some() {
-                return Err(format!("duplicate metadata key '{}'", key).into());
+                return Err(format!("duplicate metadata key '{key}'").into());
             }
         }
         map.try_into()
@@ -217,7 +217,7 @@ impl TryFrom<HashMap<String, String>> for Metadata {
             value.split(", ").map(|s| s.trim().into()).collect()
         });
         if let Some(key) = map.keys().next() {
-            return Err(format!("unknown metadata key '{}'", key).into());
+            return Err(format!("unknown metadata key '{key}'").into());
         }
         let metadata = Self {
             duration,

@@ -57,11 +57,11 @@ pub fn export(config: &Config, options: &options::Export) -> Result<()> {
             options.output_dir.to_string_lossy().yellow(),
         ));
     }
-    fs::create_dir_all(&options.output_dir.join(RECIPE_IMAGE_DIR))?;
+    fs::create_dir_all(options.output_dir.join(RECIPE_IMAGE_DIR))?;
     let file = fs::File::options()
         .write(true)
         .create_new(true)
-        .open(&options.output_dir.join(RECIPE_JSON_FILE_NAME))?;
+        .open(options.output_dir.join(RECIPE_JSON_FILE_NAME))?;
     serde_json::to_writer_pretty(&file, &entries).map_err(io::Error::from)?;
     let image_dir = options.output_dir.join(RECIPE_IMAGE_DIR);
     for image in entries.iter().filter_map(|entry| entry.image.as_ref()) {

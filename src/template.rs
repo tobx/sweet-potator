@@ -28,6 +28,9 @@ pub struct Engine {
 }
 
 impl Engine {
+    /// # Panics
+    ///
+    /// Will panic if `PathBuf::to_str` returns `None`
     pub fn new<E: Into<String>>(
         path: &Path,
         escape: bool,

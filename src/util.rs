@@ -51,6 +51,9 @@ where
     s
 }
 
+/// # Panics
+///
+/// Will panic if `Path::file_name` returns `None`
 pub fn copy_dir<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()> {
     let mut stack = vec![from.as_ref().to_owned()];
     let output_root = to.as_ref().to_owned();

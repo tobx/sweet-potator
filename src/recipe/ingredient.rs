@@ -28,9 +28,8 @@ pub struct Decimal {
 
 impl Decimal {
     fn try_parse_from_str(s: &str) -> ParseResult<Option<Self>> {
-        let (int, frac) = match s.split_once(".") {
-            Some(decimal) => decimal,
-            None => return Ok(None),
+        let Some((int, frac)) = s.split_once('.') else {
+            return Ok(None);
         };
         match (int.parse(), frac.parse()) {
             (Ok(int), Ok(frac)) => Ok(Some(Self { int, frac })),
@@ -59,9 +58,8 @@ impl Fraction {
     }
 
     fn try_parse_from_str(s: &str) -> ParseResult<Option<Self>> {
-        let (numer, denom) = match s.split_once("/") {
-            Some(fraction) => fraction,
-            None => return Ok(None),
+        let Some((numer, denom)) = s.split_once('/') else {
+            return Ok(None);
         };
         match (numer.parse(), denom.parse()) {
             (Ok(numer), Ok(denom)) => Ok(Some(Self { numer, denom })),
@@ -94,7 +92,7 @@ impl QuantityValue {
         } else if let Some(fraction) = Fraction::try_parse_from_str(value)? {
             Ok((Self::Fraction(fraction), rest))
         } else {
-            Err(format!("invalid ingredient quantity value: '{}'", value).into())
+            Err(format!("invalid ingredient quantity value: '{value}'").into())
         }
     }
 
@@ -103,15 +101,14 @@ impl QuantityValue {
         value: &str,
     ) -> ParseResult<Option<(Fraction, &str)>> {
         let (value, rest) = value.split_once(' ').unwrap_or((value, ""));
-        let fraction = match Fraction::try_parse_from_str(value)? {
-            Some(fraction) => fraction,
-            None => return Ok(None),
+        let Some(fraction) = Fraction::try_parse_from_str(value)? else {
+            return Ok(None);
         };
         let fraction = int
             .try_into()
             .ok()
             .and_then(|int| fraction.add_integer(int))
-            .ok_or_else(|| format!("mixed number fraction '{}' is out of range", value))?;
+            .ok_or_else(|| format!("mixed number fraction '{value}' is out of range"))?;
         Ok(Some((fraction, rest)))
     }
 }
@@ -127,13 +124,13 @@ impl fmt::Display for QuantityValue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Integer(Integer(value)) => {
-                write!(f, "{}", value)
+                write!(f, "{value}")
             }
             Self::Decimal(Decimal { int, frac }) => {
-                write!(f, "{}.{}", int, frac)
+                write!(f, "{int}.{frac}")
             }
             Self::Fraction(Fraction { numer, denom }) => {
-                write!(f, "{}/{}", numer, denom)
+                write!(f, "{numer}/{denom}")
             }
         }
     }
@@ -143,10 +140,10 @@ impl fmt::Display for Quantity {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.value)?;
         if let Some(unit) = &self.unit {
-            write!(f, " {}", unit)?;
+            write!(f, " {unit}")?;
         }
         if let Some(note) = &self.note {
-            write!(f, " ({})", note)?;
+            write!(f, " ({note})")?;
         }
         Ok(())
     }
@@ -168,7 +165,7 @@ impl ParseFromStr for Quantity {
         } else {
             (rest.trim_start().into(), None)
         };
-        let unit = unit.is_empty().not().then(|| unit);
+        let unit = unit.is_empty().not().then_some(unit);
         Ok(Self { value, unit, note })
     }
 }
@@ -184,10 +181,10 @@ impl fmt::Display for Ingredient {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.name)?;
         if let Some(kind) = &self.kind {
-            write!(f, ", {}", kind)?;
+            write!(f, ", {kind}")?;
         }
         if let Some(quantity) = &self.quantity {
-            write!(f, ": {}", quantity)?;
+            write!(f, ": {quantity}")?;
         }
         Ok(())
     }

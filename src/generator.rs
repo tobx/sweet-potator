@@ -77,7 +77,7 @@ impl<F: TextFilter> Generator<F> {
         context.insert("recipes", &entries);
         context.insert("tags", &tags);
         let path = output_dir.join(append_os_file_ext(INDEX_NAME, &self.output_file_ext));
-        fs::create_dir_all(&path.parent().expect("invalid index template path"))?;
+        fs::create_dir_all(path.parent().expect("invalid index template path"))?;
         let file = fs::File::create(path)?;
         self.engine.render_index(context, file)
     }

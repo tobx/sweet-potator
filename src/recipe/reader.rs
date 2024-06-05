@@ -23,7 +23,7 @@ impl<R: io::Read> Reader<R> {
             .skip_while(|res| matches!(res, Ok(line) if line.is_empty()))
             .take_while(|res| matches!(res, Ok(line) if !line.is_empty()))
             .collect::<io::Result<_>>()?;
-        Ok(block.is_empty().not().then(|| block))
+        Ok(block.is_empty().not().then_some(block))
     }
 }
 

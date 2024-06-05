@@ -29,7 +29,7 @@ fn notify<D: fmt::Display>(notification_type: NotificationType, message: D) -> S
         NotificationType::Info => "INFO".yellow(),
         NotificationType::Success => "SUCCESS".green(),
     };
-    format!("{} ({}): {}", APP_NAME, type_text, message)
+    format!("{APP_NAME} ({type_text}): {message}")
 }
 
 pub mod write {

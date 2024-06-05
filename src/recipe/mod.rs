@@ -72,7 +72,7 @@ impl Recipe {
     }
 
     fn parse_ingredients(mut lines: Vec<String>) -> ParseResult<List<Ingredient>> {
-        if !matches!(lines.get(0), Some(line) if line == "Ingredients") {
+        if !matches!(lines.first(), Some(line) if line == "Ingredients") {
             return Err("missing headline 'Ingredients'".into());
         }
         lines.remove(0);
@@ -80,7 +80,7 @@ impl Recipe {
     }
 
     fn parse_instructions(mut lines: Vec<String>) -> ParseResult<List<String>> {
-        if !matches!(lines.get(0), Some(line) if line == "Instructions") {
+        if !matches!(lines.first(), Some(line) if line == "Instructions") {
             return Err("missing headline 'Instructions'".into());
         }
         lines.remove(0);
@@ -88,7 +88,7 @@ impl Recipe {
     }
 
     fn parse_notes(mut lines: Vec<String>) -> ParseResult<Vec<String>> {
-        if !matches!(lines.get(0), Some(line) if line == "Notes") {
+        if !matches!(lines.first(), Some(line) if line == "Notes") {
             return Err("expected headline 'Notes'".into());
         }
         lines.remove(0);

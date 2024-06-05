@@ -38,7 +38,7 @@ impl<P: ParseFromStr> Section<P> {
 impl<D: fmt::Display> Section<D> {
     fn format(&self, f: &mut fmt::Formatter<'_>, indentation: &str) -> fmt::Result {
         writeln!(f, "{}{}", indentation, self.name)?;
-        format_items(&self.items, f, &format!("{0}{0}", indentation))
+        format_items(&self.items, f, &format!("{indentation}{indentation}"))
     }
 }
 
@@ -140,7 +140,7 @@ impl<D: ParseFromStr> TryFrom<Vec<String>> for List<D> {
     type Error = ParseError;
 
     fn try_from(lines: Vec<String>) -> Result<Self, Self::Error> {
-        if lines.get(0).map_or(true, |line| line.starts_with("- ")) {
+        if lines.first().map_or(true, |line| line.starts_with("- ")) {
             Ok(Self::Basic(Self::parse_basic(&lines)?))
         } else {
             Ok(Self::Sectioned(Self::parse_sectioned(&lines)?))
@@ -154,7 +154,7 @@ pub fn format_items<D: fmt::Display>(
     indentation: &str,
 ) -> fmt::Result {
     for item in items {
-        writeln!(f, "{}- {}", indentation, item)?;
+        writeln!(f, "{indentation}- {item}")?;
     }
     Ok(())
 }

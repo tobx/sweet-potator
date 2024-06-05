@@ -28,6 +28,9 @@ impl Directory {
         })
     }
 
+    /// # Panics
+    ///
+    /// Will panic if `Path::file_name` returns `None`
     pub fn list_all(path: &Path) -> io::Result<Vec<Self>> {
         let mut directories = Vec::new();
         for entry in fs::read_dir(path)? {
@@ -65,9 +68,12 @@ impl Directory {
         fs::remove_dir_all(self.path())
     }
 
+    /// # Panics
+    ///
+    /// Will panic if `Path::file_name` returns `None`
     pub fn image_file_name(&self, file_exts: &[OsString]) -> io::Result<Option<OsString>> {
         let path = self.path();
-        for entry in fs::read_dir(&path)? {
+        for entry in fs::read_dir(path)? {
             let entry = entry?;
             if entry.file_type()?.is_file() {
                 let path = entry.path();
@@ -108,11 +114,14 @@ impl Directory {
         let mut file = fs::File::options()
             .write(true)
             .create_new(true)
-            .open(&recipe_path)?;
-        write!(file, "{}", recipe)?;
+            .open(recipe_path)?;
+        write!(file, "{recipe}")?;
         Ok(())
     }
 
+    /// # Panics
+    ///
+    /// Will panic if recipe title is empty
     pub fn suffix(&self, title: &str) -> Option<&str> {
         let directory = Self::from_title(&self.parent, title).expect("empty recipe title");
         self.name
@@ -151,7 +160,7 @@ impl Directory {
 
     fn rename(&mut self, name: OsString) -> Result<()> {
         let path = self.parent.join(&name);
-        fs::rename(&self.path(), &path)?;
+        fs::rename(self.path(), &path)?;
         self.name = name;
         let mut files = Vec::new();
         for entry in fs::read_dir(&path)? {

@@ -93,7 +93,7 @@ fn run() -> Result<()> {
     }
     let template_dir = config.template_dir();
     if !template_dir.exists() {
-        TEMPLATE_DIR.extract(&config.template_dir())?;
+        TEMPLATE_DIR.extract(config.template_dir())?;
     }
     if let Some(path) = &options.recipe_dir {
         config.recipe_dir = path.into();
