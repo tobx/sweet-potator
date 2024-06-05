@@ -10,6 +10,7 @@ macro_rules! trait_methods {
     };
 }
 
+#[allow(dead_code)]
 pub trait Colorize {
     trait_methods!(
         black,
