@@ -4,7 +4,7 @@ use std::{
 };
 
 use config::{ConfigError, File, FileFormat};
-use dirs_next::home_dir;
+use dirs::home_dir;
 use serde::Deserialize;
 use slug::slugify;
 use sweet_potator::{

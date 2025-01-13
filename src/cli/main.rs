@@ -11,8 +11,8 @@ mod util;
 use std::fs;
 
 use clap::Parser;
-use dirs_next::home_dir;
 
+use dirs::home_dir;
 use serde::Serialize;
 use sweet_potator::{APP_NAME, TEMPLATE_DIR};
 
