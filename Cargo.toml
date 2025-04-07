@@ -9,25 +9,25 @@ license-file = "LICENSE"
 name = "sweet-potator"
 readme = "README.md"
 repository = "https://github.com/tobx/sweet-potator"
-version = "0.7.8"
+version = "0.7.9"
 
 [[bin]]
 name = "sweet-potator"
 path = "src/cli/main.rs"
 
 [dependencies]
-clap = { version = "4.5.26", features = ["derive"] }
-config = "0.15.5"
+clap = { version = "4.5.35", features = ["derive"] }
+config = "0.15.11"
 dirs = "6.0.0"
 include_dir = "0.7.4"
-owo-colors = { version = "4.1.0", features = ["supports-colors"] }
+owo-colors = { version = "4.2.0", features = ["supports-colors"] }
 sanitize-filename = "0.6.0"
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = "1.0.135"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
 slug = "0.1.6"
 tera = "1.20.0"
-thiserror = "2.0.11"
-toml = "0.8.19"
+thiserror = "2.0.12"
+toml = "0.8.20"
 
 [dev-dependencies]
-tempfile = "3.15.0"
+tempfile = "3.19.1"
