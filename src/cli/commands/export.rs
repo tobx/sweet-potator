@@ -5,7 +5,7 @@ use std::{
 };
 
 use serde::Serialize;
-use sweet_potator::recipe::{directory::Directory, Recipe};
+use sweet_potator::recipe::{Recipe, directory::Directory};
 
 use crate::{
     config::Config,

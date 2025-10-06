@@ -3,8 +3,8 @@ use std::{collections::HashMap, fmt};
 use serde::Serialize;
 
 use super::{
-    errors::{ParseError, ParseResult},
     ParseFromStr,
+    errors::{ParseError, ParseResult},
 };
 
 #[derive(Debug, Serialize)]

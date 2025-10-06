@@ -6,7 +6,7 @@ pub mod recipe;
 pub mod template;
 pub mod util;
 
-use include_dir::{include_dir, Dir};
+use include_dir::{Dir, include_dir};
 
 pub const APP_NAME: &str = env!("CARGO_PKG_NAME");
 

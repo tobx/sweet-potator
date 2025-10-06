@@ -1,10 +1,10 @@
 use sweet_potator::recipe::directory::Directory;
 
 use crate::{
+    AppInfo,
     config::Config,
     error::Result,
     terminal::{color::Colorize, writeln},
-    AppInfo,
 };
 
 pub fn info(config: &Config) -> Result<()> {

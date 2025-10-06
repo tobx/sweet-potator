@@ -4,11 +4,11 @@ use sweet_potator::{generator::Generator, template};
 use tera::Context;
 
 use crate::{
+    AppInfo,
     config::Config,
     error::{Error, Result},
     options,
     terminal::color::Colorize,
-    AppInfo,
 };
 
 pub fn build(config: &Config, options: &options::Build) -> Result<()> {

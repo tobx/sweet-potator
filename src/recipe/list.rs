@@ -3,8 +3,8 @@ use std::{fmt, slice};
 use serde::Serialize;
 
 use super::{
-    errors::{ParseError, ParseResult},
     ParseFromStr,
+    errors::{ParseError, ParseResult},
 };
 
 #[derive(Debug, Serialize)]
@@ -258,12 +258,10 @@ mod tests {
 
     #[test]
     fn test_parse_basic_fail() {
-        assert!(List::<String>::try_from(vec![
-            "- item 1".into(),
-            "- item 2".into(),
-            String::new()
-        ])
-        .is_err());
+        assert!(
+            List::<String>::try_from(vec!["- item 1".into(), "- item 2".into(), String::new()])
+                .is_err()
+        );
     }
 
     #[test]

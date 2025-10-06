@@ -17,7 +17,7 @@ use serde::Serialize;
 use sweet_potator::{APP_NAME, TEMPLATE_DIR};
 
 use crate::{
-    config::{Config, CONFIG_FILE_NAME, DEFAULT_CONFIG_FILE_CONTENT, DEFAULT_RECIPE_FILE_CONTENT},
+    config::{CONFIG_FILE_NAME, Config, DEFAULT_CONFIG_FILE_CONTENT, DEFAULT_RECIPE_FILE_CONTENT},
     error::Result,
     options::{Options, SubCommand},
     terminal::message::write,

@@ -77,7 +77,7 @@ pub fn copy_dir<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<()
 }
 
 pub fn sanitize_file_name(file_name: &str) -> String {
-    use sanitize_filename::{sanitize_with_options, Options};
+    use sanitize_filename::{Options, sanitize_with_options};
 
     sanitize_with_options(
         file_name,

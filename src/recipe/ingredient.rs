@@ -3,8 +3,8 @@ use std::{fmt, num::IntErrorKind, ops::Not};
 use serde::Serialize;
 
 use super::{
-    errors::{ParseError, ParseResult},
     ParseFromStr,
+    errors::{ParseError, ParseResult},
 };
 
 #[derive(Clone, Copy, Debug, Serialize)]

@@ -12,7 +12,7 @@ use crate::{
     error::Result,
     recipe::directory::Directory,
     template,
-    util::{append_os_file_ext, copy_dir, UniqueNameFinder},
+    util::{UniqueNameFinder, append_os_file_ext, copy_dir},
 };
 
 pub trait TextFilter {
