@@ -90,7 +90,7 @@ impl Engine {
                 .join(language)
                 .with_extension(LANGUAGE_FILE_EXTENSION);
             match fs::read_to_string(path) {
-                Ok(data) => Ok(Some(data.parse()?)),
+                Ok(data) => Ok(Some(toml::from_str(&data)?)),
                 Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(None),
                 Err(error) => Err(error.into()),
             }
